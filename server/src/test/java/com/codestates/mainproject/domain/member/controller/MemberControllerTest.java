@@ -64,7 +64,7 @@ class MemberControllerTest {
                 "hgd@gmail.com", "홍길동", "hgd1234@","2ndPass");
         String content = gson.toJson(postDto);
         MemberResponseDto responseDto= new MemberResponseDto(
-                1L,"hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","1티어",
+                1L,"hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
                 List.of("Java", "SpringMVC", "SpringJPA"),
                 List.of("미디어"),
                 "github.com/honggildong",
@@ -137,7 +137,7 @@ class MemberControllerTest {
         patchDto.setPasswordCheck("pass2nd");
         patchDto.setName("고길동");
         patchDto.setDescription("홍길동아닙니다");
-        patchDto.setLevel("2티어");
+        patchDto.setLevel("시니어");
         patchDto.setStack(List.of("Python","R","Pytorch"));
         patchDto.setField(List.of("헬스케어"));
         patchDto.setGithub("github.com/gogildong");
@@ -146,7 +146,7 @@ class MemberControllerTest {
 
         MemberResponseDto responseDto =
                 new MemberResponseDto(1L, "hgd@gmail.com","hgd1234@","고길동",
-                        "홍길동아닙니다", "2티어", List.of("Python","R","Pytorch"),List.of("헬스케어"),
+                        "홍길동아닙니다", "시니어", List.of("Python","R","Pytorch"),List.of("헬스케어"),
                         "github.com/gogildong",List.of(new Article()),List.of(new Heart())
                         ,LocalDateTime.of(2022,11,10,11,30),LocalDateTime.now());
 
@@ -225,7 +225,7 @@ class MemberControllerTest {
         //given
         long memberId = 1;
 
-        MemberResponseDto responseDto = new MemberResponseDto(memberId, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","1티어",
+        MemberResponseDto responseDto = new MemberResponseDto(memberId, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
                 List.of("Java", "SpringMVC", "SpringJPA"),
                 List.of("미디어"),"github.com/honggildong",
                 List.of(new Article()),
@@ -289,21 +289,21 @@ class MemberControllerTest {
 
         given(mapper.membersToMemberResponseDtos(Mockito.anyList()))
                 .willReturn(List.of(
-                        new MemberResponseDto(1L, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","1티어",
+                        new MemberResponseDto(1L, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
                                 List.of("Java", "SpringMVC", "SpringJPA"),
                                 List.of("미디어"),"github.com/honggildong",
                                 List.of(new Article()),
                                 List.of(new Heart()),
                                 LocalDateTime.of(2022,11,10,11,30),
                                 LocalDateTime.now()),
-                        new MemberResponseDto(2L, "ggd@gmail.com", "ggd1234@", "고길동","길동이아닙니다","2티어",
+                        new MemberResponseDto(2L, "ggd@gmail.com", "ggd1234@", "고길동","길동이아닙니다","시니어",
                                 List.of("Python","R","Pytorch"),
                                 List.of("헬스케어"),"github.com/gogildong",
                                 List.of(new Article()),
                                 List.of(new Heart()),
                                 LocalDateTime.of(2022,11,10,11,30),
                                 LocalDateTime.now()),
-                       new MemberResponseDto(3L, "kgd@gmail.com", "hgd1234#", "김길동","길동","3티어",
+                       new MemberResponseDto(3L, "kgd@gmail.com", "hgd1234#", "김길동","길동","주니어",
                                List.of("Python", "SpringMVC", "Pytorch"),
                                List.of("제조"),"github.com/kimgildong",
                                List.of(new Article()),
