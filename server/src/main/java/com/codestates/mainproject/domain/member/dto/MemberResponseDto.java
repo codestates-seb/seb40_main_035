@@ -2,6 +2,7 @@ package com.codestates.mainproject.domain.member.dto;
 
 import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.heart.entity.Heart;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class MemberResponseDto {
     private long memberId;
     private String email;
