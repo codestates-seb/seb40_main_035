@@ -25,7 +25,15 @@ public class Heart extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    public long getMemberId() {
+        return member.getMemberId();
+    }
+
     @ManyToOne
     @JoinColumn(name = "ARTICLE_ID")
     private Article article;
+
+    public long getArticleId() {
+        return article.getArticleId();
+    }
 }

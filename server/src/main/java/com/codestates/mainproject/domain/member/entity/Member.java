@@ -58,6 +58,10 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<Heart> hearts = new ArrayList<>();
 
+    public void addHeart(Heart heart) {
+        hearts.add(heart);
+    }
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Answer> answers = new ArrayList<>();
 

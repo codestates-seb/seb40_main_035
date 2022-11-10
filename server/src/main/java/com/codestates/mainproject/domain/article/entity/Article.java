@@ -1,6 +1,7 @@
 package com.codestates.mainproject.domain.article.entity;
 
 import com.codestates.mainproject.audit.Auditable;
+import com.codestates.mainproject.converter.StringListConverter;
 import com.codestates.mainproject.domain.answer.entity.Answer;
 import com.codestates.mainproject.domain.category.entity.Category;
 import com.codestates.mainproject.domain.heart.entity.Heart;
@@ -46,8 +47,9 @@ public class Article extends Auditable {
     @Column(nullable = false)
     private int frontend;
 
+    @Convert(converter = StringListConverter.class)
     @Column(nullable = false)
-    private String location;
+    private List<String> field = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -62,6 +64,10 @@ public class Article extends Auditable {
 
     @OneToMany(mappedBy = "article")
     private List<Heart> hearts = new ArrayList<>();
+
+    public void addHeart(Heart heart) {
+        hearts.add(heart);
+    }
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Answer> answers = new ArrayList<>();
