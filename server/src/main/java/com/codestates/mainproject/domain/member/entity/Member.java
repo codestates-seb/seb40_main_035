@@ -64,10 +64,9 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<Heart> hearts = new ArrayList<>();
 
-    public List<ArticleSimpleResponseDto> getHeartArticles() {
+    public List<Article> getHeartArticles() {
         return hearts.stream()
                 .map(heart -> heart.getArticle())
-                .map(article -> new ArticleSimpleResponseDto(article.getArticleId(), article.getTitle()))
                 .collect(Collectors.toList());
     }
 

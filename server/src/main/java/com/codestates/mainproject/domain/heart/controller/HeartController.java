@@ -46,8 +46,8 @@ public class HeartController {
     @GetMapping
     public ResponseEntity getHearts() {
 
-        List<Heart> foundHeart = heartService.findHearts();
-        List<HeartResponseDto> responseDtos = mapper.heartsToHeartResponseDtos(foundHeart);
+        List<Heart> hearts = heartService.findHearts();
+        List<HeartResponseDto> responseDtos = mapper.heartsToHeartResponseDtos(hearts);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDtos), HttpStatus.OK);
     }

@@ -1,6 +1,8 @@
 package com.codestates.mainproject.domain.article.dto;
 
 import com.codestates.mainproject.domain.answer.dto.AnswerResponseDto;
+import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
+import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,5 +27,6 @@ public class ArticleDetailResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private int heartCount;
+    private List<HashtagResponseDto> hashtags;
     private List<AnswerResponseDto> answers;
 }

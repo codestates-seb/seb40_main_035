@@ -64,7 +64,10 @@ public class ArticleService {
     }
 
     public Article findArticle(long articleId) {
-        return findVerifiedArticle(articleId);
+        Article article = findVerifiedArticle(articleId);
+        article.addViews();
+
+        return article;
     }
 
     public Page<Article> findArticles(int page, int size) {
