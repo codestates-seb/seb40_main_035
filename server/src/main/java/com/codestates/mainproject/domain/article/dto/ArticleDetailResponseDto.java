@@ -1,17 +1,17 @@
 package com.codestates.mainproject.domain.article.dto;
 
+import com.codestates.mainproject.domain.answer.dto.AnswerResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Getter
 @Setter
-@AllArgsConstructor
-public class ArticleResponseDto {
+public class ArticleDetailResponseDto {
     private long articleId;
     private String title;
     private String body;
@@ -28,4 +28,5 @@ public class ArticleResponseDto {
     private LocalDateTime modifiedAt;
     private int heartCount;
     private List<HashtagResponseDto> hashtags;
+    private List<AnswerResponseDto> answers;
 }

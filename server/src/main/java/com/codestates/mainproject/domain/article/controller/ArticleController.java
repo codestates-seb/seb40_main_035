@@ -1,9 +1,15 @@
 package com.codestates.mainproject.domain.article.controller;
 
+import com.codestates.mainproject.domain.article.dto.ArticleDetailResponseDto;
 import com.codestates.mainproject.domain.article.dto.ArticlePatchDto;
 import com.codestates.mainproject.domain.article.dto.ArticlePostDto;
+import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
+import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.article.mapper.ArticleMapper;
 import com.codestates.mainproject.domain.article.service.ArticleService;
+import com.codestates.mainproject.dto.MultiResponseDto;
+import com.codestates.mainproject.dto.PageInfo;
+import com.codestates.mainproject.dto.SingleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,32 +32,51 @@ public class ArticleController {
     @PostMapping
     public ResponseEntity postArticle(@Valid @RequestBody ArticlePostDto postDto) {
 
-        return null;
+        Article article = mapper.articlePostDtoToArticle(postDto);
+        Article createdArticle = articleService.createArticle(article);
+        ArticleDetailResponseDto responseDto = mapper.articleToArticleDetailResponseDto(createdArticle);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{article-id}")
     public ResponseEntity patchArticle(@PathVariable("article-id") @Positive long articleId,
                                        @Valid @RequestBody ArticlePatchDto patchDto) {
+        patchDto.setArticleId(articleId);
 
-        return null;
+        Article article = mapper.articlePatchDtoToArticle(patchDto);
+        Article updatedArticle = articleService.updateArticle(article);
+        ArticleDetailResponseDto responseDto = mapper.articleToArticleDetailResponseDto(updatedArticle);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @GetMapping("/{article-id}")
     public ResponseEntity getArticle(@PathVariable("article-id") @Positive long articleId) {
 
-        return null;
+        Article foundArticle = articleService.findArticle(articleId);
+        ArticleDetailResponseDto responseDto = mapper.articleToArticleDetailResponseDto(foundArticle);
+
+        return new ResponseEntity(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getArticles(@RequestParam("page") @Positive int page,
                                        @RequestParam("size") @Positive int size) {
 
-        return null;
+        Page<Article> articlePage = articleService.findArticles(page, size);
+        List<Article> articles = articlePage.getContent();
+        List<ArticleResponseDto> responseDtos = mapper.articlesToArticleResponseDtos(articles);
+        PageInfo pageInfo = new PageInfo(articlePage.getNumber() - 1, articlePage.getSize(), articlePage.getTotalElements(), articlePage.getTotalPages());
+
+        return new ResponseEntity(new MultiResponseDto<>(responseDtos, pageInfo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{article-id}")
     public ResponseEntity deleteArticle(@PathVariable("article-id") @Positive long articleId) {
 
-        return null;
+        articleService.deleteArticle(articleId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

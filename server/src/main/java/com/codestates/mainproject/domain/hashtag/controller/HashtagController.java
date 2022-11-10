@@ -50,8 +50,8 @@ public class HashtagController {
     @GetMapping("/{hashtag-id}")
     public ResponseEntity getHashtag(@PathVariable("hashtag-id") @Positive long hashtagId) {
 
-        Hashtag findHashtag = hashtagService.findHashtag(hashtagId);
-        HashtagResponseDto responseDto = mapper.hashtagToHashtagResponseDto(findHashtag);
+        Hashtag foundHashtag = hashtagService.findHashtag(hashtagId);
+        HashtagResponseDto responseDto = mapper.hashtagToHashtagResponseDto(foundHashtag);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }

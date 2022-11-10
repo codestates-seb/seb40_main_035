@@ -50,8 +50,8 @@ public class CommentController {
     @GetMapping("/{comment-id}")
     public ResponseEntity getComment(@PathVariable("comment-id") @Positive long commentId) {
 
-        Comment findComment = commentService.findComment(commentId);
-        CommentResponseDto responseDto = mapper.commentToCommentResponseDto(findComment);
+        Comment foundComment = commentService.findComment(commentId);
+        CommentResponseDto responseDto = mapper.commentToCommentResponseDto(foundComment);
 
         return new ResponseEntity(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }

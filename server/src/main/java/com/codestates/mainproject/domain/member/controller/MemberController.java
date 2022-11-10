@@ -1,6 +1,6 @@
 package com.codestates.mainproject.domain.member.controller;
 
-import com.codestates.mainproject.domain.member.dto.LoginDto;
+import com.codestates.mainproject.domain.member.dto.MemberDetailResponseDto;
 import com.codestates.mainproject.domain.member.dto.MemberPatchDto;
 import com.codestates.mainproject.domain.member.dto.MemberPostDto;
 import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
@@ -10,20 +10,16 @@ import com.codestates.mainproject.domain.member.service.MemberService;
 import com.codestates.mainproject.dto.MultiResponseDto;
 import com.codestates.mainproject.dto.PageInfo;
 import com.codestates.mainproject.dto.SingleResponseDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/members")
@@ -38,7 +34,7 @@ public class MemberController {
 
         Member member = mapper.memberPostDtoToMember(postDto);
         Member createdMember = memberService.createMember(member);
-        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(createdMember);
+        MemberDetailResponseDto responseDto = mapper.memberToMemberDetailResponseDto(createdMember);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
     }
@@ -51,7 +47,7 @@ public class MemberController {
 
         Member member = mapper.memberPatchDtoToMember(patchDto);
         Member updatedMember = memberService.updateMember(member);
-        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(updatedMember);
+        MemberDetailResponseDto responseDto = mapper.memberToMemberDetailResponseDto(updatedMember);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
@@ -59,8 +55,8 @@ public class MemberController {
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") @Positive long memberId) {
 
-        Member member = memberService.findMember(memberId);
-        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(member);
+        Member foundMember = memberService.findMember(memberId);
+        MemberDetailResponseDto responseDto = mapper.memberToMemberDetailResponseDto(foundMember);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }

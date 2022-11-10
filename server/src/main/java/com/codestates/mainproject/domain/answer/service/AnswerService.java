@@ -21,18 +21,18 @@ public class AnswerService {
     private final ArticleService articleService;
     private final MemberService memberService;
 
-//    public Answer createAnswer(Answer answer) {
-//        Article article = articleService.findverifiedArticle(answer.getArticleId());
-//        Member member = memberService.findVerifiedMember(answer.getMemberId());
-//
-//        answer.setArticle(article);
-//        answer.setMember(member);
-//
-//        article.addAnswer(answer);
-//        member.addAnswer(answer);
-//
-//        return answerRepository.save(answer);
-//    }
+    public Answer createAnswer(Answer answer) {
+        Article article = articleService.findVerifiedArticle(answer.getArticleId());
+        Member member = memberService.findVerifiedMember(answer.getMemberId());
+
+        answer.setArticle(article);
+        answer.setMember(member);
+
+        article.addAnswer(answer);
+        member.addAnswer(answer);
+
+        return answerRepository.save(answer);
+    }
 
     public Answer updateAnswer(Answer answer) {
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());

@@ -25,14 +25,14 @@ public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper mapper;
 
-//    @PostMapping
-//    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto postDto) {
-//        Answer answer = mapper.answerPostDtoToAnswer(postDto);
-//        Answer createdAnswer = answerService.createAnswer(answer);
-//        AnswerResponseDto responseDto = mapper.answerToAnswerResponseDto(createdAnswer);
-//
-//        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
-//    }
+    @PostMapping
+    public ResponseEntity postAnswer(@Valid @RequestBody AnswerPostDto postDto) {
+        Answer answer = mapper.answerPostDtoToAnswer(postDto);
+        Answer createdAnswer = answerService.createAnswer(answer);
+        AnswerResponseDto responseDto = mapper.answerToAnswerResponseDto(createdAnswer);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
+    }
 
     @PatchMapping("/{answer-id}")
     public ResponseEntity patchAnswer(@PathVariable("answer-id") @Positive long answerId,
@@ -49,8 +49,8 @@ public class AnswerController {
     @GetMapping("/{answer-id}")
     public ResponseEntity getAnswer(@PathVariable("answer-id") @Positive long answerId) {
 
-        Answer findAnswer = answerService.findAnswer(answerId);
-        AnswerResponseDto responseDto = mapper.answerToAnswerResponseDto(findAnswer);
+        Answer foundAnswer = answerService.findAnswer(answerId);
+        AnswerResponseDto responseDto = mapper.answerToAnswerResponseDto(foundAnswer);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }

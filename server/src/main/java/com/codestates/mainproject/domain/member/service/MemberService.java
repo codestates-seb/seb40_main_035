@@ -19,6 +19,7 @@ public class MemberService {
 
     public Member createMember(Member member) {
         verifyExistingEmail(member.getEmail());
+        verifyExistingName(member.getName());
         checkPassword(member.getPassword(), member.getPasswordCheck());
 
         return memberRepository.save(member);
@@ -32,29 +33,36 @@ public class MemberService {
                     checkPassword(member.getPassword(), member.getPasswordCheck());
                     findMember.setPassword(password);
                 });
+
         Optional.ofNullable(member.getPasswordCheck())
                 .ifPresent(passwordCheck -> {
                     checkPassword(member.getPassword(), member.getPasswordCheck());
                     findMember.setPasswordCheck(passwordCheck);
                 });
+
         Optional.ofNullable(member.getName())
                 .ifPresent(name -> findMember.setName(name));
+
         Optional.ofNullable(member.getDescription())
                 .ifPresent(description -> findMember.setDescription(description));
+
         Optional.ofNullable(member.getLevel())
                 .ifPresent(level -> findMember.setLevel(level));
+
         Optional.ofNullable(member.getStack())
                 .ifPresent(stack -> {
                     if (!stack.isEmpty()) {
                         findMember.setStack(stack);
                     }
                 });
+
         Optional.ofNullable(member.getField())
                 .ifPresent(field -> {
                     if (!field.isEmpty()) {
                         findMember.setField(field);
                     }
                 });
+
         Optional.ofNullable(member.getGithub())
                 .ifPresent(github -> findMember.setGithub(github));
 
@@ -85,6 +93,14 @@ public class MemberService {
 
         if (optionalMember.isPresent()) {
             throw new RuntimeException("중복된 이메일입니다.");
+        }
+    }
+
+    private void verifyExistingName(String name) {
+        Optional<Member> optionalMember = memberRepository.findByName(name);
+
+        if (optionalMember.isPresent()) {
+            throw new RuntimeException("중복된 이름입니다.");
         }
     }
 

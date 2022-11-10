@@ -1,6 +1,5 @@
 package com.codestates.mainproject.domain.heart.mapper;
 
-import com.codestates.mainproject.domain.heart.dto.HeartPatchDto;
 import com.codestates.mainproject.domain.heart.dto.HeartPostDto;
 import com.codestates.mainproject.domain.heart.dto.HeartResponseDto;
 import com.codestates.mainproject.domain.heart.entity.Heart;
@@ -11,8 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface HeartMapper {
     Heart heartPostDtoToHeart(HeartPostDto postDto);
-
-    Heart heartPatchDtoToHeart(HeartPatchDto patchDto);
 
     HeartResponseDto heartToHeartResponseDto(Heart heart);
 

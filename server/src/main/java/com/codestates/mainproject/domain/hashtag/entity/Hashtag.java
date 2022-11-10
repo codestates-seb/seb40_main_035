@@ -1,6 +1,8 @@
 package com.codestates.mainproject.domain.hashtag.entity;
 
-import com.codestates.mainproject.domain.article.entity.ArticleHashtag;
+import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
+import com.codestates.mainproject.domain.article.entity.Article;
+import com.codestates.mainproject.domain.articlehashtag.entity.ArticleHashtag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,4 +26,8 @@ public class Hashtag {
 
     @OneToMany(mappedBy = "hashtag")
     private List<ArticleHashtag> articleHashtags = new ArrayList<>();
+
+    public void addArticleHashtag(ArticleHashtag articleHashtag) {
+        articleHashtags.add(articleHashtag);
+    }
 }

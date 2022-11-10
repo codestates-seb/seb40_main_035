@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,18 +21,26 @@ public class HeartService {
     private final MemberService memberService;
     private final ArticleService articleService;
 
-//    public Heart createHeart(Heart heart) {
-//        Article article = articleService.findverifiedArticle(heart.getArticleId());
-//        Member member = memberService.findVerifiedMember(heart.getMemberId());
-//
-//        heart.setArticle(article);
-//        heart.setMember(member);
-//
-//        article.addHeart(heart);
-//        member.addHeart(heart);
-//
-//        return heartRepository.save(heart);
-//    }
+    public Heart createHeart(Heart heart) {
+        Article article = articleService.findVerifiedArticle(heart.getArticleId());
+        Member member = memberService.findVerifiedMember(heart.getMemberId());
+
+        heart.setArticle(article);
+        heart.setMember(member);
+
+        article.addHeart(heart);
+        member.addHeart(heart);
+
+        return heartRepository.save(heart);
+    }
+
+    public Heart findHeart(long heartId) {
+        return findVerifiedHeart(heartId);
+    }
+
+    public List<Heart> findHearts() {
+        return heartRepository.findAll();
+    }
 
     public void deleteHeart(long heartId) {
         Heart heart = findVerifiedHeart(heartId);

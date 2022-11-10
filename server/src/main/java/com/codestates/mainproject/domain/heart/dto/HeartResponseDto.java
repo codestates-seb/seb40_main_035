@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 public class HeartResponseDto {
     private long heartId;
-    private boolean isHeart;
     private long memberId;
     private long articleId;
 }
