@@ -1,6 +1,9 @@
 package com.codestates.mainproject.domain.article.controller;
 
+import com.codestates.mainproject.domain.answer.dto.AnswerResponseDto;
 import com.codestates.mainproject.domain.answer.entity.Answer;
+import com.codestates.mainproject.domain.article.dto.ArticleDetailResponseDto;
+import com.codestates.mainproject.domain.article.dto.ArticlePatchDto;
 import com.codestates.mainproject.domain.article.dto.ArticlePostDto;
 import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
 import com.codestates.mainproject.domain.article.entity.Article;
@@ -8,6 +11,8 @@ import com.codestates.mainproject.domain.article.entity.ArticleHashtag;
 import com.codestates.mainproject.domain.article.mapper.ArticleMapper;
 import com.codestates.mainproject.domain.article.service.ArticleService;
 import com.codestates.mainproject.domain.category.entity.Category;
+import com.codestates.mainproject.domain.comment.dto.CommentResponseDto;
+import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.heart.entity.Heart;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.google.gson.Gson;
@@ -18,6 +23,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -26,15 +34,18 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,23 +69,29 @@ class ArticleControllerTest {
     @Test
     void postArticle() throws Exception{
         //given
-        ArticlePostDto postDto = new ArticlePostDto("제목1","본문1",
-                7,false, "20221109"
-                ,"20221210",
-                3,3, List.of("금융"),new Member(), new Category(), List.of(new ArticleHashtag()),
-                List.of(new Heart()),List.of(new Answer()));
+        ArticlePostDto postDto = new ArticlePostDto(1L,"제목1","본문1","20221109","20221210",
+                3, 3, List.of("금융"));
         String content = gson.toJson(postDto);
 
-        ArticleResponseDto responseDto = new ArticleResponseDto();
+        ArticleDetailResponseDto detailResponseDto = new ArticleDetailResponseDto(
+                1L, "제목1", "본문1", 0, false,
+                "20221109", "20221210", 3, 3, List.of("금융"),
+                1L, "홍길동", LocalDateTime.now(),
+                LocalDateTime.now(),0, List.of(new HashtagResponseDto(1L,"MySQL")),
+                List.of(new AnswerResponseDto(1L,"본문1",1L,"홍길동",
+                        1L,LocalDateTime.now(), LocalDateTime.now(),
+                        List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
+                                1L, LocalDateTime.now(),LocalDateTime.now()))))
+        );
 
         given(mapper.articlePostDtoToArticle(Mockito.any(ArticlePostDto.class)))
                 .willReturn(new Article());
 
-//        given(ArticleService.createArticle(Mockito.any(Article.class)))
-//                .willReturn(new Article());
+        given(articleService.createArticle(Mockito.any(Article.class)))
+                .willReturn(new Article());
 
-        given(mapper.articleToArticleResponseDto(Mockito.any(Article.class)))
-                .willReturn(responseDto);
+        given(mapper.articleToArticleDetailResponseDto(Mockito.any(Article.class)))
+                .willReturn(detailResponseDto);
 
         //when
         ResultActions actions = mockMvc.perform(
@@ -87,50 +104,358 @@ class ArticleControllerTest {
         //then
         actions
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data.memberId").value(postDto.getMemberId()))
                 .andExpect(jsonPath("$.data.title").value(postDto.getTitle()))
                 .andExpect(jsonPath("$.data.body").value(postDto.getBody()))
-
-                .andDo(document("post-question",
+                .andExpect(jsonPath("$.data.startDay").value(postDto.getStartDay()))
+                .andExpect(jsonPath("$.data.endDay").value(postDto.getEndDay()))
+                .andExpect(jsonPath("$.data.backend").value(postDto.getBackend()))
+                .andExpect(jsonPath("$.data.frontend").value(postDto.getFrontend()))
+                .andExpect(jsonPath("$.data.field").value(postDto.getField()))
+                .andDo(document("post-article",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("질문 제목"),
-                                        fieldWithPath("body").type(JsonFieldType.STRING).description("질문 본문"),
-                                        fieldWithPath("tags").type(JsonFieldType.ARRAY).description("질문 태그").optional(),
-                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자")
+                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("body").type(JsonFieldType.STRING).description("게시글 본문"),
+                                        fieldWithPath("startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
+                                        fieldWithPath("endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
+                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+                                        fieldWithPath("field").type(JsonFieldType.ARRAY).description("프로젝트 산업분야")
                                 )
                         ),
                         responseFields(
                                 List.of(
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
-                                        fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 식별자"),
-                                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("질문 제목"),
-                                        fieldWithPath("data.body").type(JsonFieldType.STRING).description("질문 본문"),
+                                        fieldWithPath("data.articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("data.body").type(JsonFieldType.STRING).description("게시글 본문"),
+                                        fieldWithPath("data.views").type(JsonFieldType.NUMBER).description("게시글 조회수"),
+                                        fieldWithPath("data.isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
+                                        fieldWithPath("data.startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
+                                        fieldWithPath("data.endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
+                                        fieldWithPath("data.backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("data.frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+                                        fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("프로젝트 산업분야"),
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-                                        fieldWithPath("data.displayName").type(JsonFieldType.STRING).description("회원 이름"),
-                                        fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("질문 태그"),
+                                        fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
-                                        fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("답변 갯수")
+                                        fieldWithPath("data.modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
+
+                                        fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("data.hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+                                        fieldWithPath("data.hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
+
+                                        fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
+                                        fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
+                                        fieldWithPath("data.answers[].body").type(JsonFieldType.STRING).description("답변 본문"),
+                                        fieldWithPath("data.answers[].memberId").type(JsonFieldType.NUMBER).description("답변 작성 회원 식별자"),
+                                        fieldWithPath("data.answers[].memberName").type(JsonFieldType.STRING).description("답변 작성 회원"),
+                                        fieldWithPath("data.answers[].articleId").type(JsonFieldType.NUMBER).description("답변 작성 게시글 식별자"),
+                                        fieldWithPath("data.answers[].createdAt").type(JsonFieldType.STRING).description("답변 생성 시간"),
+                                        fieldWithPath("data.answers[].modifiedAt").type(JsonFieldType.STRING).description("답변 수정 시간"),
+
+                                        fieldWithPath("data.answers[].comments").type(JsonFieldType.ARRAY).description("답변 댓글 정보"),
+                                        fieldWithPath("data.answers[].comments[].commentId").type(JsonFieldType.NUMBER).description("댓글 식별자"),
+                                        fieldWithPath("data.answers[].comments[].body").type(JsonFieldType.STRING).description("댓글 내용"),
+                                        fieldWithPath("data.answers[].comments[].memberId").type(JsonFieldType.NUMBER).description("댓글 작성 회원 식별자"),
+                                        fieldWithPath("data.answers[].comments[].memberName").type(JsonFieldType.STRING).description("댓글 작성 회원 이름"),
+                                        fieldWithPath("data.answers[].comments[].answerId").type(JsonFieldType.NUMBER).description("댓글 작성 답변 식별자"),
+                                        fieldWithPath("data.answers[].comments[].createdAt").type(JsonFieldType.STRING).description("댓글 생성 시간"),
+                                        fieldWithPath("data.answers[].comments[].modifiedAt").type(JsonFieldType.STRING).description("댓글 수정 시간")
                                 )
                         )
                 ));
     }
 
     @Test
-    void patchArticle() {
+    void patchArticle() throws Exception{
+        //given
+        long articleId = 1L;
+        ArticlePatchDto patchDto = new ArticlePatchDto();
+        patchDto.setTitle("제목2");
+        patchDto.setBody("본문2");
+        patchDto.setIsCompleted(true);
+        patchDto.setStartDay("20221111");
+        patchDto.setEndDay("20221130");
+        patchDto.setBackend(Optional.of(2));
+        patchDto.setFrontend(Optional.of(2));
+        patchDto.setField(List.of("교육"));
+
+        String content = gson.toJson(patchDto);
+
+        ArticleDetailResponseDto detailResponseDto = new ArticleDetailResponseDto(articleId, "제목2", "본문2",
+                0, true, "20221111","20221130",2,2,List.of("교육"),
+                1L, "홍길동", LocalDateTime.now(),LocalDateTime.now(), 0,
+                List.of(new HashtagResponseDto(1L,"MySQL")),
+                List.of(new AnswerResponseDto(1L, "본문1",1L,"홍길동", 1L,
+                        LocalDateTime.now(), LocalDateTime.now(),
+                        List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
+                                1L, LocalDateTime.now(),LocalDateTime.now()))
+                )
+                ));
+
+        given(mapper.articlePatchDtoToArticle(Mockito.any(ArticlePatchDto.class)))
+                .willReturn(new Article());
+
+        given(articleService.updateArticle(Mockito.any(Article.class)))
+                .willReturn(new Article());
+
+        given(mapper.articleToArticleDetailResponseDto(Mockito.any(Article.class)))
+                .willReturn(detailResponseDto);
+
+        //when
+        ResultActions actions = mockMvc.perform(
+                patch("/{article-id}/edit", articleId)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+        );
+
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.articleId").value(articleId))
+                .andExpect(jsonPath("$.data.title").value(patchDto.getTitle()))
+                .andExpect(jsonPath("$.data.body").value(patchDto.getBody()))
+                .andExpect(jsonPath("$.data.isCompleted").value(patchDto.getIsCompleted()))
+                .andExpect(jsonPath("$.data.startDay").value(patchDto.getStartDay()))
+                .andExpect(jsonPath("$.data.endDay").value(patchDto.getEndDay()))
+                .andExpect(jsonPath("$.data.backend").value(patchDto.getBackend()))
+                .andExpect(jsonPath("$.data.frontend").value(patchDto.getFrontend()))
+                .andExpect(jsonPath("$.data.field").value(patchDto.getField()))
+                .andDo(document("patch-article",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("article-id").description("게시글 식별자")),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 식별자").ignored(),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("body").type(JsonFieldType.STRING).description("게시글 본문"),
+                                        fieldWithPath("isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
+                                        fieldWithPath("startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
+                                        fieldWithPath("endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
+                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+                                        fieldWithPath("field").type(JsonFieldType.ARRAY).description("프로젝트 산업분야")
+                                )
+                        ),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data.articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("data.body").type(JsonFieldType.STRING).description("게시글 본문"),
+                                        fieldWithPath("data.views").type(JsonFieldType.NUMBER).description("게시글 조회수"),
+                                        fieldWithPath("data.isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
+                                        fieldWithPath("data.startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
+                                        fieldWithPath("data.endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
+                                        fieldWithPath("data.backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("data.frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+                                        fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("프로젝트 산업분야"),
+                                        fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                        fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("회원 이름"),
+                                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                        fieldWithPath("data.modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
+
+                                        fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("data.hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+                                        fieldWithPath("data.hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
+
+                                        fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
+                                        fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
+                                        fieldWithPath("data.answers[].body").type(JsonFieldType.STRING).description("답변 본문"),
+                                        fieldWithPath("data.answers[].memberId").type(JsonFieldType.NUMBER).description("답변 작성 회원 식별자"),
+                                        fieldWithPath("data.answers[].memberName").type(JsonFieldType.STRING).description("답변 작성 회원"),
+                                        fieldWithPath("data.answers[].articleId").type(JsonFieldType.NUMBER).description("답변 작성 게시글 식별자"),
+                                        fieldWithPath("data.answers[].createdAt").type(JsonFieldType.STRING).description("답변 생성 시간"),
+                                        fieldWithPath("data.answers[].modifiedAt").type(JsonFieldType.STRING).description("답변 수정 시간"),
+
+                                        fieldWithPath("data.answers[].comments").type(JsonFieldType.ARRAY).description("답변 댓글 정보"),
+                                        fieldWithPath("data.answers[].comments[].commentId").type(JsonFieldType.NUMBER).description("댓글 식별자"),
+                                        fieldWithPath("data.answers[].comments[].body").type(JsonFieldType.STRING).description("댓글 내용"),
+                                        fieldWithPath("data.answers[].comments[].memberId").type(JsonFieldType.NUMBER).description("댓글 작성 회원 식별자"),
+                                        fieldWithPath("data.answers[].comments[].memberName").type(JsonFieldType.STRING).description("댓글 작성 회원 이름"),
+                                        fieldWithPath("data.answers[].comments[].answerId").type(JsonFieldType.NUMBER).description("댓글 작성 답변 식별자"),
+                                        fieldWithPath("data.answers[].comments[].createdAt").type(JsonFieldType.STRING).description("댓글 생성 시간"),
+                                        fieldWithPath("data.answers[].comments[].modifiedAt").type(JsonFieldType.STRING).description("댓글 수정 시간")
+                                )
+                        )
+                ));
     }
 
     @Test
-    void getArticle() {
+    void getArticle() throws Exception {
+        //given
+        long articleId = 1L;
+
+        ArticleDetailResponseDto detailResponseDto = new ArticleDetailResponseDto(
+                1L, "제목1", "본문1", 0, false,
+                "20221109", "20221210", 3, 3, List.of("금융"),
+                1L, "홍길동", LocalDateTime.now(),
+                LocalDateTime.now(),0, List.of(new HashtagResponseDto(1L,"MySQL")),
+                List.of(new AnswerResponseDto(1L,"본문1",1L,"홍길동",
+                        1L,LocalDateTime.now(), LocalDateTime.now(),
+                        List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
+                                1L, LocalDateTime.now(),LocalDateTime.now()))))
+        );
+
+        given(articleService.findArticle(Mockito.anyLong()))
+                .willReturn(new Article());
+
+        given(mapper.articleToArticleDetailResponseDto(Mockito.any(Article.class)))
+                .willReturn(detailResponseDto);
+
+        //when
+        ResultActions actions = mockMvc.perform(
+                get("/{article-id}", articleId)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.articleId").value(articleId))
+                .andDo(document("get-article",
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("article-id").description("게시글 식별자")),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data.articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("data.body").type(JsonFieldType.STRING).description("게시글 본문"),
+                                        fieldWithPath("data.views").type(JsonFieldType.NUMBER).description("게시글 조회수"),
+                                        fieldWithPath("data.isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
+                                        fieldWithPath("data.startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
+                                        fieldWithPath("data.endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
+                                        fieldWithPath("data.backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("data.frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+                                        fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("프로젝트 산업분야"),
+                                        fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                        fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("회원 이름"),
+                                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                        fieldWithPath("data.modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
+
+                                        fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("data.hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+                                        fieldWithPath("data.hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
+
+                                        fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
+                                        fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
+                                        fieldWithPath("data.answers[].body").type(JsonFieldType.STRING).description("답변 본문"),
+                                        fieldWithPath("data.answers[].memberId").type(JsonFieldType.NUMBER).description("답변 작성 회원 식별자"),
+                                        fieldWithPath("data.answers[].memberName").type(JsonFieldType.STRING).description("답변 작성 회원"),
+                                        fieldWithPath("data.answers[].articleId").type(JsonFieldType.NUMBER).description("답변 작성 게시글 식별자"),
+                                        fieldWithPath("data.answers[].createdAt").type(JsonFieldType.STRING).description("답변 생성 시간"),
+                                        fieldWithPath("data.answers[].modifiedAt").type(JsonFieldType.STRING).description("답변 수정 시간"),
+
+                                        fieldWithPath("data.answers[].comments").type(JsonFieldType.ARRAY).description("답변 댓글 정보"),
+                                        fieldWithPath("data.answers[].comments[].commentId").type(JsonFieldType.NUMBER).description("댓글 식별자"),
+                                        fieldWithPath("data.answers[].comments[].body").type(JsonFieldType.STRING).description("댓글 내용"),
+                                        fieldWithPath("data.answers[].comments[].memberId").type(JsonFieldType.NUMBER).description("댓글 작성 회원 식별자"),
+                                        fieldWithPath("data.answers[].comments[].memberName").type(JsonFieldType.STRING).description("댓글 작성 회원 이름"),
+                                        fieldWithPath("data.answers[].comments[].answerId").type(JsonFieldType.NUMBER).description("댓글 작성 답변 식별자"),
+                                        fieldWithPath("data.answers[].comments[].createdAt").type(JsonFieldType.STRING).description("댓글 생성 시간"),
+                                        fieldWithPath("data.answers[].comments[].modifiedAt").type(JsonFieldType.STRING).description("댓글 수정 시간")
+                                )
+                        )
+                ));
     }
 
     @Test
-    void getArticles() {
+    void getArticles() throws Exception {
+        //given
+        int page = 1;
+        int size =5;
+
+        List<Article> articles = List.of(new Article(), new Article(), new Article());
+
+        List<ArticleResponseDto> responseDtos = List.of(
+                new ArticleResponseDto(1L, "제목1", "본문1", 0, false,
+                        "20221109", "20221210", 3 , 3, List.of("금융"),
+                        1L, "홍길동", LocalDateTime.now(), LocalDateTime.now(),
+                        0, List.of(new HashtagResponseDto(1L,"MySQL")))
+        );
+
+        given(articleService.findArticles(Mockito.anyInt(),Mockito.anyInt()))
+                .willReturn(new PageImpl<>(articles, PageRequest.of(page-1,size, Sort.by("articleId")
+                        .descending()), articles.size()));
+
+        given(mapper.articlesToArticleResponseDtos(Mockito.anyList()))
+                .willReturn(responseDtos);
+
+        //when
+        ResultActions actions = mockMvc.perform(
+                get("/articles?page={page}&size={size}",page,size)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").isArray())
+                .andDo(document("get-articles",
+                        preprocessResponse(prettyPrint()),
+                        requestParameters(List.of(
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("size").description("페이지 크기"))),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data[].articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                        fieldWithPath("data[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                        fieldWithPath("data[].body").type(JsonFieldType.STRING).description("게시글 본문"),
+                                        fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("게시글 조회수"),
+                                        fieldWithPath("data[].isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
+                                        fieldWithPath("data[].startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
+                                        fieldWithPath("data[].endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
+                                        fieldWithPath("data[].backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("data[].frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+                                        fieldWithPath("data[].field").type(JsonFieldType.ARRAY).description("프로젝트 산업분야"),
+                                        fieldWithPath("data[].memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                                        fieldWithPath("data[].memberName").type(JsonFieldType.STRING).description("회원 이름"),
+                                        fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                        fieldWithPath("data[].modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data[].heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
+
+                                        fieldWithPath("data[].hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("data[].hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+                                        fieldWithPath("data[].hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
+
+                                        fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
+                                        fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 번호"),
+                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                                        fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("총 갯수"),
+                                        fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수")
+                                )
+                        )
+                ));
+
     }
 
     @Test
-    void deleteArticle() {
+    void deleteArticle() throws Exception {
+        //given
+        long articleId = 1L;
+
+        //when
+        ResultActions actions = mockMvc.perform(
+                delete("/articles/{article-id}", articleId)
+        );
+
+        //then
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-article",
+                        pathParameters(parameterWithName("article-id").description("게시글 식별자"))
+                ));
     }
 }

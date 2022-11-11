@@ -174,7 +174,7 @@ class CommentControllerTest {
         //given
         long commentId = 1L;
 
-        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글2", 1L,"홍길동1",
+        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글1", 1L,"홍길동1",
                 1L,LocalDateTime.now(), LocalDateTime.now());
 
         given(commentService.findComment(Mockito.anyLong()))

@@ -3,7 +3,9 @@ package com.codestates.mainproject.domain.article.dto;
 import com.codestates.mainproject.domain.answer.dto.AnswerResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ArticleDetailResponseDto {
     private long articleId;
     private String title;

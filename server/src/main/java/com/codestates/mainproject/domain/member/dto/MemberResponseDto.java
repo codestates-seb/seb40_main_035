@@ -1,5 +1,6 @@
 package com.codestates.mainproject.domain.member.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class MemberResponseDto {
     private long memberId;
     private String email;

@@ -2,12 +2,14 @@ package com.codestates.mainproject.domain.answer.dto;
 
 import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.member.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 @Getter
+@AllArgsConstructor
 public class AnswerPostDto {
     @Positive
     private long articleId;

@@ -1,7 +1,9 @@
 package com.codestates.mainproject.domain.member.controller;
 
+import com.codestates.mainproject.domain.article.dto.ArticleSimpleResponseDto;
 import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.heart.entity.Heart;
+import com.codestates.mainproject.domain.member.dto.MemberDetailResponseDto;
 import com.codestates.mainproject.domain.member.dto.MemberPatchDto;
 import com.codestates.mainproject.domain.member.dto.MemberPostDto;
 import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
@@ -63,22 +65,23 @@ class MemberControllerTest {
         MemberPostDto postDto = new MemberPostDto(
                 "hgd@gmail.com", "홍길동", "hgd1234@","2ndPass");
         String content = gson.toJson(postDto);
-        MemberResponseDto responseDto= new MemberResponseDto(
+        MemberDetailResponseDto detailResponseDto= new MemberDetailResponseDto(
                 1L,"hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
                 List.of("Java", "SpringMVC", "SpringJPA"),
                 List.of("미디어"),
                 "github.com/honggildong",
-                List.of(new Article()),
-                List.of(new Heart()),
                 LocalDateTime.of(2022,11,10,11,30),
-                LocalDateTime.now());
+                LocalDateTime.now(),
+                List.of(new ArticleSimpleResponseDto(1L,"제목1")),
+                List.of(new ArticleSimpleResponseDto(2L,"제목2"))
+        );
 
         given(mapper.memberPostDtoToMember(Mockito.any(MemberPostDto.class)))
                 .willReturn(new Member());
         given(memberService.createMember(Mockito.any(Member.class)))
                 .willReturn(new Member());
-        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class)))
-                .willReturn(responseDto);
+        given(mapper.memberToMemberDetailResponseDto(Mockito.any(Member.class)))
+                .willReturn(detailResponseDto);
 
         //when
         ResultActions actions =
@@ -107,7 +110,7 @@ class MemberControllerTest {
                                         fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("2차 비밀번호")
                                 )
                         ),
-                        requestFields(
+                        responseFields(
                                 List.of(
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
@@ -119,10 +122,10 @@ class MemberControllerTest {
                                         fieldWithPath("data.stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
                                         fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("data.github").type(JsonFieldType.STRING).description("회원 깃허브"),
-                                        fieldWithPath("data.article").type(JsonFieldType.ARRAY).description("회원 작성글"),
-                                        fieldWithPath("data.hearts").type(JsonFieldType.ARRAY).description("회원 좋아요"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.article").type(JsonFieldType.ARRAY).description("회원 작성글"),
+                                        fieldWithPath("data.hearts").type(JsonFieldType.ARRAY).description("회원 좋아요")
                                 )
                         )
                 ));
@@ -144,11 +147,12 @@ class MemberControllerTest {
 
         String content = gson.toJson(patchDto);
 
-        MemberResponseDto responseDto =
-                new MemberResponseDto(1L, "hgd@gmail.com","hgd1234@","고길동",
+        MemberDetailResponseDto detailResponseDto =
+                new MemberDetailResponseDto(1L, "hgd@gmail.com","hgd1234@","고길동",
                         "홍길동아닙니다", "시니어", List.of("Python","R","Pytorch"),List.of("헬스케어"),
-                        "github.com/gogildong",List.of(new Article()),List.of(new Heart())
-                        ,LocalDateTime.of(2022,11,10,11,30),LocalDateTime.now());
+                        "github.com/gogildong",LocalDateTime.of(2022,11,10,11,30),
+                        LocalDateTime.now(),List.of(new ArticleSimpleResponseDto(2L,"제목2")),
+                        List.of(new ArticleSimpleResponseDto(1L,"제목1")));
 
         given(mapper.memberPatchDtoToMember(Mockito.any(MemberPatchDto.class)))
                 .willReturn(new Member());
@@ -156,8 +160,8 @@ class MemberControllerTest {
         given(memberService.updateMember(Mockito.any(Member.class)))
                 .willReturn(new Member());
 
-        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class)))
-                .willReturn(responseDto);
+        given(mapper.memberToMemberDetailResponseDto(Mockito.any(Member.class)))
+                .willReturn(detailResponseDto);
 
         //when
         ResultActions actions = mockMvc.perform(
@@ -225,24 +229,23 @@ class MemberControllerTest {
         //given
         long memberId = 1;
 
-        MemberResponseDto responseDto = new MemberResponseDto(memberId, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
+        MemberDetailResponseDto detailResponseDto = new MemberDetailResponseDto(memberId, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
                 List.of("Java", "SpringMVC", "SpringJPA"),
                 List.of("미디어"),"github.com/honggildong",
-                List.of(new Article()),
-                List.of(new Heart()),
                 LocalDateTime.of(2022,11,10,11,30),
-                LocalDateTime.now());
+                LocalDateTime.now(),List.of(new ArticleSimpleResponseDto(1L,"제목1")),
+                List.of(new ArticleSimpleResponseDto(2L,"제목2")));
 
         given(memberService.findMember(Mockito.anyLong()))
                 .willReturn(new Member());
 
-        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class)))
-                .willReturn(responseDto);
+        given(mapper.memberToMemberDetailResponseDto(Mockito.any(Member.class)))
+                .willReturn(detailResponseDto);
 
         //when
         ResultActions actions =
                 mockMvc.perform(
-                        get("/members/{member-id", memberId)
+                        get("/members/{member-id}", memberId)
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -265,10 +268,10 @@ class MemberControllerTest {
                                         fieldWithPath("data.stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
                                         fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("data.github").type(JsonFieldType.STRING).description("회원 깃허브"),
-                                        fieldWithPath("data.article").type(JsonFieldType.ARRAY).description("회원 작성글"),
-                                        fieldWithPath("data.hearts").type(JsonFieldType.ARRAY).description("회원 좋아요"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.article").type(JsonFieldType.ARRAY).description("회원 작성글"),
+                                        fieldWithPath("data.hearts").type(JsonFieldType.ARRAY).description("회원 좋아요")
                                 )
                         )
                 ));
@@ -292,22 +295,16 @@ class MemberControllerTest {
                         new MemberResponseDto(1L, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
                                 List.of("Java", "SpringMVC", "SpringJPA"),
                                 List.of("미디어"),"github.com/honggildong",
-                                List.of(new Article()),
-                                List.of(new Heart()),
                                 LocalDateTime.of(2022,11,10,11,30),
                                 LocalDateTime.now()),
                         new MemberResponseDto(2L, "ggd@gmail.com", "ggd1234@", "고길동","길동이아닙니다","시니어",
                                 List.of("Python","R","Pytorch"),
                                 List.of("헬스케어"),"github.com/gogildong",
-                                List.of(new Article()),
-                                List.of(new Heart()),
                                 LocalDateTime.of(2022,11,10,11,30),
                                 LocalDateTime.now()),
                        new MemberResponseDto(3L, "kgd@gmail.com", "hgd1234#", "김길동","길동","주니어",
                                List.of("Python", "SpringMVC", "Pytorch"),
                                List.of("제조"),"github.com/kimgildong",
-                               List.of(new Article()),
-                               List.of(new Heart()),
                                LocalDateTime.of(2022,11,10,11,30),
                                LocalDateTime.now())
                     )
@@ -340,8 +337,6 @@ class MemberControllerTest {
                                         fieldWithPath("data[].stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
                                         fieldWithPath("data[].field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("data[].github").type(JsonFieldType.STRING).description("회원 깃허브"),
-                                        fieldWithPath("data[].article").type(JsonFieldType.ARRAY).description("회원 작성글"),
-                                        fieldWithPath("data[].hearts").type(JsonFieldType.ARRAY).description("회원 좋아요"),
                                         fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
 
@@ -363,7 +358,7 @@ class MemberControllerTest {
         //when
         ResultActions actions =
                 mockMvc.perform(
-                        delete("/members/{member-id",memberId)
+                        delete("/members/{member-id}",memberId)
                 );
 
         //then

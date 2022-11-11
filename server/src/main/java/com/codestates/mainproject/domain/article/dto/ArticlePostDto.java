@@ -1,6 +1,7 @@
 package com.codestates.mainproject.domain.article.dto;
 
 import com.codestates.mainproject.domain.member.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Min;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class ArticlePostDto {
     @Positive
     private long memberId;

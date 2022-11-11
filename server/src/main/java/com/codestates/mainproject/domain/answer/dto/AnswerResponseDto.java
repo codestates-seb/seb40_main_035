@@ -1,6 +1,7 @@
 package com.codestates.mainproject.domain.answer.dto;
 
 import com.codestates.mainproject.domain.comment.dto.CommentResponseDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class AnswerResponseDto {
     private long answerId;
     private String body;
