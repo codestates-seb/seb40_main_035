@@ -37,8 +37,6 @@ public class ArticlePostDto {
     @NotEmpty
     private List<@NotBlank String> field;
 
-
-
     public Member getMember() {
         Member member = new Member();
         member.setMemberId(memberId);

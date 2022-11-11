@@ -29,9 +29,9 @@ public class ArticlePatchDto {
     @NotSpace
     private String endDay;
 
-    private Optional<@Min(0) Integer> backend;
+    private Optional<@Min(0) Integer> backend = Optional.empty();
 
-    private Optional<@Min(0) Integer> frontend;
+    private Optional<@Min(0) Integer> frontend = Optional.empty();
 
     @Nullable
     private List<@NotBlank String> field;

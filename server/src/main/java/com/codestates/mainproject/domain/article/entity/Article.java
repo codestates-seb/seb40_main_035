@@ -58,6 +58,12 @@ public class Article extends Auditable {
     @Column(nullable = false)
     private List<String> field = new ArrayList<>();
 
+    @Column(nullable = false)
+    private int heartCount;
+
+    @Column(nullable = false)
+    private int answerCount;
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -70,7 +76,7 @@ public class Article extends Auditable {
         return member.getName();
     }
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleHashtag> articleHashtags = new ArrayList<>();
 
     public void addArticleHashtag(ArticleHashtag articleHashtag) {
@@ -83,15 +89,12 @@ public class Article extends Auditable {
                 .collect(Collectors.toList());
     }
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Heart> hearts = new ArrayList<>();
-
-    public int getHeartCount() {
-        return hearts.size();
-    }
 
     public void addHeart(Heart heart) {
         hearts.add(heart);
+        heartCount++;
     }
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
@@ -99,5 +102,6 @@ public class Article extends Auditable {
 
     public void addAnswer(Answer answer) {
         answers.add(answer);
+        answerCount++;
     }
 }
