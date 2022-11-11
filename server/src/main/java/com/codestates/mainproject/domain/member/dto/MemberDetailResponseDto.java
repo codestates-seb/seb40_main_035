@@ -1,6 +1,8 @@
 package com.codestates.mainproject.domain.member.dto;
 
 import com.codestates.mainproject.domain.article.dto.ArticleSimpleResponseDto;
+import com.codestates.mainproject.domain.industry.dto.IndustryResponseDto;
+import com.codestates.mainproject.domain.stack.dto.StackResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +18,9 @@ public class MemberDetailResponseDto {
     private String name;
     private String description;
     private String level;
-    private List<String> stack;
-    private List<String> field;
     private String github;
+    private List<IndustryResponseDto> industries;
+    private List<StackResponseDto> stacks;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<ArticleSimpleResponseDto> articles;

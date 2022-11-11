@@ -32,9 +32,6 @@ public class ArticlePostDto {
     @Min(0)
     private int frontend;
 
-    @NotEmpty
-    private List<@NotBlank String> field;
-
     public Member getMember() {
         Member member = new Member();
         member.setMemberId(memberId);

@@ -28,12 +28,6 @@ public class MemberPatchDto {
     @NotSpace
     private String level;
 
-    @Nullable
-    private List<@NotBlank String> stack;
-
-    @Nullable
-    private List<@NotBlank String> field;
-
     @NotSpace
     private String github;
 }

@@ -1,12 +1,11 @@
 package com.codestates.mainproject.domain.member.entity;
 
 import com.codestates.mainproject.audit.Auditable;
-import com.codestates.mainproject.converter.StringListConverter;
 import com.codestates.mainproject.domain.answer.entity.Answer;
-import com.codestates.mainproject.domain.article.dto.ArticleSimpleResponseDto;
 import com.codestates.mainproject.domain.article.entity.Article;
-import com.codestates.mainproject.domain.heart.entity.Heart;
 import com.codestates.mainproject.domain.comment.entity.Comment;
+import com.codestates.mainproject.domain.industry.entity.Industry;
+import com.codestates.mainproject.domain.stack.entity.Stack;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,13 +42,23 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private String level = "";
 
-    @Convert(converter = StringListConverter.class)
-    @Column(nullable = false)
-    private List<String> stack = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<MemberStack> memberStacks = new ArrayList<>();
 
-    @Convert(converter = StringListConverter.class)
-    @Column(nullable = false)
-    private List<String> field = new ArrayList<>();
+    public List<Stack> getStacks() {
+        return memberStacks.stream()
+                .map(memberStack -> memberStack.getStack())
+                .collect(Collectors.toList());
+    }
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberIndustry> memberIndustries = new ArrayList<>();
+
+    public List<Industry> getIndustries() {
+        return memberIndustries.stream()
+                .map(memberIndustry -> memberIndustry.getIndustry())
+                .collect(Collectors.toList());
+    }
 
     @Column(nullable = false)
     private String github = "";

@@ -1,6 +1,5 @@
 package com.codestates.mainproject.domain.hashtag.controller;
 
-import com.codestates.mainproject.domain.hashtag.dto.HashtagDetailResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagPostDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
@@ -39,7 +38,7 @@ public class HashtagController {
     public ResponseEntity getHashtag(@PathVariable("hashtag-id") @Positive long hashtagId) {
 
         Hashtag foundHashtag = hashtagService.findHashtag(hashtagId);
-        HashtagDetailResponseDto responseDto = mapper.hashtagToHashtagDetailResponseDto(foundHashtag);
+        HashtagResponseDto responseDto = mapper.hashtagToHashtagResponseDto(foundHashtag);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
