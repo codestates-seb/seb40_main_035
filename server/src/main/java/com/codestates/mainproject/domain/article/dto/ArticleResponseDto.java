@@ -27,5 +27,6 @@ public class ArticleResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private int heartCount;
+    private int answerCount;
     private List<HashtagResponseDto> hashtags;
 }

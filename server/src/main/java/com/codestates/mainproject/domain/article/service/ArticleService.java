@@ -2,6 +2,8 @@ package com.codestates.mainproject.domain.article.service;
 
 import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.article.repository.ArticleRepository;
+import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
+import com.codestates.mainproject.domain.hashtag.service.HashtagService;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @RequiredArgsConstructor
@@ -19,6 +24,7 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberService memberService;
+    private final HashtagService hashtagService;
 
     public Article createArticle(Article article) {
         Member member = memberService.findVerifiedMember(article.getMemberId());
@@ -70,9 +76,11 @@ public class ArticleService {
         return article;
     }
 
-    public Page<Article> findArticles(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("articleId").descending());
-        return articleRepository.findAll(pageRequest);
+    public Page<Article> findArticles(Boolean status, String sort, int page, int size) {
+        if (status != null)
+            return articleRepository.findByIsCompleted(status, sortBy(sort, page, size));
+
+        return articleRepository.findAll(sortBy(sort, page, size));
     }
 
     public void deleteArticle(long articleId) {
@@ -83,5 +91,22 @@ public class ArticleService {
     public Article findVerifiedArticle(long articleId) {
         Optional<Article> optionalArticle = articleRepository.findById(articleId);
         return optionalArticle.orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
+    }
+
+    private PageRequest sortBy(String sort, int page, int size) {
+        switch (sort) {
+            case "view": {
+                return PageRequest.of(page - 1, size, Sort.by("views").descending().and(Sort.by("articleId").descending()));
+            }
+            case "heart": {
+                return PageRequest.of(page - 1, size, Sort.by("heartCount").descending().and(Sort.by("articleId").descending()));
+            }
+            case "answer": {
+                return PageRequest.of(page - 1, size, Sort.by("answerCount").descending().and(Sort.by("articleId").descending()));
+            }
+            default: {
+                return PageRequest.of(page - 1, size, Sort.by("articleId").descending());
+            }
+        }
     }
 }

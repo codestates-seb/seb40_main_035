@@ -20,15 +20,6 @@ public class HashtagService {
         return hashtagRepository.save(hashtag);
     }
 
-    public Hashtag updateHashtag(Hashtag hashtag) {
-        Hashtag findHashtag = findVerifiedHashtag(hashtag.getHashtagId());
-
-        Optional.ofNullable(hashtag.getName())
-                .ifPresent(name -> findHashtag.setName(name));
-
-        return hashtagRepository.save(findHashtag);
-    }
-
     public Hashtag findHashtag(long hashtagId) {
         return findVerifiedHashtag(hashtagId);
     }
@@ -44,6 +35,11 @@ public class HashtagService {
 
     public Hashtag findVerifiedHashtag(long hashtagId) {
         Optional<Hashtag> optionalHashtag = hashtagRepository.findById(hashtagId);
+        return optionalHashtag.orElseThrow(() -> new RuntimeException("존재하지 않는 태그입니다."));
+    }
+
+    public Hashtag findVerifiedHashtag(String name) {
+        Optional<Hashtag> optionalHashtag = hashtagRepository.findByName(name);
         return optionalHashtag.orElseThrow(() -> new RuntimeException("존재하지 않는 태그입니다."));
     }
 

@@ -10,5 +10,4 @@ import lombok.Setter;
 public class HashtagResponseDto {
     private long hashtagId;
     private String name;
-
 }

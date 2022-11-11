@@ -61,7 +61,7 @@ public class Member extends Auditable {
         articles.add(article);
     }
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Heart> hearts = new ArrayList<>();
 
     public List<Article> getHeartArticles() {

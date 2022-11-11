@@ -1,6 +1,6 @@
 package com.codestates.mainproject.domain.hashtag.controller;
 
-import com.codestates.mainproject.domain.hashtag.dto.HashtagPatchDto;
+import com.codestates.mainproject.domain.hashtag.dto.HashtagDetailResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagPostDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
@@ -35,23 +35,11 @@ public class HashtagController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{hashtag-id}")
-    public ResponseEntity patchHashtag(@PathVariable("hashtag-id") @Positive long hashtagId,
-                                       @Valid @RequestBody HashtagPatchDto patchDto) {
-        patchDto.setHashtagId(hashtagId);
-
-        Hashtag hashtag = mapper.hashtagPatchDtoToHashtag(patchDto);
-        Hashtag updatedHashtag = hashtagService.updateHashtag(hashtag);
-        HashtagResponseDto responseDto = mapper.hashtagToHashtagResponseDto(updatedHashtag);
-
-        return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
-    }
-
     @GetMapping("/{hashtag-id}")
     public ResponseEntity getHashtag(@PathVariable("hashtag-id") @Positive long hashtagId) {
 
         Hashtag foundHashtag = hashtagService.findHashtag(hashtagId);
-        HashtagResponseDto responseDto = mapper.hashtagToHashtagResponseDto(foundHashtag);
+        HashtagDetailResponseDto responseDto = mapper.hashtagToHashtagDetailResponseDto(foundHashtag);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }

@@ -18,8 +18,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/articles")
@@ -61,13 +64,15 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity getArticles(@RequestParam("page") @Positive int page,
-                                       @RequestParam("size") @Positive int size) {
+    public ResponseEntity getArticles(@RequestParam(value = "status", required = false) Boolean status,
+                                      @RequestParam(value = "sort", required = false, defaultValue = "new") String sort,
+                                      @RequestParam("page") @Positive int page,
+                                      @RequestParam("size") @Positive int size) {
 
-        Page<Article> articlePage = articleService.findArticles(page, size);
+        Page<Article> articlePage = articleService.findArticles(status, sort, page, size);
         List<Article> articles = articlePage.getContent();
         List<ArticleResponseDto> responseDtos = mapper.articlesToArticleResponseDtos(articles);
-        PageInfo pageInfo = new PageInfo(articlePage.getNumber() - 1, articlePage.getSize(), articlePage.getTotalElements(), articlePage.getTotalPages());
+        PageInfo pageInfo = new PageInfo(articlePage.getNumber() + 1, articlePage.getSize(), articlePage.getTotalElements(), articlePage.getTotalPages());
 
         return new ResponseEntity(new MultiResponseDto<>(responseDtos, pageInfo), HttpStatus.OK);
     }

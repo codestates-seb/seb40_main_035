@@ -24,10 +24,17 @@ public class Hashtag {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "hashtag")
+    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL)
     private List<ArticleHashtag> articleHashtags = new ArrayList<>();
 
     public void addArticleHashtag(ArticleHashtag articleHashtag) {
         articleHashtags.add(articleHashtag);
     }
+
+    public List<Article> getArticles() {
+        return articleHashtags.stream()
+                .map(articleHashtag -> articleHashtag.getArticle())
+                .collect(Collectors.toList());
+    }
+
 }
