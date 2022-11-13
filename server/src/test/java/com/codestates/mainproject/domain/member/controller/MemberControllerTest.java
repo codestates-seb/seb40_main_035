@@ -171,8 +171,8 @@ class MemberControllerTest {
         //when
         ResultActions actions = mockMvc.perform(
                 patch("/members/{member-id}", memberId)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
         );
 
@@ -189,9 +189,7 @@ class MemberControllerTest {
                 .andDo(document("patch-member",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("member-id").description("회원 식별자")
-                        ),
+                        pathParameters(parameterWithName("member-id").description("회원 식별자")),
                         requestFields(
                                 List.of(
                                         fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자").ignored(),

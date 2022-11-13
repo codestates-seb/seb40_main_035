@@ -137,7 +137,7 @@ class ArticleControllerTest {
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data.modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                         fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
                                         fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
 
@@ -213,7 +213,7 @@ class ArticleControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(
-                patch("/{article-id}/edit", articleId)
+                patch("/articles/{article-id}", articleId)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
@@ -256,12 +256,12 @@ class ArticleControllerTest {
                                         fieldWithPath("data.isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
                                         fieldWithPath("data.startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
                                         fieldWithPath("data.endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
-                                        fieldWithPath("data.backend").type(JsonFieldType.NUMBER).description("백엔드 인원수").optional(),
-                                        fieldWithPath("data.frontend").type(JsonFieldType.NUMBER).description("프론트 인원수").optional(),
+                                        fieldWithPath("data.backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("data.frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data.modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                         fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
                                         fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
 
@@ -325,7 +325,7 @@ class ArticleControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(
-                get("/{article-id}", articleId)
+                get("/articles/{article-id}", articleId)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -351,7 +351,7 @@ class ArticleControllerTest {
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data.modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                         fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
                                         fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
 
@@ -392,6 +392,8 @@ class ArticleControllerTest {
     @Test
     void getArticles() throws Exception {
         //given
+        boolean status = false;
+        String sort = "정렬기준";
         int page = 1;
         int size =5;
 
@@ -428,7 +430,7 @@ class ArticleControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(
-                get("/articles?page={page}&size={size}",page,size)
+                get("/articles?status={status}&sort={sort}&page={page}&size={size}",status, sort, page,size)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -439,11 +441,13 @@ class ArticleControllerTest {
                 .andDo(document("get-articles",
                         preprocessResponse(prettyPrint()),
                         requestParameters(List.of(
+                                parameterWithName("status").description("페이지 상태"),
+                                parameterWithName("sort").description("페이지 정렬방식"),
                                 parameterWithName("page").description("페이지 번호"),
                                 parameterWithName("size").description("페이지 크기"))),
                         responseFields(
                                 List.of(
-                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터"),
                                         fieldWithPath("data[].articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                         fieldWithPath("data[].title").type(JsonFieldType.STRING).description("게시글 제목"),
                                         fieldWithPath("data[].body").type(JsonFieldType.STRING).description("게시글 본문"),
@@ -456,16 +460,16 @@ class ArticleControllerTest {
                                         fieldWithPath("data[].memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("data[].memberName").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data[].modified").type(JsonFieldType.STRING).description("수정 날짜"),
+                                        fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                         fieldWithPath("data[].heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
-                                        fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
+                                        fieldWithPath("data[].answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
 
                                         fieldWithPath("data[].hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
                                         fieldWithPath("data[].hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data[].hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
 
                                         fieldWithPath("data[].industries").type(JsonFieldType.ARRAY).description("게시글 산업군 정보"),
-                                        fieldWithPath("data[]]industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
+                                        fieldWithPath("data[].industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
                                         fieldWithPath("data[].industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
 
                                         fieldWithPath("data[].stacks").type(JsonFieldType.ARRAY).description("게시글 기술스택 정보"),

@@ -1,6 +1,7 @@
 package com.codestates.mainproject.domain.article.dto;
 
 import com.codestates.mainproject.validator.NotSpace;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
@@ -29,9 +30,9 @@ public class ArticlePatchDto {
     @NotSpace
     private String endDay;
 
-    private Optional<@Min(0) Integer> backend = Optional.empty();
+    private Optional<@Min(0) Integer> backend  = Optional.empty();
 
-    private Optional<@Min(0) Integer> frontend = Optional.empty();
+    private Optional<@Min(0) Integer> frontend  = Optional.empty();
 
     public int getBackend() {
         return backend.orElse(-1);
