@@ -33,9 +33,6 @@ public class ArticlePatchDto {
 
     private Optional<@Min(0) Integer> frontend = Optional.empty();
 
-    @Nullable
-    private List<@NotBlank String> field;
-
     public int getBackend() {
         return backend.orElse(-1);
     }

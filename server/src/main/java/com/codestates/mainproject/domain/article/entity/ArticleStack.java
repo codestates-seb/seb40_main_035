@@ -1,7 +1,6 @@
 package com.codestates.mainproject.domain.article.entity;
 
-import com.codestates.mainproject.domain.article.entity.Article;
-import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
+import com.codestates.mainproject.domain.stack.entity.Stack;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,16 +11,16 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class ArticleHashtag {
+public class ArticleStack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long articleHashtagId;
+    private long articleStackId;
 
     @ManyToOne
     @JoinColumn(name = "ARTICLE_ID")
     private Article article;
 
     @ManyToOne
-    @JoinColumn(name = "HASHTAG_ID")
-    private Hashtag hashtag;
+    @JoinColumn(name = "STACK_ID")
+    private Stack stack;
 }

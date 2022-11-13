@@ -59,13 +59,6 @@ public class ArticleService {
         if (article.getFrontend() != -1)
             findArticle.setFrontend(article.getFrontend());
 
-        Optional.ofNullable(article.getField())
-                .ifPresent(field -> {
-                    if (!field.isEmpty()) {
-                        findArticle.setField(field);
-                    }
-                });
-
         return articleRepository.save(findArticle);
     }
 

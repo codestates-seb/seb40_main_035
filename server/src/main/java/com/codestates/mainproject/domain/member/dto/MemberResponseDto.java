@@ -1,6 +1,7 @@
 package com.codestates.mainproject.domain.member.dto;
 
-import lombok.AllArgsConstructor;
+import com.codestates.mainproject.domain.industry.dto.IndustryResponseDto;
+import com.codestates.mainproject.domain.stack.dto.StackResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class MemberResponseDto {
     private long memberId;
     private String email;
@@ -17,9 +17,9 @@ public class MemberResponseDto {
     private String name;
     private String description;
     private String level;
-    private List<String> stack;
-    private List<String> field;
     private String github;
+    private List<IndustryResponseDto> industries;
+    private List<StackResponseDto> stacks;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

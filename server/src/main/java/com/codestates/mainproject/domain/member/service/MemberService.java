@@ -49,20 +49,6 @@ public class MemberService {
         Optional.ofNullable(member.getLevel())
                 .ifPresent(level -> findMember.setLevel(level));
 
-        Optional.ofNullable(member.getStack())
-                .ifPresent(stack -> {
-                    if (!stack.isEmpty()) {
-                        findMember.setStack(stack);
-                    }
-                });
-
-        Optional.ofNullable(member.getField())
-                .ifPresent(field -> {
-                    if (!field.isEmpty()) {
-                        findMember.setField(field);
-                    }
-                });
-
         Optional.ofNullable(member.getGithub())
                 .ifPresent(github -> findMember.setGithub(github));
 

@@ -1,6 +1,5 @@
 package com.codestates.mainproject.domain.hashtag.mapper;
 
-import com.codestates.mainproject.domain.hashtag.dto.HashtagDetailResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagPostDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
@@ -13,8 +12,6 @@ public interface HashtagMapper {
     Hashtag hashtagPostDtoToHashtag(HashtagPostDto postDto);
 
     HashtagResponseDto hashtagToHashtagResponseDto(Hashtag hashtag);
-
-    HashtagDetailResponseDto hashtagToHashtagDetailResponseDto(Hashtag hashtag);
 
     List<HashtagResponseDto> hashtagsToHashtagResponseDtos(List<Hashtag> hashtags);
 }

@@ -1,4 +1,4 @@
-package com.codestates.mainproject.domain.heart.entity;
+package com.codestates.mainproject.domain.member.entity;
 
 import com.codestates.mainproject.audit.Auditable;
 import com.codestates.mainproject.domain.article.entity.Article;
@@ -22,15 +22,7 @@ public class Heart extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    public long getMemberId() {
-        return member.getMemberId();
-    }
-
     @ManyToOne
     @JoinColumn(name = "ARTICLE_ID")
     private Article article;
-
-    public long getArticleId() {
-        return article.getArticleId();
-    }
 }

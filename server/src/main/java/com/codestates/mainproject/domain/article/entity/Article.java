@@ -1,13 +1,12 @@
 package com.codestates.mainproject.domain.article.entity;
 
 import com.codestates.mainproject.audit.Auditable;
-import com.codestates.mainproject.converter.StringListConverter;
 import com.codestates.mainproject.domain.answer.entity.Answer;
-import com.codestates.mainproject.domain.articlehashtag.entity.ArticleHashtag;
-import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
-import com.codestates.mainproject.domain.heart.entity.Heart;
+import com.codestates.mainproject.domain.industry.entity.Industry;
+import com.codestates.mainproject.domain.member.entity.Heart;
 import com.codestates.mainproject.domain.member.entity.Member;
+import com.codestates.mainproject.domain.stack.entity.Stack;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +28,7 @@ public class Article extends Auditable {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 10000)
+    @Column(nullable = false, length = 2000)
     private String body;
 
     @Column(nullable = false)
@@ -54,9 +53,14 @@ public class Article extends Auditable {
     @Column(nullable = false)
     private int frontend;
 
-    @Convert(converter = StringListConverter.class)
-    @Column(nullable = false)
-    private List<String> field = new ArrayList<>();
+    @OneToMany(mappedBy = "article")
+    private List<ArticleIndustry> articleIndustries = getArticleIndustries();
+
+    public List<Industry> getIndustries() {
+        return articleIndustries.stream()
+                .map(articleIndustry -> articleIndustry.getIndustry())
+                .collect(Collectors.toList());
+    }
 
     @Column(nullable = false)
     private int heartCount;
@@ -103,5 +107,14 @@ public class Article extends Auditable {
     public void addAnswer(Answer answer) {
         answers.add(answer);
         answerCount++;
+    }
+
+    @OneToMany(mappedBy = "article")
+    private List<ArticleStack> articleStacks = new ArrayList<>();
+
+    public List<Stack> getStacks() {
+        return articleStacks.stream()
+                .map(articleStack -> articleStack.getStack())
+                .collect(Collectors.toList());
     }
 }

@@ -1,8 +1,7 @@
 package com.codestates.mainproject.domain.hashtag.entity;
 
-import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
 import com.codestates.mainproject.domain.article.entity.Article;
-import com.codestates.mainproject.domain.articlehashtag.entity.ArticleHashtag;
+import com.codestates.mainproject.domain.article.entity.ArticleHashtag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,12 +28,6 @@ public class Hashtag {
 
     public void addArticleHashtag(ArticleHashtag articleHashtag) {
         articleHashtags.add(articleHashtag);
-    }
-
-    public List<Article> getArticles() {
-        return articleHashtags.stream()
-                .map(articleHashtag -> articleHashtag.getArticle())
-                .collect(Collectors.toList());
     }
 
 }
