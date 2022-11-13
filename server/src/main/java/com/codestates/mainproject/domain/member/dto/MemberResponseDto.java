@@ -24,4 +24,5 @@ public class MemberResponseDto {
     private List<Heart> hearts;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
 }

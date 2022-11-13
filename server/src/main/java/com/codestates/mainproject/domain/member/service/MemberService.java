@@ -2,13 +2,18 @@ package com.codestates.mainproject.domain.member.service;
 
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.repository.MemberRepository;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
+import com.codestates.mainproject.security.util.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -16,10 +21,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final MemberAuthorityUtils memberAuthorityUtils;
+
+    private final PasswordEncoder passwordEncoder;
 
     public Member createMember(Member member) {
         verifyExistingEmail(member.getEmail());
         checkPassword(member.getPassword(), member.getPasswordCheck());
+        List<String> roles = memberAuthorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
 
         return memberRepository.save(member);
     }
@@ -92,5 +102,15 @@ public class MemberService {
         if (!password.equals(passwordCheck)) {
             throw new RuntimeException("동일한 비밀번호를 입력하세요.");
         }
+    }
+
+    public Member loginMember(Member member) {
+        Member findMember = memberRepository.findByEmail(member.getEmail()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(member.getPassword(), findMember.getPassword())) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_REDIRECTION_FIND_PASSWORD);
+        }
+
+        return findMember;
     }
 }

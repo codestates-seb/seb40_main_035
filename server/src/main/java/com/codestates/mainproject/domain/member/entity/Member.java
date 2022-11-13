@@ -58,6 +58,10 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<Heart> hearts = new ArrayList<>();
 
+    public void addHeart(Heart heart) {
+        hearts.add(heart);
+    }
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Answer> answers = new ArrayList<>();
 
@@ -68,7 +72,15 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
     public void addComment(Comment comment) {
         comments.add(comment);
+    }
+
+    public enum MemberRole{
+        ROLE_USER,
+        ROLE_ADMIN
     }
 }

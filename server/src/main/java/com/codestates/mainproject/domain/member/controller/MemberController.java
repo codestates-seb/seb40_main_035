@@ -10,18 +10,23 @@ import com.codestates.mainproject.domain.member.service.MemberService;
 import com.codestates.mainproject.dto.MultiResponseDto;
 import com.codestates.mainproject.dto.PageInfo;
 import com.codestates.mainproject.dto.SingleResponseDto;
+import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
+import com.codestates.mainproject.security.auth.jwt.MemberDetails;
+import com.codestates.mainproject.security.response.TokenResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +37,8 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
+
+    private final JwtTokenizer jwtTokenizer;
 
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto postDto) {
@@ -83,6 +90,37 @@ public class MemberController {
         memberService.deleteMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity login(@Valid @RequestBody LoginDto loginDto) throws JsonProcessingException {
+
+        Member member = mapper.loginDtoToMember(loginDto);
+        Member authorizedMember = memberService.loginMember(member);
+        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(authorizedMember);
+
+        TokenResponse tokenResponse = jwtTokenizer.createTokensByLogin(responseDto);
+
+        Map<String, Object> claims = jwtTokenizer.getClaims(tokenResponse.getAcToken()).getBody();
+        long memberId = Long.parseLong(claims.get("memberId").toString());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + tokenResponse.getAcToken());
+        headers.add("Refresh", tokenResponse.getRfToken());
+
+        return new ResponseEntity<>(new SingleResponseDto<>(memberId), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(@AuthenticationPrincipal MemberDetails memberDetails,
+                                 @RequestHeader("Authorization") String bearerAtk) throws JwtException {
+        MemberResponseDto memberResponseDto = mapper.memberToMemberResponseDto(memberDetails.getMember());
+
+        jwtTokenizer.setBlackListAcToken(bearerAtk);
+        jwtTokenizer.deleteRfToken(memberResponseDto);
+
+        return new ResponseEntity<>(new SingleResponseDto<>("로그아웃이 완료되었습니다."), HttpStatus.NO_CONTENT);
     }
 }
 

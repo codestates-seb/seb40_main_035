@@ -1,5 +1,6 @@
 package com.codestates.mainproject.domain.member.mapper;
 
+import com.codestates.mainproject.domain.member.dto.LoginDto;
 import com.codestates.mainproject.domain.member.dto.MemberPatchDto;
 import com.codestates.mainproject.domain.member.dto.MemberPostDto;
 import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
@@ -16,5 +17,6 @@ public interface MemberMapper {
 
     MemberResponseDto memberToMemberResponseDto(Member member);
 
+    Member loginDtoToMember(LoginDto loginDto);
     List<MemberResponseDto> membersToMemberResponseDtos(List<Member> members);
 }
