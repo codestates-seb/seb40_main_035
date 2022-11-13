@@ -5,6 +5,7 @@ import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 import com.codestates.mainproject.domain.industry.dto.IndustryResponseDto;
 import com.codestates.mainproject.domain.stack.dto.StackResponseDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ArticleDetailResponseDto {
     private long articleId;
     private String title;

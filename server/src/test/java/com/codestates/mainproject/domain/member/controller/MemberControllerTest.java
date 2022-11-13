@@ -1,8 +1,7 @@
 package com.codestates.mainproject.domain.member.controller;
 
 import com.codestates.mainproject.domain.article.dto.ArticleSimpleResponseDto;
-import com.codestates.mainproject.domain.article.entity.Article;
-import com.codestates.mainproject.domain.heart.entity.Heart;
+import com.codestates.mainproject.domain.industry.dto.IndustryResponseDto;
 import com.codestates.mainproject.domain.member.dto.MemberDetailResponseDto;
 import com.codestates.mainproject.domain.member.dto.MemberPatchDto;
 import com.codestates.mainproject.domain.member.dto.MemberPostDto;
@@ -10,6 +9,7 @@ import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.mapper.MemberMapper;
 import com.codestates.mainproject.domain.member.service.MemberService;
+import com.codestates.mainproject.domain.stack.dto.StackResponseDto;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,7 +31,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -63,18 +62,14 @@ class MemberControllerTest {
     void postMember() throws Exception{
         //given
         MemberPostDto postDto = new MemberPostDto(
-                "hgd@gmail.com", "홍길동", "hgd1234@","2ndPass");
+                "hgd@gmail.com", "홍길동", "hgd1234!","2ndPass");
         String content = gson.toJson(postDto);
         MemberDetailResponseDto detailResponseDto= new MemberDetailResponseDto(
-                1L,"hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
-                List.of("Java", "SpringMVC", "SpringJPA"),
-                List.of("미디어"),
-                "github.com/honggildong",
-                LocalDateTime.of(2022,11,10,11,30),
-                LocalDateTime.now(),
-                List.of(new ArticleSimpleResponseDto(1L,"제목1")),
-                List.of(new ArticleSimpleResponseDto(2L,"제목2"))
-        );
+                1L,"hgd@gmail.com", "hgd1234!",  "홍길동", "길동이입니다","학생",
+                "github.com/honggildong", List.of(new IndustryResponseDto(1L, "금융")),
+                List.of(new StackResponseDto(1L, "JAVA"), new StackResponseDto(2L, "MySQL"),
+                        new StackResponseDto(3L, "Nodejs")), LocalDateTime.now(), LocalDateTime.now(),
+                List.of(new ArticleSimpleResponseDto(1L,"제목1")), List.of(new ArticleSimpleResponseDto(1L,"제목1")));
 
         given(mapper.memberPostDtoToMember(Mockito.any(MemberPostDto.class)))
                 .willReturn(new Member());
@@ -98,7 +93,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.data.email").value(postDto.getEmail()))
                 .andExpect(jsonPath("$.data.name").value(postDto.getName()))
                 .andExpect(jsonPath("$.data.password").value(postDto.getPassword()))
-                .andExpect(jsonPath("$.data.passwordCheck").value(postDto.getPasswordCheck()))
+//                .andExpect(jsonPath("$.data.passwordCheck").value(postDto.getPasswordCheck()))
                 .andDo(document("post-member",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -119,13 +114,25 @@ class MemberControllerTest {
                                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.description").type(JsonFieldType.STRING).description("회원 소개"),
                                         fieldWithPath("data.level").type(JsonFieldType.STRING).description("회원 티어"),
-                                        fieldWithPath("data.stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
-                                        fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("data.github").type(JsonFieldType.STRING).description("회원 깃허브"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
-                                        fieldWithPath("data.article").type(JsonFieldType.ARRAY).description("회원 작성글"),
-                                        fieldWithPath("data.hearts").type(JsonFieldType.ARRAY).description("회원 좋아요")
+
+                                        fieldWithPath("data.industries").type(JsonFieldType.ARRAY).description("회원 산업군 정보"),
+                                        fieldWithPath("data.industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
+                                        fieldWithPath("data.industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
+
+                                        fieldWithPath("data.stacks").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
+                                        fieldWithPath("data.stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
+                                        fieldWithPath("data.stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+
+                                        fieldWithPath("data.articles").type(JsonFieldType.ARRAY).description("회원 작성글 정보"),
+                                        fieldWithPath("data.articles[].articleId").type(JsonFieldType.NUMBER).description("작성글 식별자"),
+                                        fieldWithPath("data.articles[].title").type(JsonFieldType.STRING).description("작성글 제목"),
+
+                                        fieldWithPath("data.heartArticles").type(JsonFieldType.ARRAY).description("회원 좋아요 정보"),
+                                        fieldWithPath("data.heartArticles[].articleId").type(JsonFieldType.NUMBER).description("좋아요 식별자"),
+                                        fieldWithPath("data.heartArticles[].title").type(JsonFieldType.STRING).description("좋아요 제목")
                                 )
                         )
                 ));
@@ -136,23 +143,21 @@ class MemberControllerTest {
         //given
         long memberId = 1L;
         MemberPatchDto patchDto = new MemberPatchDto();
-        patchDto.setPassword("hgd4321@");
+        patchDto.setPassword("hgd1234@");
         patchDto.setPasswordCheck("pass2nd");
         patchDto.setName("고길동");
         patchDto.setDescription("홍길동아닙니다");
         patchDto.setLevel("시니어");
-        patchDto.setStack(List.of("Python","R","Pytorch"));
-        patchDto.setField(List.of("헬스케어"));
         patchDto.setGithub("github.com/gogildong");
 
         String content = gson.toJson(patchDto);
 
         MemberDetailResponseDto detailResponseDto =
-                new MemberDetailResponseDto(1L, "hgd@gmail.com","hgd1234@","고길동",
-                        "홍길동아닙니다", "시니어", List.of("Python","R","Pytorch"),List.of("헬스케어"),
-                        "github.com/gogildong",LocalDateTime.of(2022,11,10,11,30),
-                        LocalDateTime.now(),List.of(new ArticleSimpleResponseDto(2L,"제목2")),
-                        List.of(new ArticleSimpleResponseDto(1L,"제목1")));
+                new MemberDetailResponseDto(1L, "hgd@gmail.com","hgd1234@","고길동", "홍길동아닙니다",
+                        "시니어", "github.com/gogildong", List.of(new IndustryResponseDto(1L, "금융")),
+                        List.of(new StackResponseDto(1L, "JAVA"), new StackResponseDto(2L, "MySQL"),
+                                new StackResponseDto(3L, "Nodejs")), LocalDateTime.now(), LocalDateTime.now(),
+                        List.of(new ArticleSimpleResponseDto(1L,"제목1")), List.of(new ArticleSimpleResponseDto(1L,"제목1")));
 
         given(mapper.memberPatchDtoToMember(Mockito.any(MemberPatchDto.class)))
                 .willReturn(new Member());
@@ -165,7 +170,7 @@ class MemberControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(
-                patch("/member/{member-id", memberId)
+                patch("/members/{member-id}", memberId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
@@ -176,12 +181,10 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.memberId").value(memberId))
                 .andExpect(jsonPath("$.data.password").value(patchDto.getPassword()))
-                .andExpect(jsonPath("$.data.passwordCheck").value(patchDto.getPasswordCheck()))
+//                .andExpect(jsonPath("$.data.passwordCheck").value(patchDto.getPasswordCheck()))
                 .andExpect(jsonPath("$.data.name").value(patchDto.getName()))
                 .andExpect(jsonPath("$.data.description").value(patchDto.getDescription()))
                 .andExpect(jsonPath("$.data.level").value(patchDto.getLevel()))
-                .andExpect(jsonPath("$.data.stack").value(patchDto.getStack()))
-                .andExpect(jsonPath("$.data.field").value(patchDto.getField()))
                 .andExpect(jsonPath("$.data.github").value(patchDto.getGithub()))
                 .andDo(document("patch-member",
                         preprocessRequest(prettyPrint()),
@@ -197,8 +200,6 @@ class MemberControllerTest {
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("description").type(JsonFieldType.STRING).description("회원 소개"),
                                         fieldWithPath("level").type(JsonFieldType.STRING).description("회원 티어"),
-                                        fieldWithPath("stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
-                                        fieldWithPath("field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("github").type(JsonFieldType.STRING).description("회원 깃허브")
                                 )
                         ),
@@ -211,13 +212,25 @@ class MemberControllerTest {
                                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.description").type(JsonFieldType.STRING).description("회원 소개"),
                                         fieldWithPath("data.level").type(JsonFieldType.STRING).description("회원 티어"),
-                                        fieldWithPath("data.stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
-                                        fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("data.github").type(JsonFieldType.STRING).description("회원 깃허브"),
-                                        fieldWithPath("data.article").type(JsonFieldType.ARRAY).description("회원 작성글"),
-                                        fieldWithPath("data.hearts").type(JsonFieldType.ARRAY).description("회원 좋아요"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+
+                                        fieldWithPath("data.industries").type(JsonFieldType.ARRAY).description("회원 산업군 정보"),
+                                        fieldWithPath("data.industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
+                                        fieldWithPath("data.industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
+
+                                        fieldWithPath("data.stacks").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
+                                        fieldWithPath("data.stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
+                                        fieldWithPath("data.stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+
+                                        fieldWithPath("data.articles").type(JsonFieldType.ARRAY).description("회원 작성글 정보"),
+                                        fieldWithPath("data.articles[].articleId").type(JsonFieldType.NUMBER).description("작성글 식별자"),
+                                        fieldWithPath("data.articles[].title").type(JsonFieldType.STRING).description("작성글 제목"),
+
+                                        fieldWithPath("data.heartArticles").type(JsonFieldType.ARRAY).description("회원 좋아요 정보"),
+                                        fieldWithPath("data.heartArticles[].articleId").type(JsonFieldType.NUMBER).description("좋아요 식별자"),
+                                        fieldWithPath("data.heartArticles[].title").type(JsonFieldType.STRING).description("좋아요 제목")
                                 )
                         )
                 ));
@@ -229,12 +242,12 @@ class MemberControllerTest {
         //given
         long memberId = 1;
 
-        MemberDetailResponseDto detailResponseDto = new MemberDetailResponseDto(memberId, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
-                List.of("Java", "SpringMVC", "SpringJPA"),
-                List.of("미디어"),"github.com/honggildong",
-                LocalDateTime.of(2022,11,10,11,30),
-                LocalDateTime.now(),List.of(new ArticleSimpleResponseDto(1L,"제목1")),
-                List.of(new ArticleSimpleResponseDto(2L,"제목2")));
+        MemberDetailResponseDto detailResponseDto = new MemberDetailResponseDto(memberId, "hgd@gmail.com",
+                "hgd1234!", "홍길동","길동이입니다","학생", "github.com/honggildong",
+                List.of(new IndustryResponseDto(1L, "금융")), List.of(new StackResponseDto(1L, "JAVA"),
+                new StackResponseDto(2L, "MySQL"), new StackResponseDto(3L, "Nodejs")),
+                LocalDateTime.now(), LocalDateTime.now(),List.of(new ArticleSimpleResponseDto(1L,"제목1")),
+                List.of(new ArticleSimpleResponseDto(1L,"제목1")));
 
         given(memberService.findMember(Mockito.anyLong()))
                 .willReturn(new Member());
@@ -265,13 +278,25 @@ class MemberControllerTest {
                                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.description").type(JsonFieldType.STRING).description("회원 소개"),
                                         fieldWithPath("data.level").type(JsonFieldType.STRING).description("회원 티어"),
-                                        fieldWithPath("data.stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
-                                        fieldWithPath("data.field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("data.github").type(JsonFieldType.STRING).description("회원 깃허브"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
-                                        fieldWithPath("data.article").type(JsonFieldType.ARRAY).description("회원 작성글"),
-                                        fieldWithPath("data.hearts").type(JsonFieldType.ARRAY).description("회원 좋아요")
+
+                                        fieldWithPath("data.industries").type(JsonFieldType.ARRAY).description("회원 산업군 정보"),
+                                        fieldWithPath("data.industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
+                                        fieldWithPath("data.industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
+
+                                        fieldWithPath("data.stacks").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
+                                        fieldWithPath("data.stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
+                                        fieldWithPath("data.stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+
+                                        fieldWithPath("data.articles").type(JsonFieldType.ARRAY).description("회원 작성글 정보"),
+                                        fieldWithPath("data.articles[].articleId").type(JsonFieldType.NUMBER).description("작성글 식별자"),
+                                        fieldWithPath("data.articles[].title").type(JsonFieldType.STRING).description("작성글 제목"),
+
+                                        fieldWithPath("data.heartArticles").type(JsonFieldType.ARRAY).description("회원 좋아요 정보"),
+                                        fieldWithPath("data.heartArticles[].articleId").type(JsonFieldType.NUMBER).description("좋아요 식별자"),
+                                        fieldWithPath("data.heartArticles[].title").type(JsonFieldType.STRING).description("좋아요 제목")
                                 )
                         )
                 ));
@@ -292,23 +317,21 @@ class MemberControllerTest {
 
         given(mapper.membersToMemberResponseDtos(Mockito.anyList()))
                 .willReturn(List.of(
-                        new MemberResponseDto(1L, "hgd@gmail.com", "hgd1234!", "홍길동","길동이입니다","학생",
-                                List.of("Java", "SpringMVC", "SpringJPA"),
-                                List.of("미디어"),"github.com/honggildong",
-                                LocalDateTime.of(2022,11,10,11,30),
-                                LocalDateTime.now()),
-                        new MemberResponseDto(2L, "ggd@gmail.com", "ggd1234@", "고길동","길동이아닙니다","시니어",
-                                List.of("Python","R","Pytorch"),
-                                List.of("헬스케어"),"github.com/gogildong",
-                                LocalDateTime.of(2022,11,10,11,30),
-                                LocalDateTime.now()),
-                       new MemberResponseDto(3L, "kgd@gmail.com", "hgd1234#", "김길동","길동","주니어",
-                               List.of("Python", "SpringMVC", "Pytorch"),
-                               List.of("제조"),"github.com/kimgildong",
-                               LocalDateTime.of(2022,11,10,11,30),
-                               LocalDateTime.now())
-                    )
-                );
+                        new MemberResponseDto(
+                                1L,"hgd@gmail.com", "hgd1234!", "홍길동", "길동이입니다","학생",
+                                "github.com/honggildong", List.of(new IndustryResponseDto(1L, "금융")),
+                                List.of(new StackResponseDto(1L, "JAVA"), new StackResponseDto(2L, "MySQL"),
+                                        new StackResponseDto(3L, "Nodejs")), LocalDateTime.now(), LocalDateTime.now()),
+                        new MemberResponseDto(2L, "ggd@gmail.com", "ggd1234@", "고길동",
+                                "길동이아닙니다","시니어", "github.com/gogildong",
+                                List.of(new IndustryResponseDto(2L, "교육")),
+                                List.of(new StackResponseDto(4L, "Nestjs")), LocalDateTime.now(), LocalDateTime.now()),
+                       new MemberResponseDto(3L, "kgd@gmail.com", "hgd1234#", "김길동",
+                               "길동","주니어", "github.com/kimgildong",
+                               List.of(new IndustryResponseDto(3L, "헬스케어")),
+                               List.of(new StackResponseDto(5L, "Go"), new StackResponseDto(6L, "Kotlin")),
+                               LocalDateTime.now(), LocalDateTime.now())
+                        ));
 
         //when
         ResultActions actions =
@@ -334,11 +357,17 @@ class MemberControllerTest {
                                         fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data[].description").type(JsonFieldType.STRING).description("회원 소개"),
                                         fieldWithPath("data[].level").type(JsonFieldType.STRING).description("회원 티어"),
-                                        fieldWithPath("data[].stack").type(JsonFieldType.ARRAY).description("회원 기술스택"),
-                                        fieldWithPath("data[].field").type(JsonFieldType.ARRAY).description("회원 산업분야"),
                                         fieldWithPath("data[].github").type(JsonFieldType.STRING).description("회원 깃허브"),
                                         fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+
+                                        fieldWithPath("data[].industries").type(JsonFieldType.ARRAY).description("회원 산업군 정보"),
+                                        fieldWithPath("data[].industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
+                                        fieldWithPath("data[].industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
+
+                                        fieldWithPath("data[].stacks").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
+                                        fieldWithPath("data[].stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
+                                        fieldWithPath("data[].stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 번호"),

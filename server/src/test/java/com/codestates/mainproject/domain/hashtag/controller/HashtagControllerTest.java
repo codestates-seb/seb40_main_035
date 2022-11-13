@@ -1,6 +1,5 @@
 package com.codestates.mainproject.domain.hashtag.controller;
 
-import com.codestates.mainproject.domain.hashtag.dto.HashtagPatchDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagPostDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
@@ -20,11 +19,9 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -99,58 +96,58 @@ class HashtagControllerTest {
                 ));
     }
 
-    @Test
-    void patchHashtag() throws Exception {
-        long hashtagId = 1L;
-
-        HashtagPatchDto patchDto = new HashtagPatchDto();
-        patchDto.setName("React");
-
-        String content = gson.toJson(patchDto);
-
-        HashtagResponseDto responseDto = new HashtagResponseDto(hashtagId, "React");
-
-        given(mapper.hashtagPatchDtoToHashtag(Mockito.any(HashtagPatchDto.class)))
-                .willReturn(new Hashtag());
-
-        given(hashtagService.updateHashtag(Mockito.any(Hashtag.class)))
-                .willReturn(new Hashtag());
-
-        given(mapper.hashtagToHashtagResponseDto(Mockito.any(Hashtag.class)))
-                .willReturn(responseDto);
-
-        //when
-        ResultActions actions = mockMvc.perform(
-                patch("/hashtags/{hashtag-id}", hashtagId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content)
-        );
-
-        //then
-        actions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.hashtagId").value(hashtagId))
-                .andExpect(jsonPath("$.data.name").value(patchDto.getName()))
-                .andDo(document("patch-hashtag",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(parameterWithName("hashtag-id").description("태그 식별자")),
-                        requestFields(
-                                List.of(
-                                        fieldWithPath("hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자").ignored(),
-                                        fieldWithPath("name").type(JsonFieldType.STRING).description("태그 이름")
-                                )
-                        ),
-                        responseFields(
-                                List.of(
-                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
-                                        fieldWithPath("data.hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
-                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("태그 이름")
-                                )
-                        )
-                ));
-    }
+//    @Test
+//    void patchHashtag() throws Exception {
+//        long hashtagId = 1L;
+//
+//        HashtagPatchDto patchDto = new HashtagPatchDto();
+//        patchDto.setName("React");
+//
+//        String content = gson.toJson(patchDto);
+//
+//        HashtagResponseDto responseDto = new HashtagResponseDto(hashtagId, "React");
+//
+//        given(mapper.hashtagPatchDtoToHashtag(Mockito.any(HashtagPatchDto.class)))
+//                .willReturn(new Hashtag());
+//
+//        given(hashtagService.updateHashtag(Mockito.any(Hashtag.class)))
+//                .willReturn(new Hashtag());
+//
+//        given(mapper.hashtagToHashtagResponseDto(Mockito.any(Hashtag.class)))
+//                .willReturn(responseDto);
+//
+//        //when
+//        ResultActions actions = mockMvc.perform(
+//                patch("/hashtags/{hashtag-id}", hashtagId)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(content)
+//        );
+//
+//        //then
+//        actions
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.data.hashtagId").value(hashtagId))
+//                .andExpect(jsonPath("$.data.name").value(patchDto.getName()))
+//                .andDo(document("patch-hashtag",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        pathParameters(parameterWithName("hashtag-id").description("태그 식별자")),
+//                        requestFields(
+//                                List.of(
+//                                        fieldWithPath("hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자").ignored(),
+//                                        fieldWithPath("name").type(JsonFieldType.STRING).description("태그 이름")
+//                                )
+//                        ),
+//                        responseFields(
+//                                List.of(
+//                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+//                                        fieldWithPath("data.hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+//                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("태그 이름")
+//                                )
+//                        )
+//                ));
+//    }
 
     @Test
     void getHashtag() throws Exception {
