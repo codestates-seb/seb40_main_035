@@ -2,7 +2,6 @@ package com.codestates.mainproject.domain.answer.entity;
 
 import com.codestates.mainproject.audit.Auditable;
 import com.codestates.mainproject.domain.article.entity.Article;
-import com.codestates.mainproject.domain.comment.dto.CommentResponseDto;
 import com.codestates.mainproject.domain.comment.entity.Comment;
 import com.codestates.mainproject.domain.member.entity.Member;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,7 +21,7 @@ public class Answer extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long answerId;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 5000)
     private String body;
 
     @ManyToOne
