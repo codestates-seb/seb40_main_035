@@ -20,11 +20,12 @@ public class Hashtag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long hashtagId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ArticleHashtag> articleHashtags = new ArrayList<>();
+
 
     public void addArticleHashtag(ArticleHashtag articleHashtag) {
         articleHashtags.add(articleHashtag);

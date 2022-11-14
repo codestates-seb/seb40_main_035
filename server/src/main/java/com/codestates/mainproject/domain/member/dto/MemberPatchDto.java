@@ -1,10 +1,12 @@
 package com.codestates.mainproject.domain.member.dto;
 
+import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.validator.NotSpace;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;

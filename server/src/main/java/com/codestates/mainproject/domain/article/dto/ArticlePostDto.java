@@ -3,6 +3,7 @@ package com.codestates.mainproject.domain.article.dto;
 import com.codestates.mainproject.domain.member.entity.Member;
 import lombok.Getter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -31,6 +32,9 @@ public class ArticlePostDto {
 
     @Min(0)
     private int frontend;
+
+    @NotEmpty
+    private List<@Valid ArticleHashtagDto> articleHashtags;
 
     public Member getMember() {
         Member member = new Member();

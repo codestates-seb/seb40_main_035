@@ -3,9 +3,9 @@ package com.codestates.mainproject.domain.member.entity;
 import com.codestates.mainproject.audit.Auditable;
 import com.codestates.mainproject.domain.answer.entity.Answer;
 import com.codestates.mainproject.domain.article.entity.Article;
+import com.codestates.mainproject.domain.article.entity.Heart;
 import com.codestates.mainproject.domain.comment.entity.Comment;
-import com.codestates.mainproject.domain.industry.entity.Industry;
-import com.codestates.mainproject.domain.stack.entity.Stack;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,43 +24,25 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long memberId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String passwordCheck;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 30)
     private String name;
 
     @Column(nullable = false)
     private String description = "";
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String level = "";
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberStack> memberStacks = new ArrayList<>();
-
-    public List<Stack> getStacks() {
-        return memberStacks.stream()
-                .map(memberStack -> memberStack.getStack())
-                .collect(Collectors.toList());
-    }
-
-    @OneToMany(mappedBy = "member")
-    private List<MemberIndustry> memberIndustries = new ArrayList<>();
-
-    public List<Industry> getIndustries() {
-        return memberIndustries.stream()
-                .map(memberIndustry -> memberIndustry.getIndustry())
-                .collect(Collectors.toList());
-    }
-
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String github = "";
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -70,7 +52,7 @@ public class Member extends Auditable {
         articles.add(article);
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
     public List<Article> getHeartArticles() {
@@ -81,6 +63,10 @@ public class Member extends Auditable {
 
     public void addHeart(Heart heart) {
         hearts.add(heart);
+    }
+
+    public void removeHeart(Heart heart) {
+        hearts.remove(heart);
     }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

@@ -1,6 +1,8 @@
 package com.codestates.mainproject.domain.article.service;
 
 import com.codestates.mainproject.domain.article.entity.Article;
+import com.codestates.mainproject.domain.article.entity.ArticleHashtag;
+import com.codestates.mainproject.domain.article.entity.Heart;
 import com.codestates.mainproject.domain.article.repository.ArticleRepository;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 import com.codestates.mainproject.domain.hashtag.service.HashtagService;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +33,14 @@ public class ArticleService {
         Member member = memberService.findVerifiedMember(article.getMemberId());
 
         article.setMember(member);
+
+        article.getArticleHashtags().stream()
+                .forEach(articleHashtag -> {
+                    Hashtag hashtag = hashtagService.findVerifiedHashtag(articleHashtag.getHashtag().getName());
+                    articleHashtag.setHashtag(hashtag);
+                    hashtag.addArticleHashtag(articleHashtag);
+                });
+
         member.addArticle(article);
 
         return articleRepository.save(article);
@@ -59,21 +70,68 @@ public class ArticleService {
         if (article.getFrontend() != -1)
             findArticle.setFrontend(article.getFrontend());
 
+        Optional.ofNullable(article.getHearts())
+                .ifPresent(hearts -> {
+                    if (!hearts.isEmpty()) {
+                        hearts.stream()
+                                .forEach(heart -> {
+                                    Member member = memberService.findVerifiedMember(heart.getMember().getMemberId());
+                                    heart.setArticle(findArticle);
+                                    heart.setMember(member);
+
+                                    Optional<Heart> optionalHeart = member.getHearts().stream()
+                                            .filter(heart1 -> heart1.getArticle() == findArticle)
+                                            .findAny();
+
+                                    if (optionalHeart.isPresent()) {
+                                        findArticle.removeHeart(optionalHeart.get());
+//                                        member.removeHeart(optionalHeart.get());
+//                                        findArticle.removeHeart(optionalHeart.get())에서 heart 객체는 참조를 잃으면서 제거됨(orphanRemoval = true)
+                                    } else {
+                                        findArticle.addHeart(heart);
+                                        member.addHeart(heart);
+                                    }
+                                });
+                    }
+                });
+
+        Optional.ofNullable(article.getArticleHashtags())
+                .ifPresent(articleHashtags -> {
+                    if (!articleHashtags.isEmpty()) {
+                        findArticle.getArticleHashtags().clear();
+                        articleHashtags.stream()
+                                .forEach(articleHashtag -> {
+                                    Hashtag hashtag = hashtagService.findVerifiedHashtag(articleHashtag.getHashtag().getName());
+                                    articleHashtag.setArticle(findArticle);
+                                    articleHashtag.setHashtag(hashtag);
+
+                                    findArticle.addArticleHashtag(articleHashtag);
+                                    hashtag.addArticleHashtag(articleHashtag);
+                                });
+                    }
+                });
+
         return articleRepository.save(findArticle);
     }
 
     public Article findArticle(long articleId) {
         Article article = findVerifiedArticle(articleId);
         article.addViews();
+        setCount(article);
 
         return article;
     }
 
     public Page<Article> findArticles(Boolean status, String sort, int page, int size) {
-        if (status != null)
-            return articleRepository.findByIsCompleted(status, sortBy(sort, page, size));
+        if (status != null) {
+            Page<Article> articlePage = articleRepository.findByIsCompleted(status, sortBy(sort, page, size));
+            articlePage.getContent().stream().forEach(article -> setCount(article));
+            return articlePage;
+        }
 
-        return articleRepository.findAll(sortBy(sort, page, size));
+        Page<Article> articlePage =  articleRepository.findAll(sortBy(sort, page, size));
+        articlePage.getContent().stream().forEach(article -> setCount(article));
+        return articlePage;
     }
 
     public void deleteArticle(long articleId) {
@@ -102,4 +160,14 @@ public class ArticleService {
             }
         }
     }
+
+    private void setCount(Article article) {
+        if (article.getAnswerCount() != article.getAnswers().size()) {
+            article.setAnswerCount(article.getAnswers().size());
+        }
+        if (article.getHeartCount() != article.getHearts().size()) {
+            article.setHeartCount(article.getHearts().size());
+        }
+    }
+
 }

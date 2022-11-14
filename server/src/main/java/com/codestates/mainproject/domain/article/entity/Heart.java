@@ -1,4 +1,4 @@
-package com.codestates.mainproject.domain.member.entity;
+package com.codestates.mainproject.domain.article.entity;
 
 import com.codestates.mainproject.audit.Auditable;
 import com.codestates.mainproject.domain.article.entity.Article;

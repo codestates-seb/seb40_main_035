@@ -2,8 +2,7 @@ package com.codestates.mainproject.domain.article.dto;
 
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
-import com.codestates.mainproject.domain.industry.dto.IndustryResponseDto;
-import com.codestates.mainproject.domain.stack.dto.StackResponseDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +29,4 @@ public class ArticleResponseDto {
     private int heartCount;
     private int answerCount;
     private List<HashtagResponseDto> hashtags;
-    private List<IndustryResponseDto> industries;
-    private List<StackResponseDto> stacks;
 }

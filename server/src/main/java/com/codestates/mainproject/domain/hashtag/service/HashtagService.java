@@ -40,7 +40,13 @@ public class HashtagService {
 
     public Hashtag findVerifiedHashtag(String name) {
         Optional<Hashtag> optionalHashtag = hashtagRepository.findByName(name);
-        return optionalHashtag.orElseThrow(() -> new RuntimeException("존재하지 않는 태그입니다."));
+        if (optionalHashtag.isPresent()) {
+            return optionalHashtag.get();
+        } else {
+            Hashtag hashtag = new Hashtag();
+            hashtag.setName(name);
+            return hashtagRepository.save(hashtag);
+        }
     }
 
     private void verifyExistingName(String name) {
