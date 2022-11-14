@@ -60,7 +60,7 @@ class MemberControllerTest {
     void postMember() throws Exception{
         //given
         MemberPostDto postDto = new MemberPostDto(
-                "hgd@gmail.com", "홍길동", "hgd1234!","2ndPass");
+                "hgd@gmail.com", "홍길동", "hgd1234!","hgd1234!");
         String content = gson.toJson(postDto);
         MemberDetailResponseDto detailResponseDto= new MemberDetailResponseDto(
                 1L,"hgd@gmail.com", "hgd1234!",  "홍길동", "길동이입니다","학생",
@@ -132,7 +132,7 @@ class MemberControllerTest {
         long memberId = 1L;
         MemberPatchDto patchDto = new MemberPatchDto();
         patchDto.setPassword("hgd1234@");
-        patchDto.setPasswordCheck("pass2nd");
+        patchDto.setPasswordCheck("hgd1234@");
         patchDto.setName("고길동");
         patchDto.setDescription("홍길동아닙니다");
         patchDto.setLevel("시니어");
