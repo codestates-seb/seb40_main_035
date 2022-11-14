@@ -53,9 +53,9 @@ class HashtagControllerTest {
     @Test
     void postHashtag() throws Exception {
         //given
-        HashtagPostDto postDto = new HashtagPostDto("Nodejs");
+        HashtagPostDto postDto = new HashtagPostDto("해시태그1");
         String content = gson.toJson(postDto);
-        HashtagResponseDto responseDto = new HashtagResponseDto(1L, "Nodejs");
+        HashtagResponseDto responseDto = new HashtagResponseDto(1L, "해시태그1");
 
         given(mapper.hashtagPostDtoToHashtag(Mockito.any(HashtagPostDto.class)))
                 .willReturn(new Hashtag());
@@ -67,13 +67,11 @@ class HashtagControllerTest {
                 .willReturn(responseDto);
 
         //when
-        ResultActions actions =
-                mockMvc.perform(
-                        post("/hashtags")
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
-                );
+        ResultActions actions = mockMvc.perform(
+                post("/hashtags")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content));
 
         //then
         actions
@@ -89,6 +87,7 @@ class HashtagControllerTest {
                         ),
                         responseFields(
                                 List.of(
+                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                         fieldWithPath("data.hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("태그 이름")
                                 )
@@ -105,7 +104,7 @@ class HashtagControllerTest {
 //
 //        String content = gson.toJson(patchDto);
 //
-//        HashtagResponseDto responseDto = new HashtagResponseDto(hashtagId, "React");
+//        HashtagResponseDto responseDto = new HashtagResponseDto(hashtagId, "해시태그2");
 //
 //        given(mapper.hashtagPatchDtoToHashtag(Mockito.any(HashtagPatchDto.class)))
 //                .willReturn(new Hashtag());
@@ -154,7 +153,7 @@ class HashtagControllerTest {
         //given
         long hashtagId = 1L;
 
-        HashtagResponseDto responseDto = new HashtagResponseDto(1L, "Nodejs");
+        HashtagResponseDto responseDto = new HashtagResponseDto(1L, "해시태그1");
 
         given(hashtagService.findHashtag(Mockito.anyLong()))
                 .willReturn(new Hashtag());
@@ -188,9 +187,9 @@ class HashtagControllerTest {
     @Test
     void getHashtags() throws Exception {
         List<HashtagResponseDto> responseDtos = new ArrayList<>(List.of(
-                new HashtagResponseDto(1L, "Nodejs"),
-                new HashtagResponseDto(2L, "Go"),
-                new HashtagResponseDto(3L, "php")
+                new HashtagResponseDto(1L, "해시태그1"),
+                new HashtagResponseDto(2L, "해시태그2"),
+                new HashtagResponseDto(3L, "해시태그3")
         ));
 
         given(hashtagService.findHashtags())

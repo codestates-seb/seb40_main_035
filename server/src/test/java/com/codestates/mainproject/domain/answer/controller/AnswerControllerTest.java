@@ -293,7 +293,7 @@ class AnswerControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 List.of(
-                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터"),
                                         fieldWithPath("data[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
                                         fieldWithPath("data[].body").type(JsonFieldType.STRING).description("답변 내용"),
                                         fieldWithPath("data[].memberId").type(JsonFieldType.NUMBER).description("답변 회원 식별자"),

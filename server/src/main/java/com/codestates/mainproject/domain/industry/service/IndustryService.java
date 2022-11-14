@@ -21,6 +21,7 @@ public class IndustryService {
     }
 
     public Industry findIndustry(long industryId) {
+
         return findVerifiedIndustry(industryId);
     }
 

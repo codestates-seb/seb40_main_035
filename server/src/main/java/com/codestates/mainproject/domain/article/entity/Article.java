@@ -7,6 +7,7 @@ import com.codestates.mainproject.domain.industry.entity.Industry;
 import com.codestates.mainproject.domain.member.entity.Heart;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.stack.entity.Stack;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,12 +15,13 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Article extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -132,8 +132,8 @@ class ArticleControllerTest {
                                         fieldWithPath("data.isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
                                         fieldWithPath("data.startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
                                         fieldWithPath("data.endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
-                                        fieldWithPath("data.backend").type(JsonFieldType.NUMBER).description("백엔드 인원수").optional(),
-                                        fieldWithPath("data.frontend").type(JsonFieldType.NUMBER).description("프론트 인원수").optional(),
+                                        fieldWithPath("data.backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("data.frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("data.memberName").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
@@ -217,6 +217,7 @@ class ArticleControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
+
         );
 
         //then

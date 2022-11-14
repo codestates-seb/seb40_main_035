@@ -1,0 +1,76 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Project Matching API Docs
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+Seo Geon Won <pisatan@gmail.com>
+
+v1.0.0, 2022.11.14
+
+***
+== MemberController
+==== 회원가입
+.curl-request
+include::{snippets}/post-member/curl-request.adoc[]
+
+.request-body
+include::{snippets}/post-member/request-body.adoc[]
+
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-member/response-fields.adoc[]
+
+==== 회원정보 수정
+
+.curl-request
+include::{snippets}/patch-member/curl-request.adoc[]
+
+.request-body
+include::{snippets}/patch-member/request-body.adoc[]
+
+.http-request
+include::{snippets}/patch-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/patch-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-member/response-fields.adoc[]
+
+==== 회원정보 조회
+.curl-request
+include::{snippets}/get-member/curl-request.adoc[]
+
+.request-body
+include::{snippets}/get-member/request-body.adoc[]
+
+.http-request
+include::{snippets}/get-member/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-member/response-fields.adoc[]
+
+
+
+
+

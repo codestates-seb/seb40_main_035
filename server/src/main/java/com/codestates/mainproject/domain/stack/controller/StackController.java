@@ -6,6 +6,7 @@ import com.codestates.mainproject.domain.stack.entity.Stack;
 import com.codestates.mainproject.domain.stack.mapper.StackMapper;
 import com.codestates.mainproject.domain.stack.service.StackService;
 import com.codestates.mainproject.dto.SingleResponseDto;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

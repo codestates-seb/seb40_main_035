@@ -1,15 +1,15 @@
 package com.codestates.mainproject.domain.article.dto;
 
 import com.codestates.mainproject.validator.NotSpace;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 @Getter
 @Setter
@@ -34,12 +34,11 @@ public class ArticlePatchDto {
 
     private Optional<@Min(0) Integer> frontend  = Optional.empty();
 
-    public int getBackend() {
-        return backend.orElse(-1);
+
+    public int getBackend() {return backend.orElse(-1);
     }
 
     public int getFrontend() {
         return frontend.orElse(-1);
     }
-
 }
