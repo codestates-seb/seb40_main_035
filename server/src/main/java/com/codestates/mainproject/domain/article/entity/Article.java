@@ -3,7 +3,9 @@ package com.codestates.mainproject.domain.article.entity;
 import com.codestates.mainproject.audit.Auditable;
 import com.codestates.mainproject.domain.answer.entity.Answer;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
+import com.codestates.mainproject.domain.interest.entity.Interest;
 import com.codestates.mainproject.domain.member.entity.Member;
+import com.codestates.mainproject.domain.skill.entity.Skill;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -102,4 +104,29 @@ public class Article extends Auditable {
         answerCount++;
     }
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleInterest> articleInterests = new ArrayList<>();
+
+    public void addArticleInterest(ArticleInterest articleInterest) {
+        articleInterests.add(articleInterest);
+    }
+
+    public List<Interest> getInterests() {
+        return articleInterests.stream()
+                .map(articleInterest -> articleInterest.getInterest())
+                .collect(Collectors.toList());
+    }
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleSkill> articleSkills = new ArrayList<>();
+
+    public void addArticleSkill(ArticleSkill articleSkill) {
+        articleSkills.add(articleSkill);
+    }
+
+    public List<Skill> getSkills() {
+        return articleSkills.stream()
+                .map(articleSkill -> articleSkill.getSkill())
+                .collect(Collectors.toList());
+    }
 }

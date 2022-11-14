@@ -6,6 +6,8 @@ import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.article.entity.Heart;
 import com.codestates.mainproject.domain.comment.entity.Comment;
 
+import com.codestates.mainproject.domain.interest.entity.Interest;
+import com.codestates.mainproject.domain.skill.entity.Skill;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -81,5 +83,31 @@ public class Member extends Auditable {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+    }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberInterest> memberInterests = new ArrayList<>();
+
+    public void addMemberInterest(MemberInterest memberInterest) {
+        memberInterests.add(memberInterest);
+    }
+
+    public List<Interest> getInterests() {
+        return memberInterests.stream()
+                .map(memberInterest -> memberInterest.getInterest())
+                .collect(Collectors.toList());
+    }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberSkill> memberSkills = new ArrayList<>();
+
+    public void addMemberSkill(MemberSkill memberSkill) {
+        memberSkills.add(memberSkill);
+    }
+
+    public List<Skill> getSkills() {
+        return memberSkills.stream()
+                .map(memberSkill -> memberSkill.getSkill())
+                .collect(Collectors.toList());
     }
 }

@@ -20,7 +20,7 @@ public class Hashtag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long hashtagId;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 20)
     private String name;
 
     @OneToMany(mappedBy = "hashtag", cascade = CascadeType.REMOVE, orphanRemoval = true)

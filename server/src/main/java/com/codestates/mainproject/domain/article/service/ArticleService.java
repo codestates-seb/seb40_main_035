@@ -6,8 +6,12 @@ import com.codestates.mainproject.domain.article.entity.Heart;
 import com.codestates.mainproject.domain.article.repository.ArticleRepository;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 import com.codestates.mainproject.domain.hashtag.service.HashtagService;
+import com.codestates.mainproject.domain.interest.entity.Interest;
+import com.codestates.mainproject.domain.interest.service.InterestService;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.service.MemberService;
+import com.codestates.mainproject.domain.skill.entity.Skill;
+import com.codestates.mainproject.domain.skill.service.SkillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +32,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberService memberService;
     private final HashtagService hashtagService;
+    private final InterestService interestService;
+    private final SkillService skillService;
 
     public Article createArticle(Article article) {
         Member member = memberService.findVerifiedMember(article.getMemberId());
@@ -39,6 +45,20 @@ public class ArticleService {
                     Hashtag hashtag = hashtagService.findVerifiedHashtag(articleHashtag.getHashtag().getName());
                     articleHashtag.setHashtag(hashtag);
                     hashtag.addArticleHashtag(articleHashtag);
+                });
+
+        article.getArticleInterests().stream()
+                .forEach(articleInterest -> {
+                    Interest interest = interestService.findVerifiedInterest(articleInterest.getInterest().getName());
+                    articleInterest.setInterest(interest);
+                    interest.addArticleInterest(articleInterest);
+                });
+
+        article.getArticleSkills().stream()
+                .forEach(articleSkill -> {
+                    Skill skill = skillService.findVerifiedSkill(articleSkill.getSkill().getName());
+                    articleSkill.setSkill(skill);
+                    skill.addArticleSkill(articleSkill);
                 });
 
         member.addArticle(article);
@@ -107,6 +127,38 @@ public class ArticleService {
 
                                     findArticle.addArticleHashtag(articleHashtag);
                                     hashtag.addArticleHashtag(articleHashtag);
+                                });
+                    }
+                });
+
+        Optional.ofNullable(article.getArticleInterests())
+                .ifPresent(articleInterests -> {
+                    if (!articleInterests.isEmpty()) {
+                        findArticle.getArticleInterests().clear();
+                        articleInterests.stream()
+                                .forEach(articleInterest -> {
+                                    Interest interest = interestService.findVerifiedInterest(articleInterest.getInterest().getName());
+                                    articleInterest.setArticle(findArticle);
+                                    articleInterest.setInterest(interest);
+
+                                    findArticle.addArticleInterest(articleInterest);
+                                    interest.addArticleInterest(articleInterest);
+                                });
+                    }
+                });
+
+        Optional.ofNullable(article.getArticleSkills())
+                .ifPresent(articleSkills -> {
+                    if (!articleSkills.isEmpty()) {
+                        findArticle.getArticleSkills().clear();
+                        articleSkills.stream()
+                                .forEach(articleSkill -> {
+                                    Skill skill = skillService.findVerifiedSkill(articleSkill.getSkill().getName());
+                                    articleSkill.setArticle(findArticle);
+                                    articleSkill.setSkill(skill);
+
+                                    findArticle.addArticleSkill(articleSkill);
+                                    skill.addArticleSkill(articleSkill);
                                 });
                     }
                 });
