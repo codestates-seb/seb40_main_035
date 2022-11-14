@@ -98,7 +98,7 @@ class MemberControllerTest {
                                         fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호"),
-                                        fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("2차 비밀번호")
+                                        fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("비밀번호 재확인")
                                 )
                         ),
                         responseFields(
@@ -180,7 +180,7 @@ class MemberControllerTest {
                                 List.of(
                                         fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자").ignored(),
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호"),
-                                        fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("2차 비밀번호"),
+                                        fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("비밀번호 재확인"),
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("description").type(JsonFieldType.STRING).description("회원 소개"),
                                         fieldWithPath("level").type(JsonFieldType.STRING).description("회원 티어"),

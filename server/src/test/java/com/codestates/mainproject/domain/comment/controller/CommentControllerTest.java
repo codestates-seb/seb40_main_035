@@ -58,7 +58,7 @@ class CommentControllerTest {
         CommentPostDto postDto = new CommentPostDto(1L, 1L,"댓글1");
         String content = gson.toJson(postDto);
 
-        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글1",1L, "홍길동1",
+        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글1",1L, "홍길동",
                 1L,LocalDateTime.now(), LocalDateTime.now());
 
         given(mapper.commentPostDtoToComment(Mockito.any(CommentPostDto.class)))
@@ -119,7 +119,7 @@ class CommentControllerTest {
 
         String content = gson.toJson(patchDto);
 
-        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글2",1L, "홍길동1",
+        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글2",1L, "홍길동",
                  1L,LocalDateTime.now(), LocalDateTime.now());
 
         given(mapper.commentPatchDtoToComment(Mockito.any(CommentPatchDto.class)))
@@ -151,7 +151,7 @@ class CommentControllerTest {
                         requestFields(
                                 List.of(
                                         fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 식별자").ignored(),
-                                        fieldWithPath("body").type(JsonFieldType.STRING).description("댓글 내용").optional()
+                                        fieldWithPath("body").type(JsonFieldType.STRING).description("댓글 내용")
                                 )
                         ),
                         responseFields(
@@ -174,7 +174,7 @@ class CommentControllerTest {
         //given
         long commentId = 1L;
 
-        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글1", 1L,"홍길동1",
+        CommentResponseDto responseDto = new CommentResponseDto(1L, "댓글1", 1L,"홍길동",
                 1L,LocalDateTime.now(), LocalDateTime.now());
 
         given(commentService.findComment(Mockito.anyLong()))
@@ -215,11 +215,11 @@ class CommentControllerTest {
     void getComments() throws Exception {
         //given
         List<CommentResponseDto> responseDtos = new ArrayList<>(List.of(
-                new CommentResponseDto(1L, "댓글1", 1L,"홍길동1",
+                new CommentResponseDto(1L, "댓글1", 1L,"홍길동",
                         1L,LocalDateTime.now(), LocalDateTime.now()),
-                new CommentResponseDto(2L, "댓글2", 1L,"홍길동1",
+                new CommentResponseDto(2L, "댓글2", 2L,"고길동",
                         1L,LocalDateTime.now(), LocalDateTime.now()),
-                new CommentResponseDto(3L, "댓글3", 3L,"홍길동3",
+                new CommentResponseDto(3L, "댓글3", 3L,"김길동",
                         1L, LocalDateTime.now(), LocalDateTime.now())
         ));
 

@@ -60,7 +60,7 @@ class ArticleControllerTest {
     void postArticle() throws Exception{
         //given
         ArticlePostDto postDto = new ArticlePostDto(1L,"제목1","본문1","20221109","20221210",
-                3, 3, List.of(new ArticleHashtagDto("해시태그1")));
+                3, 3, List.of(new ArticleHashtagDto("게시글태그1")));
         String content = gson.toJson(postDto);
 
         ArticleDetailResponseDto detailResponseDto = new ArticleDetailResponseDto(
@@ -101,7 +101,6 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.data.endDay").value(postDto.getEndDay()))
                 .andExpect(jsonPath("$.data.backend").value(postDto.getBackend()))
                 .andExpect(jsonPath("$.data.frontend").value(postDto.getFrontend()))
-                .andExpect(jsonPath("$.data.articleHashtags").value(postDto.getArticleHashtags()))
                 .andDo(document("post-article",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -116,7 +115,7 @@ class ArticleControllerTest {
                                         fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
 
                                         fieldWithPath("articleHashtags").type(JsonFieldType.ARRAY).description("게시글 태그"),
-                                        fieldWithPath("articleHashtags[].hashtagName").type(JsonFieldType.STRING).description("게시글 해시태그")
+                                        fieldWithPath("articleHashtags[].hashtagName").type(JsonFieldType.STRING).description("게시글 태그 이름")
                                 )
                         ),
                         responseFields(
@@ -174,10 +173,10 @@ class ArticleControllerTest {
         patchDto.setIsCompleted(true);
         patchDto.setStartDay("20221111");
         patchDto.setEndDay("20221130");
-        patchDto.setBackend(Optional.of(2));
-        patchDto.setFrontend(Optional.of(2));
+        patchDto.setBackend(2);
+        patchDto.setFrontend(2);
         patchDto.setHearts(List.of(new HeartDto(1L)));
-        patchDto.setArticleHashtags(List.of(new ArticleHashtagDto("해시태그1")));
+        patchDto.setArticleHashtags(List.of(new ArticleHashtagDto("게시글태그1")));
 
         String content = gson.toJson(patchDto);
 
@@ -220,8 +219,6 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.data.endDay").value(patchDto.getEndDay()))
                 .andExpect(jsonPath("$.data.backend").value(patchDto.getBackend()))
                 .andExpect(jsonPath("$.data.frontend").value(patchDto.getFrontend()))
-                .andExpect(jsonPath("$.data.hearts").value(patchDto.getArticleHashtags()))
-                .andExpect(jsonPath("$.data.articleHashtags").value(patchDto.getArticleHashtags()))
                 .andDo(document("patch-article",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -234,10 +231,14 @@ class ArticleControllerTest {
                                         fieldWithPath("isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
                                         fieldWithPath("startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
                                         fieldWithPath("endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
-                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
-                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
-                                        fieldWithPath("hearts").type(JsonFieldType.ARRAY).description("게시글 좋아요"),
-                                        fieldWithPath("articleHashtags").type(JsonFieldType.ARRAY).description("게시글 태그")
+                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수").optional(),
+                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수").optional(),
+
+                                        fieldWithPath("hearts").type(JsonFieldType.ARRAY).description("게시글 좋아요 정보"),
+                                        fieldWithPath("hearts[].memberId").type(JsonFieldType.NUMBER).description("게시글 좋아요 멤버 식별자"),
+
+                                        fieldWithPath("articleHashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("articleHashtags[].hashtagName").type(JsonFieldType.STRING).description("게시글 태그 이름")
                                 )
                         ),
                         responseFields(
@@ -259,17 +260,9 @@ class ArticleControllerTest {
                                         fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
                                         fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
 
-                                        fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("태그 정보"),
                                         fieldWithPath("data.hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data.hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
-
-                                        fieldWithPath("data.industries").type(JsonFieldType.ARRAY).description("게시글 산업군 정보"),
-                                        fieldWithPath("data.industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
-                                        fieldWithPath("data.industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
-
-                                        fieldWithPath("data.stacks").type(JsonFieldType.ARRAY).description("게시글 기술스택 정보"),
-                                        fieldWithPath("data.stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data.stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
 
                                         fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
                                         fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
@@ -347,7 +340,7 @@ class ArticleControllerTest {
                                         fieldWithPath("data.heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
                                         fieldWithPath("data.answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
 
-                                        fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("태그 정보"),
                                         fieldWithPath("data.hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data.hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
 
@@ -444,7 +437,7 @@ class ArticleControllerTest {
                                         fieldWithPath("data[].heartCount").type(JsonFieldType.NUMBER).description("게시글 좋아요수"),
                                         fieldWithPath("data[].answerCount").type(JsonFieldType.NUMBER).description("게시글 답변수"),
 
-                                        fieldWithPath("data[].hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
+                                        fieldWithPath("data[].hashtags").type(JsonFieldType.ARRAY).description("태그 정보"),
                                         fieldWithPath("data[].hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data[].hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
 
