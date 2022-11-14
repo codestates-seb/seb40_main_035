@@ -1,17 +1,12 @@
 package com.codestates.mainproject.domain.article.controller;
 
 import com.codestates.mainproject.domain.answer.dto.AnswerResponseDto;
-import com.codestates.mainproject.domain.article.dto.ArticleDetailResponseDto;
-import com.codestates.mainproject.domain.article.dto.ArticlePatchDto;
-import com.codestates.mainproject.domain.article.dto.ArticlePostDto;
-import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
+import com.codestates.mainproject.domain.article.dto.*;
 import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.article.mapper.ArticleMapper;
 import com.codestates.mainproject.domain.article.service.ArticleService;
 import com.codestates.mainproject.domain.comment.dto.CommentResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
-import com.codestates.mainproject.domain.industry.dto.IndustryResponseDto;
-import com.codestates.mainproject.domain.stack.dto.StackResponseDto;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -65,16 +60,14 @@ class ArticleControllerTest {
     void postArticle() throws Exception{
         //given
         ArticlePostDto postDto = new ArticlePostDto(1L,"제목1","본문1","20221109","20221210",
-                3, 3);
+                3, 3, List.of(new ArticleHashtagDto("해시태그1")));
         String content = gson.toJson(postDto);
 
         ArticleDetailResponseDto detailResponseDto = new ArticleDetailResponseDto(
                 1L, "제목1", "본문1", 0, false,
-                "20221109", "20221210", 3, 3,
+                "20221109", "20221210", 3,3,
                 1L, "홍길동", LocalDateTime.now(),
                 LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                List.of(new IndustryResponseDto(1L, "금융")), List.of(new StackResponseDto(1L, "JAVA"),
-                new StackResponseDto(2L, "MySQL"),new StackResponseDto(3L, "Nodejs")),
                 List.of(new AnswerResponseDto(1L,"본문1",1L,"홍길동",
                         1L,LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
@@ -108,6 +101,7 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.data.endDay").value(postDto.getEndDay()))
                 .andExpect(jsonPath("$.data.backend").value(postDto.getBackend()))
                 .andExpect(jsonPath("$.data.frontend").value(postDto.getFrontend()))
+                .andExpect(jsonPath("$.data.articleHashtags").value(postDto.getArticleHashtags()))
                 .andDo(document("post-article",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -118,8 +112,11 @@ class ArticleControllerTest {
                                         fieldWithPath("body").type(JsonFieldType.STRING).description("게시글 본문"),
                                         fieldWithPath("startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
                                         fieldWithPath("endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
-                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수").optional(),
-                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수").optional()
+                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+
+                                        fieldWithPath("articleHashtags").type(JsonFieldType.ARRAY).description("게시글 태그"),
+                                        fieldWithPath("articleHashtags[].hashtagName").type(JsonFieldType.STRING).description("게시글 해시태그")
                                 )
                         ),
                         responseFields(
@@ -144,14 +141,6 @@ class ArticleControllerTest {
                                         fieldWithPath("data.hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
                                         fieldWithPath("data.hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data.hashtags[].name").type(JsonFieldType.STRING).description("태그 이름"),
-
-                                        fieldWithPath("data.industries").type(JsonFieldType.ARRAY).description("게시글 산업군 정보"),
-                                        fieldWithPath("data.industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
-                                        fieldWithPath("data.industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
-
-                                        fieldWithPath("data.stacks").type(JsonFieldType.ARRAY).description("게시글 기술스택 정보"),
-                                        fieldWithPath("data.stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data.stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
 
                                         fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
                                         fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
@@ -187,15 +176,15 @@ class ArticleControllerTest {
         patchDto.setEndDay("20221130");
         patchDto.setBackend(Optional.of(2));
         patchDto.setFrontend(Optional.of(2));
+        patchDto.setHearts(List.of(new HeartDto(1L)));
+        patchDto.setArticleHashtags(List.of(new ArticleHashtagDto("해시태그1")));
 
         String content = gson.toJson(patchDto);
 
         ArticleDetailResponseDto detailResponseDto = new ArticleDetailResponseDto(articleId, "제목2", "본문2",
                 0, true, "20221111","20221130",2,2,
                 1L, "홍길동", LocalDateTime.now(),LocalDateTime.now(),
-                0,1, List.of(new HashtagResponseDto(1L,"해시태그1")),
-                List.of(new IndustryResponseDto(1L, "금융")), List.of(new StackResponseDto(1L, "JAVA"),
-                new StackResponseDto(2L, "MySQL"), new StackResponseDto(3L, "Nodejs")),
+                1,1, List.of(new HashtagResponseDto(1L,"해시태그1")),
                 List.of(new AnswerResponseDto(1L, "본문1",1L,"홍길동", 1L,
                         LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
@@ -231,6 +220,8 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.data.endDay").value(patchDto.getEndDay()))
                 .andExpect(jsonPath("$.data.backend").value(patchDto.getBackend()))
                 .andExpect(jsonPath("$.data.frontend").value(patchDto.getFrontend()))
+                .andExpect(jsonPath("$.data.hearts").value(patchDto.getArticleHashtags()))
+                .andExpect(jsonPath("$.data.articleHashtags").value(patchDto.getArticleHashtags()))
                 .andDo(document("patch-article",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -243,8 +234,10 @@ class ArticleControllerTest {
                                         fieldWithPath("isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
                                         fieldWithPath("startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
                                         fieldWithPath("endDay").type(JsonFieldType.STRING).description("프로젝트 마감일"),
-                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수").optional(),
-                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수").optional()
+                                        fieldWithPath("backend").type(JsonFieldType.NUMBER).description("백엔드 인원수"),
+                                        fieldWithPath("frontend").type(JsonFieldType.NUMBER).description("프론트 인원수"),
+                                        fieldWithPath("hearts").type(JsonFieldType.ARRAY).description("게시글 좋아요"),
+                                        fieldWithPath("articleHashtags").type(JsonFieldType.ARRAY).description("게시글 태그")
                                 )
                         ),
                         responseFields(
@@ -310,8 +303,6 @@ class ArticleControllerTest {
                 "20221109", "20221210", 3, 3,
                 1L, "홍길동", LocalDateTime.now(),
                 LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                List.of(new IndustryResponseDto(1L, "금융")), List.of(new StackResponseDto(1L, "JAVA"),
-                new StackResponseDto(2L, "MySQL"), new StackResponseDto(3L, "Nodejs")),
                 List.of(new AnswerResponseDto(1L,"본문1",1L,"홍길동",
                         1L,LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
@@ -360,14 +351,6 @@ class ArticleControllerTest {
                                         fieldWithPath("data.hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data.hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
 
-                                        fieldWithPath("data.industries").type(JsonFieldType.ARRAY).description("게시글 산업군 정보"),
-                                        fieldWithPath("data.industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
-                                        fieldWithPath("data.industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
-
-                                        fieldWithPath("data.stacks").type(JsonFieldType.ARRAY).description("게시글 기술스택 정보"),
-                                        fieldWithPath("data.stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data.stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
-
                                         fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
                                         fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
                                         fieldWithPath("data.answers[].body").type(JsonFieldType.STRING).description("답변 본문"),
@@ -405,22 +388,18 @@ class ArticleControllerTest {
                         1L, "제목1", "본문1", 0, false,
                         "20221109", "20221210", 3, 3,
                         1L, "홍길동", LocalDateTime.now(),
-                        LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                        List.of(new IndustryResponseDto(1L, "금융")), List.of(new StackResponseDto(1L, "JAVA"),
-                        new StackResponseDto(2L, "MySQL"), new StackResponseDto(3L, "Nodejs"))),
+                        LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1"))),
                 new ArticleResponseDto(
                         2L, "제목2", "본문2", 0, false,
                         "20221110", "20221211", 2, 2,
                         2L, "고길동", LocalDateTime.now(),
-                        LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                        List.of(new IndustryResponseDto(2L, "교육")), List.of(new StackResponseDto(4L, "Nestjs"))),
+                        LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1"))),
                 new ArticleResponseDto(
-                        3L, "제목1", "본문1", 0, true,
+                        3L, "제목3", "본문3", 0, true,
                         "20221111", "20221212", 3, 4,
                         3L, "김길동", LocalDateTime.now(),
-                        LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                        List.of(new IndustryResponseDto(3L, "헬스케어")), List.of(new StackResponseDto(5L, "Go"),
-                        new StackResponseDto(6L, "Kotlin"))));
+                        LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")))
+                );
 
         given(articleService.findArticles(Mockito.anyBoolean(),Mockito.anyString(),Mockito.anyInt(),Mockito.anyInt()))
                 .willReturn(new PageImpl<>(articles, PageRequest.of(page-1,size, Sort.by("articleId")
@@ -468,14 +447,6 @@ class ArticleControllerTest {
                                         fieldWithPath("data[].hashtags").type(JsonFieldType.ARRAY).description("게시글 태그 정보"),
                                         fieldWithPath("data[].hashtags[].hashtagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
                                         fieldWithPath("data[].hashtags[].name").type(JsonFieldType.STRING).description("태그 내용"),
-
-                                        fieldWithPath("data[].industries").type(JsonFieldType.ARRAY).description("게시글 산업군 정보"),
-                                        fieldWithPath("data[].industries[].industryId").type(JsonFieldType.NUMBER).description("산업군 식별자"),
-                                        fieldWithPath("data[].industries[].name").type(JsonFieldType.STRING).description("산업군 이름"),
-
-                                        fieldWithPath("data[].stacks").type(JsonFieldType.ARRAY).description("게시글 기술스택 정보"),
-                                        fieldWithPath("data[].stacks[].stackId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data[].stacks[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 번호"),

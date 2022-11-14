@@ -24,4 +24,18 @@ public class ArticleHashtag {
     @ManyToOne
     @JoinColumn(name = "HASHTAG_ID")
     private Hashtag hashtag;
+
+    public void addArticle(Article article) {
+        this.article = article;
+        if (!this.article.getArticleHashtags().contains(this)) {
+            this.article.getArticleHashtags().add(this);
+        }
+    }
+
+    public void addHashtag(Hashtag hashtag) {
+        this.hashtag = hashtag;
+        if (!this.hashtag.getArticleHashtags().contains(this)) {
+            this.hashtag.addArticleHashtag(this);
+        }
+    }
 }

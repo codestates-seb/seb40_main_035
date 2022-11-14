@@ -3,11 +3,7 @@ package com.codestates.mainproject.domain.article.entity;
 import com.codestates.mainproject.audit.Auditable;
 import com.codestates.mainproject.domain.answer.entity.Answer;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
-import com.codestates.mainproject.domain.industry.entity.Industry;
-import com.codestates.mainproject.domain.member.entity.Heart;
 import com.codestates.mainproject.domain.member.entity.Member;
-import com.codestates.mainproject.domain.stack.entity.Stack;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,19 +11,18 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
+@Entity
 public class Article extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long articleId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String title;
 
     @Column(nullable = false, length = 2000)
@@ -43,10 +38,10 @@ public class Article extends Auditable {
     @Column(nullable = false)
     private Boolean isCompleted = false;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String startDay;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String endDay;
 
     @Column(nullable = false)
@@ -54,15 +49,6 @@ public class Article extends Auditable {
 
     @Column(nullable = false)
     private int frontend;
-
-    @OneToMany(mappedBy = "article")
-    private List<ArticleIndustry> articleIndustries = getArticleIndustries();
-
-    public List<Industry> getIndustries() {
-        return articleIndustries.stream()
-                .map(articleIndustry -> articleIndustry.getIndustry())
-                .collect(Collectors.toList());
-    }
 
     @Column(nullable = false)
     private int heartCount;
@@ -82,7 +68,7 @@ public class Article extends Auditable {
         return member.getName();
     }
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleHashtag> articleHashtags = new ArrayList<>();
 
     public void addArticleHashtag(ArticleHashtag articleHashtag) {
@@ -95,12 +81,17 @@ public class Article extends Auditable {
                 .collect(Collectors.toList());
     }
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
     public void addHeart(Heart heart) {
         hearts.add(heart);
         heartCount++;
+    }
+
+    public void removeHeart(Heart heart) {
+        hearts.remove(heart);
+        heartCount--;
     }
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
@@ -111,12 +102,4 @@ public class Article extends Auditable {
         answerCount++;
     }
 
-    @OneToMany(mappedBy = "article")
-    private List<ArticleStack> articleStacks = new ArrayList<>();
-
-    public List<Stack> getStacks() {
-        return articleStacks.stream()
-                .map(articleStack -> articleStack.getStack())
-                .collect(Collectors.toList());
-    }
 }
