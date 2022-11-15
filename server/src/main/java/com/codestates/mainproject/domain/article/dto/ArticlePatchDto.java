@@ -1,5 +1,7 @@
 package com.codestates.mainproject.domain.article.dto;
 
+import com.codestates.mainproject.domain.article.entity.ArticleInterest;
+import com.codestates.mainproject.domain.article.entity.ArticleSkill;
 import com.codestates.mainproject.validator.NotSpace;
 import com.codestates.mainproject.validator.NotSpaceInteger;
 import lombok.Getter;
@@ -51,4 +53,10 @@ public class ArticlePatchDto {
 
     @Nullable
     private List<@Valid ArticleHashtagDto> articleHashtags;
+
+    @Nullable
+    private List<@Valid ArticleInterestDto> articleInterests;
+
+    @Nullable
+    private List<@Valid ArticleSkillDto> articleSkills;
 }

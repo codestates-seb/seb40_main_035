@@ -1,6 +1,7 @@
 package com.codestates.mainproject.domain.member.dto;
 
 import com.codestates.mainproject.domain.member.entity.Member;
+import com.codestates.mainproject.domain.member.entity.MemberInterest;
 import com.codestates.mainproject.validator.NotSpace;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,4 +37,10 @@ public class MemberPatchDto {
 
     @NotSpace
     private String github;
+
+    @Nullable
+    private List<@Valid MemberInterestDto> memberInterests;
+
+    @Nullable
+    private List<@Valid MemberSkillDto> memberSkills;
 }

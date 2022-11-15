@@ -4,11 +4,11 @@ import com.codestates.mainproject.domain.article.dto.ArticleDetailResponseDto;
 import com.codestates.mainproject.domain.article.dto.ArticlePatchDto;
 import com.codestates.mainproject.domain.article.dto.ArticlePostDto;
 import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
-import com.codestates.mainproject.domain.article.entity.Article;
-import com.codestates.mainproject.domain.article.entity.ArticleHashtag;
-import com.codestates.mainproject.domain.article.entity.Heart;
+import com.codestates.mainproject.domain.article.entity.*;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
+import com.codestates.mainproject.domain.interest.entity.Interest;
 import com.codestates.mainproject.domain.member.entity.Member;
+import com.codestates.mainproject.domain.skill.entity.Skill;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -39,6 +39,32 @@ public interface ArticleMapper {
                 .collect(Collectors.toList());
 
         article.setArticleHashtags(articleHashtags);
+
+        List<ArticleInterest> articleInterests = postDto.getArticleInterests().stream()
+                .map(articleInterestDto -> {
+                    ArticleInterest articleInterest = new ArticleInterest();
+                    Interest interest = new Interest();
+                    interest.setName(articleInterestDto.getInterestName());
+                    articleInterest.setInterest(interest);
+                    articleInterest.addArticle(article);
+                    return articleInterest;
+                })
+                .collect(Collectors.toList());
+
+        article.setArticleInterests(articleInterests);
+
+        List<ArticleSkill> articleSkills = postDto.getArticleSkills().stream()
+                .map(articleSkillDto -> {
+                    ArticleSkill articleSkill = new ArticleSkill();
+                    Skill skill = new Skill();
+                    skill.setName(articleSkillDto.getSkillName());
+                    articleSkill.setSkill(skill);
+                    articleSkill.addArticle(article);
+                    return articleSkill;
+                })
+                .collect(Collectors.toList());
+
+        article.setArticleSkills(articleSkills);
 
         return article;
     }
@@ -82,6 +108,36 @@ public interface ArticleMapper {
                     .collect(Collectors.toList());
 
             article.setArticleHashtags(articleHashtags);
+        }
+
+        if (patchDto.getArticleInterests() != null) {
+            List<ArticleInterest> articleInterests = patchDto.getArticleInterests().stream()
+                    .map(articleInterestDto -> {
+                        ArticleInterest articleInterest = new ArticleInterest();
+                        Interest interest = new Interest();
+                        interest.setName(articleInterestDto.getInterestName());
+                        articleInterest.setInterest(interest);
+                        articleInterest.setArticle(article);
+                        return articleInterest;
+                    })
+                    .collect(Collectors.toList());
+
+            article.setArticleInterests(articleInterests);
+        }
+
+        if (patchDto.getArticleSkills() != null) {
+            List<ArticleSkill> articleSkills = patchDto.getArticleSkills().stream()
+                    .map(articleSkillDto -> {
+                        ArticleSkill articleSkill = new ArticleSkill();
+                        Skill skill = new Skill();
+                        skill.setName(articleSkillDto.getSkillName());
+                        articleSkill.setSkill(skill);
+                        articleSkill.setArticle(article);
+                        return articleSkill;
+                    })
+                    .collect(Collectors.toList());
+
+            article.setArticleSkills(articleSkills);
         }
 
         return article;
