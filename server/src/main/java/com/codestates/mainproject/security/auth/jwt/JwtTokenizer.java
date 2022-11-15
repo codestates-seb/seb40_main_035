@@ -29,7 +29,6 @@ public class JwtTokenizer {
 
     private final RedisDto redisDto;
 
-    private final JwtAuthenticationFilter authenticationFilter;
     @Getter
     @Value("${jwt.secret-key}")
     private String secretKey;

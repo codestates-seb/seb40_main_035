@@ -4,7 +4,6 @@ import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.repository.MemberRepository;
 import com.codestates.mainproject.exception.BusinessLogicException;
 import com.codestates.mainproject.exception.ExceptionCode;
-import com.codestates.mainproject.security.util.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -21,13 +19,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final MemberAuthorityUtils memberAuthorityUtils;
     private final PasswordEncoder passwordEncoder;
 
     public Member createMember(Member member) {
         verifyExistingEmail(member.getEmail());
         verifyExistingName(member.getName());
         checkPassword(member.getPassword(), member.getPasswordCheck());
+
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+
 
         return memberRepository.save(member);
     }

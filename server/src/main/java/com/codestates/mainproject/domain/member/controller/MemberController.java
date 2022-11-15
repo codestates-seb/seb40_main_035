@@ -41,7 +41,7 @@ public class MemberController {
 
     private final JwtTokenizer jwtTokenizer;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto postDto) {
 
         Member member = mapper.memberPostDtoToMember(postDto);
@@ -93,6 +93,19 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/reissue")
+    public ResponseEntity reissue(@AuthenticationPrincipal MemberDetails memberDetails) throws JwtException {
+        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(memberDetails.getMember());
+        TokenResponse tokenResponseDto = jwtTokenizer.reissueAcTken(responseDto);
+
+        Map<String, Object> claims = jwtTokenizer.getClaims(tokenResponseDto.getAcToken()).getBody();
+        long memberId = Long.parseLong(claims.get("memberId").toString());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + tokenResponseDto.getAcToken());
+
+        return new ResponseEntity<>(new SingleResponseDto<>(memberId), headers, HttpStatus.OK);
+    }
 
     @PostMapping("/login")
     public ResponseEntity login(@Valid @RequestBody LoginDto loginDto) throws JsonProcessingException {

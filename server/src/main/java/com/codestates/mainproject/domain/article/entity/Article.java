@@ -2,8 +2,6 @@ package com.codestates.mainproject.domain.article.entity;
 
 import com.codestates.mainproject.audit.Auditable;
 import com.codestates.mainproject.domain.answer.entity.Answer;
-import com.codestates.mainproject.domain.category.entity.Category;
-import com.codestates.mainproject.domain.heart.entity.Heart;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 import com.codestates.mainproject.domain.member.entity.Member;
 import lombok.Getter;
