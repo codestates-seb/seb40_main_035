@@ -3,6 +3,8 @@ package com.codestates.mainproject.domain.member.dto;
 import com.codestates.mainproject.domain.article.dto.ArticleSimpleResponseDto;
 import com.codestates.mainproject.domain.interest.dto.InterestResponseDto;
 import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class MemberDetailResponseDto {
     private long memberId;
     private String email;
