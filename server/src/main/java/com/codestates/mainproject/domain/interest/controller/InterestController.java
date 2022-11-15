@@ -70,7 +70,7 @@ public class InterestController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDtos), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{hashtag-id}")
+    @DeleteMapping("/{interest-id}")
     public ResponseEntity deleteInterest(@PathVariable("interest-id") @Positive long interestId) {
 
         service.deleteInterest(interestId);

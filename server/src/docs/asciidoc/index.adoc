@@ -1,47 +1,15 @@
-ifndef::snippets[]
-:snippets: ./build/generated-snippets
-endif::[]
-
-
-
-= Project Matching API Docs
-
-[[overview-http-status-codes]]
-=== HTTP status codes
-|===
-| 상태 코드 | 설명
-
-| `200 OK`
-| 성공
-
-| `400 Bad Request`
-| 잘못된 요청
-
-| `401 Unauthorized`
-| 비인증 상태
-
-| `403 Forbidden`
-| 권한 거부
-
-| `404 Not Found`
-| 존재하지 않는 요청 리소스
-
-| `409 Conflict`
-| 이미 존재하여 충돌
-
-| `500 Internal Server Error`
-| 서버 에러
-|===
-
+= Side Project team recruiting API Docs
 :sectnums:
 :toc: left
 :toclevels: 4
 :toc-title: Table of Contents
 :source-highlighter: prettify
 
-v1.0.0, 2022.11.14
+v1.0.1, 2022.11.15
 
 ***
+include::overview.adoc[]
+
 == 회원정보
 ==== 회원가입
 .curl-request
@@ -485,6 +453,191 @@ include::{snippets}/delete-hashtag/httpie-request.adoc[]
 .http-response
 include::{snippets}/delete-hashtag/http-response.adoc[]
 
+== 관심분야
+==== 관심분야 생성
+.curl-request
+include::{snippets}/post-interest/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-interest/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-interest/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-interest/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-interest/http-response.adoc[]
+
+==== 관심분야 수정
+.curl-request
+include::{snippets}/patch-interest/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-interest/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-interest/request-fields.adoc[]
+
+.http-request
+include::{snippets}/patch-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/patch-interest/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/patch-interest/response-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-interest/http-response.adoc[]
+
+==== 관심분야 조회
+.curl-request
+include::{snippets}/get-interest/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-interest/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-interest/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-interest/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-interest/http-response.adoc[]
+
+==== 전체 관심분야 조회
+.curl-request
+include::{snippets}/get-interests/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-interests/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-interests/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-interests/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-interests/http-response.adoc[]
+
+==== 관심분야 삭제
+.curl-request
+include::{snippets}/delete-interest/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-interest/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-interest/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-interest/http-response.adoc[]
+
+== 기술스택
+==== 기술스택 생성
+.curl-request
+include::{snippets}/post-skill/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-skill/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-skill/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-skill/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-skill/http-response.adoc[]
+
+==== 기술스택 수정
+.curl-request
+include::{snippets}/patch-skill/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-skill/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-skill/request-fields.adoc[]
+
+.http-request
+include::{snippets}/patch-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/patch-skill/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/patch-skill/response-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-skill/http-response.adoc[]
+
+==== 기술스택 조회
+.curl-request
+include::{snippets}/get-skill/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-skill/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-skill/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-skill/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-skill/http-response.adoc[]
+
+==== 전체 기술스택 조회
+.curl-request
+include::{snippets}/get-skills/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-skills/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-skills/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-skills/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-skills/http-response.adoc[]
+
+==== 기술스택 삭제
+.curl-request
+include::{snippets}/delete-skill/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-skill/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-skill/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-skill/http-response.adoc[]
 
 
 

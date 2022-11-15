@@ -156,8 +156,8 @@ class MemberControllerTest {
         patchDto.setDescription("홍길동아닙니다");
         patchDto.setLevel("시니어");
         patchDto.setGithub("github.com/gogildong");
-        patchDto.setMemberInterests(List.of(new MemberInterestDto( "교육")));
-        patchDto.setMemberSkills(List.of(new MemberSkillDto( "JAVA")));
+        patchDto.setMemberInterests(List.of(new MemberInterestDto( "미디어")));
+        patchDto.setMemberSkills(List.of(new MemberSkillDto( "Spring")));
 
         String content = gson.toJson(patchDto);
 
