@@ -1,3 +1,8 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+:basedir: ./src/docs/asciidoc
+endif::[]
+
 = Side Project team recruiting API Docs
 :sectnums:
 :toc: left
@@ -8,6 +13,7 @@
 v1.0.1, 2022.11.15
 
 ***
+//include::{basedir}/overview.adoc[]
 include::overview.adoc[]
 
 == 회원정보
