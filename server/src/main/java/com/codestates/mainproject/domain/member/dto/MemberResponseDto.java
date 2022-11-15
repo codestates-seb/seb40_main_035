@@ -1,5 +1,7 @@
 package com.codestates.mainproject.domain.member.dto;
 
+import com.codestates.mainproject.domain.interest.dto.InterestResponseDto;
+import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +18,8 @@ public class MemberResponseDto {
     private String description;
     private String level;
     private String github;
+    private List<InterestResponseDto> interests;
+    private List<SkillResponseDto> skills;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

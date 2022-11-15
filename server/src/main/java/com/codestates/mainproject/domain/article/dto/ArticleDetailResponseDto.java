@@ -4,6 +4,8 @@ import com.codestates.mainproject.domain.answer.dto.AnswerResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 
+import com.codestates.mainproject.domain.interest.dto.InterestResponseDto;
+import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,5 +31,7 @@ public class ArticleDetailResponseDto {
     private int heartCount;
     private int answerCount;
     private List<HashtagResponseDto> hashtags;
+    private List<InterestResponseDto> interests;
+    private List<SkillResponseDto> skills;
     private List<AnswerResponseDto> answers;
 }
