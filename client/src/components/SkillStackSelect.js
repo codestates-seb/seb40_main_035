@@ -265,10 +265,8 @@ function SkillStackSelect() {
     setSelectedTags(filtered);
   };
 
-  const onTagClick = (e, name) => {
+  const onTagClick = (e) => {
     const newSelectedTags = [...selectedTags];
-    console.log(e.target.textContent);
-    console.log(name);
 
     const filterTarget = newSelectedTags.filter(
       (el) => el.skillName === e.target.textContent,
@@ -287,7 +285,6 @@ function SkillStackSelect() {
         ('');
       }
     }
-    console.log(selectedTags);
   };
 
   return (
