@@ -12,7 +12,7 @@ const HeaderContainer = styled.header`
 
   .header-container {
     width: 100%;
-    padding: 10px;
+    padding: 13px;
     max-width: 100%;
     height: 100%;
     display: flex;
@@ -32,11 +32,12 @@ const HeaderContainer = styled.header`
   .gnb-container-right {
     display: flex;
     align-items: center;
-    padding-right: 142px;
+    padding-right: 132px;
   }
   .logo {
     padding-right: 50px;
     padding-left: 170px;
+    font-size: 25px;
   }
   .gnb {
     display: flex;
@@ -56,7 +57,6 @@ const HeaderContainer = styled.header`
       transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
       :hover {
         box-shadow: 0 0 40px 40px rgba(81, 56, 144, 0.8) inset;
-        color: black;
       }
     }
   }
