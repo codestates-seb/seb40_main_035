@@ -1,5 +1,11 @@
+import NumberSelect from './components/NumberSelect';
+
 function App() {
-  return <div></div>;
+  return (
+    <div>
+      <NumberSelect />
+    </div>
+  );
 }
 
 export default App;
