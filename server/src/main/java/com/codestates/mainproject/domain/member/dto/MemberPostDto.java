@@ -1,11 +1,18 @@
 package com.codestates.mainproject.domain.member.dto;
 
+import com.codestates.mainproject.domain.member.entity.MemberInterest;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class MemberPostDto {
 
     @Email
@@ -20,4 +27,10 @@ public class MemberPostDto {
 
     @NotBlank
     private String passwordCheck;
+
+    @NotEmpty
+    private List<@Valid MemberInterestDto> memberInterests;
+
+    @NotEmpty
+    private List<@Valid MemberSkillDto> memberSkills;
 }

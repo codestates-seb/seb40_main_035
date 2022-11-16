@@ -3,7 +3,10 @@ package com.codestates.mainproject.domain.article.dto;
 import com.codestates.mainproject.domain.answer.dto.AnswerResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
+import com.codestates.mainproject.domain.interest.dto.InterestResponseDto;
+import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ArticleDetailResponseDto {
     private long articleId;
     private String title;
@@ -29,5 +33,7 @@ public class ArticleDetailResponseDto {
     private int heartCount;
     private int answerCount;
     private List<HashtagResponseDto> hashtags;
+    private List<InterestResponseDto> interests;
+    private List<SkillResponseDto> skills;
     private List<AnswerResponseDto> answers;
 }
