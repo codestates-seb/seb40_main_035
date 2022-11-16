@@ -1,10 +1,16 @@
+import Header from './components/Header';
+
 import SkillStackSelect from './components/SkillStackSelect';
 
 function App() {
   return (
-    <div>
+    <>
+      (
+    <Header />
+    
       <SkillStackSelect />
-    </div>
+    </>
+  )
   );
 }
 
