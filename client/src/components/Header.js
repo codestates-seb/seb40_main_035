@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiMoon } from 'react-icons/bi';
+import { useState } from 'react';
+
 const HeaderContainer = styled.header`
   width: 100%;
   display: flex;
@@ -9,7 +11,7 @@ const HeaderContainer = styled.header`
   position: fixed;
 
   .header-container {
-    width: 1864px;
+    width: 100%;
     padding: 10px;
     max-width: 100%;
     height: 100%;
@@ -38,58 +40,105 @@ const HeaderContainer = styled.header`
   }
   .gnb {
     display: flex;
+    color: var(--purple-light);
+    font-weight: 700;
+    font-size: 15px;
 
     li {
       list-style: none;
-      color: var(--purple-light);
-      font-weight: 700;
-      margin-right: 28px;
-      font-size: 15px;
+      margin-right: 31px;
+      width: auto;
+      height: auto;
+      padding: 7px;
+      text-align: center;
+
+      border-radius: 14px;
+      transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+      :hover {
+        box-shadow: 0 0 40px 40px rgba(81, 56, 144, 0.8) inset;
+        color: black;
+      }
     }
   }
 `;
 
+const NavBtn = styled.button`
+  outline: none;
+  background-color: transparent;
+  border: none;
+  color: ${(props) => (props.$color ? 'white' : '#E2E2E2')};
+  font-weight: ${(props) => (props.$color ? 700 : 500)};
+  font-size: 15px;
+`;
+
 const Header = () => {
+  const [menu, setMenu] = useState(0);
+  const navigate = useNavigate();
+
+  const onMain = () => {
+    navigate('/');
+    setMenu('main');
+    setMenu(0);
+  };
+
+  const onAbout = () => {
+    navigate('/about');
+    setMenu(1);
+  };
+
+  const onWrite = () => {
+    navigate('/write');
+    setMenu(2);
+  };
+  const onLogin = () => {
+    navigate('/login');
+    setMenu(3);
+  };
+  const onSignup = () => {
+    navigate('/signup');
+    setMenu(4);
+  };
+
   return (
     <HeaderContainer>
       <div className="header-container">
         <div className="gnb-container-left">
-          <h1 className="logo">
-            <Link to="/">
-              <span>삼삼오오</span>
-            </Link>
-          </h1>
+          <NavBtn onClick={onMain}>
+            <h1 className="logo">삼삼오오 </h1>
+          </NavBtn>
+
           <ul className="gnb">
             <li>
-              <Link to="/about">
-                <span>사이트 소개</span>
-              </Link>
+              <NavBtn $color={menu === 1} onClick={onAbout}>
+                사이트 소개
+              </NavBtn>
             </li>
             <li>
-              <Link to="/">
-                <span>프로젝트 </span>
-              </Link>
+              <NavBtn $color={menu === 0} onClick={onMain}>
+                프로젝트
+              </NavBtn>
             </li>
           </ul>
         </div>
         <div className="gnb-container-right">
           <ul className="gnb">
             <li>
-              <Link to="/write">
-                <span>글쓰기</span>
-              </Link>
+              <NavBtn $color={menu === 2} onClick={onWrite}>
+                글쓰기
+              </NavBtn>
             </li>
             <li>
-              <Link to="/login">
-                <span>로그인 </span>
-              </Link>
+              <NavBtn $color={menu === 3} onClick={onLogin}>
+                로그인
+              </NavBtn>
             </li>
             <li>
-              <Link to="/signup">
-                <span>회원가입</span>
-              </Link>
+              <NavBtn $color={menu === 4} onClick={onSignup}>
+                회원가입
+              </NavBtn>
             </li>
             <li>
+              {/* 다크모드 후순위 작업 */}
               <BiMoon className="moon-icon" />
             </li>
           </ul>
