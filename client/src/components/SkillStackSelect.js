@@ -78,13 +78,14 @@ const Container = styled.div`
   }
 
   .skill-selected-tag {
-    border: 1px solid var(--purple-medium);
+    border: 1px solid var(--purple);
     border-radius: 25px;
     background-color: var(--purple);
     color: white;
     cursor: pointer;
 
     display: flex;
+    align-items: center;
     margin: 15px 15px 15px 0;
     padding: 7px 10px;
   }
@@ -185,7 +186,7 @@ function SkillStackSelect() {
         ('');
       }
     }
-    console.log(newSelectedTags);
+    console.log(selectedTags);
   };
 
   return (
@@ -241,7 +242,8 @@ function SkillStackSelect() {
                 <div
                   key={idx}
                   className={
-                    selectedTags.includes(skillTag)
+                    selectedTags.filter((el) => el.tagName === skillTag)
+                      .length !== 0
                       ? 'skill-tag skill-selected-tag'
                       : 'skill-tag'
                   }
