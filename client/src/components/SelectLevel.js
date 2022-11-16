@@ -4,10 +4,18 @@ import styled from 'styled-components';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 
 const WholeContainer = styled.div`
+  width: 200px;
+  padding: 10px;
   display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+
+  .title {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
 `;
 
 const DropdownContainer = styled.div`
@@ -119,6 +127,7 @@ const SelectLevel = () => {
 
   return (
     <WholeContainer>
+      <span className="title">숙련도</span>
       <DropdownContainer ref={selectInput}>
         <DropdownBody onClick={onActiveToggle}>
           {selectedValue ? (
