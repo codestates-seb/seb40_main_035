@@ -4,6 +4,8 @@ import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 import com.codestates.mainproject.domain.hashtag.repository.HashtagRepository;
 import com.codestates.mainproject.domain.interest.entity.Interest;
 import com.codestates.mainproject.domain.interest.repository.InterestRepository;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,19 +48,19 @@ public class InterestService {
 
     public Interest findVerifiedInterest(long interestId) {
         Optional<Interest> optionalInterest = repository.findById(interestId);
-        return optionalInterest.orElseThrow(() -> new RuntimeException("존재하지 않는 관심분야입니다."));
+        return optionalInterest.orElseThrow(() -> new BusinessLogicException(ExceptionCode.INTEREST_NOT_FOUND));
     }
 
     public Interest findVerifiedInterest(String name) {
         Optional<Interest> optionalInterest = repository.findByName(name);
-        return optionalInterest.orElseThrow(() -> new RuntimeException("존재하지 않는 관심분야입니다."));
+        return optionalInterest.orElseThrow(() -> new BusinessLogicException(ExceptionCode.INTEREST_NOT_FOUND));
     }
 
     private void verifyExistingName(String name) {
         Optional<Interest> optionalInterest = repository.findByName(name);
 
         if (optionalInterest.isPresent()) {
-            throw new RuntimeException("이미 존재하는 관심분야입니다.");
+            throw new BusinessLogicException(ExceptionCode.INTEREST_ALREADY_EXISTS);
         }
     }
 }

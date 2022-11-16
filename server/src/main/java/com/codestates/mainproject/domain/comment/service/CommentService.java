@@ -2,10 +2,12 @@ package com.codestates.mainproject.domain.comment.service;
 
 import com.codestates.mainproject.domain.answer.entity.Answer;
 import com.codestates.mainproject.domain.answer.service.AnswerService;
-import com.codestates.mainproject.domain.comment.entity.Comment;
 import com.codestates.mainproject.domain.comment.repository.CommentRepository;
+import com.codestates.mainproject.domain.comment.entity.Comment;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.service.MemberService;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +60,6 @@ public class CommentService {
 
     private Comment findVerifiedComment(long commentId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        return optionalComment.orElseThrow(() -> new RuntimeException("존재하지 않는 댓글입니다."));
+        return optionalComment.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
 }
