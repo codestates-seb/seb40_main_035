@@ -1,5 +1,11 @@
+import SkillStackSelect from './components/SkillStackSelect';
+
 function App() {
-  return <div></div>;
+  return (
+    <div>
+      <SkillStackSelect />
+    </div>
+  );
 }
 
 export default App;
