@@ -1,8 +1,7 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { selectedTagsState } from '../atom/atom';
-// import { activeTagState } from '../atom/atom';
+import { activeIdxState, selectedTagsState } from '../atom/atom';
 
 // color/보더/커서 -> font -> w/h -> m/p -> flex -> 기타
 const Container = styled.div`
@@ -15,7 +14,7 @@ const Container = styled.div`
 
   .tab-menu {
     border-bottom: 1px solid var(--purple-medium);
-    height: 50px; // Tnwjd
+    height: 50px; // 수정
 
     display: flex;
     flex-direction: row;
@@ -31,7 +30,6 @@ const Container = styled.div`
     height: 100%;
     margin-right: 15px;
     padding: 10px 10px;
-    /* flex-grow: 1; */
   }
 
   .active-title {
@@ -97,7 +95,7 @@ const Container = styled.div`
 `;
 
 function SkillStackSelect() {
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [activeIdx, setActiveIdx] = useRecoilState(activeIdxState);
   const [selectedTags, setSelectedTags] = useRecoilState(selectedTagsState);
 
   const tabContArr = [
@@ -194,18 +192,21 @@ function SkillStackSelect() {
     <Container>
       <div className="selected-tags">
         <ul>
-          {selectedTags.map((tag, idx) => (
-            <li key={idx} className="skill-selected-tag">
-              <div>{tag.tagName}</div>
-              <div
-                className="delete"
-                onClick={() => onDeleteClick(idx)}
-                aria-hidden="true"
-              >
-                x
-              </div>
-            </li>
-          ))}
+          {
+            // 선택, 입력된 태그들 표시
+            selectedTags.map((tag, idx) => (
+              <li key={idx} className="skill-selected-tag">
+                <div>{tag.tagName}</div>
+                <div
+                  className="delete"
+                  onClick={() => onDeleteClick(idx)}
+                  aria-hidden="true"
+                >
+                  x
+                </div>
+              </li>
+            ))
+          }
         </ul>
       </div>
       <ul className="tab-menu">
@@ -225,32 +226,35 @@ function SkillStackSelect() {
         })}
       </ul>
       <div className="tab-content">
-        {activeIdx === 2 ? ( // 기타 직접 입력
-          <input
-            className="skill-tag-input"
-            placeholder="기술 태그를 직접 입력해주세요."
-            onKeyUp={onInputKeyUp}
-          ></input>
-        ) : (
-          // FE, BE 선택 입력
-          tabContArr[activeIdx].tabCont.map((skillTag, idx) => {
-            return (
-              <div
-                key={idx}
-                // className={
-                //   selectedTags.includes(skillTag)
-                //     ? 'skill-tag skill-selected-tag'
-                //     : 'skill-tag'
-                // }
-                className="skill-tag"
-                onClick={onTagClick}
-                aria-hidden="true" // ESlint 오류 해결 - 일단 스크린리더에서 제외
-              >
-                {skillTag}
-              </div>
-            );
-          })
-        )}
+        {
+          // 기타 직접 입력
+          activeIdx === 2 ? (
+            <input
+              className="skill-tag-input"
+              placeholder="기술 태그를 직접 입력해주세요."
+              onKeyUp={onInputKeyUp}
+            ></input>
+          ) : (
+            // FE, BE 선택 입력
+            tabContArr[activeIdx].tabCont.map((skillTag, idx) => {
+              return (
+                <div
+                  key={idx}
+                  className={
+                    selectedTags.includes(skillTag)
+                      ? 'skill-tag skill-selected-tag'
+                      : 'skill-tag'
+                  }
+                  // className="skill-tag"
+                  onClick={onTagClick}
+                  aria-hidden="true" // ESlint 오류 해결 - 일단 스크린리더에서 제외
+                >
+                  {skillTag}
+                </div>
+              );
+            })
+          )
+        }
       </div>
     </Container>
   );

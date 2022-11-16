@@ -5,12 +5,9 @@ import SkillStackSelect from './components/SkillStackSelect';
 function App() {
   return (
     <>
-      (
-    <Header />
-    
+      <Header />
       <SkillStackSelect />
     </>
-  )
   );
 }
 
