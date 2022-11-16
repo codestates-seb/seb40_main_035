@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter
 public class ErrorResponse {
     private int status;
     private String message;
@@ -22,21 +23,18 @@ public class ErrorResponse {
         this.status = status;
         this.message = message;
     }
-
-    private ErrorResponse(HttpStatus httpStatus, String message, List<FieldError> fieldErrors, List<ConstraintViolationError> violationErrors) {
-        this.status = httpStatus.value();
-        this.message = message;
+    private ErrorResponse(final List<FieldError> fieldErrors, final List<ConstraintViolationError> violationErrors) {
         this.fieldErrors = fieldErrors;
         this.violationErrors = violationErrors;
     }
-
-    public static ErrorResponse of(HttpStatus httpStatus, BindingResult bindingResult) {
-        return new ErrorResponse(httpStatus, ExceptionCode.FIELD_ERROR.getMessage(), FieldError.of(bindingResult), null);
+    public static ErrorResponse of(BindingResult bindingResult) {
+        return new ErrorResponse(FieldError.of(bindingResult), null);
     }
 
-    public static ErrorResponse of(HttpStatus httpStatus, Set<ConstraintViolation<?>> violations) {
-        return new ErrorResponse(httpStatus, ExceptionCode.CONSTRAINT_VIOLATION_ERROR.getMessage(), null, ConstraintViolationError.of(violations));
+    public static ErrorResponse of(Set<ConstraintViolation<?>> violations) {
+        return new ErrorResponse(null, ConstraintViolationError.of(violations));
     }
+
 
     public static ErrorResponse of(ExceptionCode exceptionCode) {
         return new ErrorResponse(exceptionCode.getStatus(), exceptionCode.getMessage());

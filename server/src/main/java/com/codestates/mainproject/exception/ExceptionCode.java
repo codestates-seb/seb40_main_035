@@ -5,13 +5,16 @@ import lombok.Getter;
 @Getter
 public enum ExceptionCode {
     //400 Bad Request
-    FIELD_ERROR(400,"FIELD ERROR"),
-    CONSTRAINT_VIOLATION_ERROR(400, "CONSTRAINT VIOLATION ERROR"),
     BAD_PARAMETER_ERROR(400,"동일한 비밀번호를 입력하세요."),
+    INVALID_INPUT_VALUE(400, "유효한 입력값이 아닙니다."),
 
     //401 Unauthorized
+    TOKEN_IS_INVALID(401, "토큰이 유효하지 않습니다."),
 
     //403 Forbidden
+    HANDLE_ACCESS_DENIED(403, "접근 권한이 없습니다."),
+
+    EMAIL_VALIDATION_NEED(403, "이메일 인증이 필요합니다."),
 
     //404 Not Found
     MEMBER_NOT_FOUND(404, "회원이 존재하지 않습니다."),
@@ -21,6 +24,9 @@ public enum ExceptionCode {
     HASHTAG_NOT_FOUND(404,"태그가 존재하지 않습니다."),
     INTEREST_NOT_FOUND(404, "관심분야가 존재하지 않습니다."),
     SKILL_NOT_FOUND(404, "기술스택이 존재하지 않습니다."),
+
+    //405 METHOD NOT ALLOWED
+    METHOD_NOT_ALLOWED(405, "지원하지 않는 메서드방식입니다."),
 
     //409 Conflict
     MEMBER_ALREADY_EXISTS(409, "이미 존재하는 회원입니다"),
