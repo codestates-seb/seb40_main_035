@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { ReactComponent as LikeIcon } from '../assets/image/like.svg';
 import { ReactComponent as ViewsIcon } from '../assets/image/views.svg';
+import yearMonthDate from '../utils/dateFormat';
 
-const ArticleCardWrapper = styled.a`
+const ArticleCardWrapper = styled(Link)`
   display: block;
   width: 323px;
   height: 286px;
@@ -70,6 +72,15 @@ const ArticleCardWrapper = styled.a`
 
     p:last-child {
       margin-bottom: 20px;
+
+      span:last-child {
+        margin-left: 6px;
+
+        &::before {
+          content: '|';
+          margin-right: 6px;
+        }
+      }
     }
   }
 
@@ -127,45 +138,58 @@ const Tag = styled.li`
   }
 `;
 
-const ArticleCard = () => {
+const ArticleCard = ({
+  articleId,
+  isCompleted,
+  title,
+  startDay,
+  endDay,
+  frontend,
+  backend,
+  hashtags,
+  skills,
+  memberName,
+  heartCount,
+  views,
+}) => {
   return (
-    <ArticleCardWrapper href="/" className="closed">
+    <ArticleCardWrapper
+      to={articleId}
+      className={isCompleted === false ? '' : 'closed'}
+    >
       <article>
-        <h3 className="article-header">
-          헬스케어 식단 관련 프로젝트를 같이 진행할 백엔드 개발자님을 구합니다
-        </h3>
+        <h3 className="article-header">{title}</h3>
         <div className="project-info">
           <p>
             <span>개발 기간</span>
-            2022.10.22 - 2022.11.22
+            {yearMonthDate(startDay)} - {yearMonthDate(endDay)}
           </p>
-          <p>
-            <span>모집 인원</span>2
+          <p className="people-number">
+            <span>프론트엔드</span>
+            {frontend}명<span>백엔드</span>
+            {backend}명
           </p>
         </div>
         <div className="project-summary">
-          <p className="hashtags">#온라인 #2개월</p>
+          <p className="hashtags">{hashtags.map((tag) => '#' + tag.name)}</p>
           <ul>
-            <Tag>
-              <span>JavaScript</span>
-            </Tag>
-            <Tag>
-              <span>Java</span>
-            </Tag>
+            {skills.map((skill) => (
+              <Tag key={skill.skillId}>
+                <span>{skill.name}</span>
+              </Tag>
+            ))}
           </ul>
         </div>
         <footer>
-          <a href="/" className="author">
-            삼삼오오
-          </a>
+          <div className="author">{memberName}</div>
           <div className="article-info">
             <div>
               <LikeIcon aria-label="좋아요 수" role="img" />
-              <span>10</span>
+              <span>{heartCount}</span>
             </div>
             <div>
               <ViewsIcon aria-label="조회수" role="img" />
-              <span>23</span>
+              <span>{views}</span>
             </div>
           </div>
         </footer>
