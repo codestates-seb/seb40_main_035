@@ -6,7 +6,8 @@ const Input = styled.input`
   border-radius: 8px;
   border: none;
   color: var(--black);
-  outline: 1px solid var(--purple-medium);
+  outline: none;
+  border: 1px solid var(--purple-medium);
   transition: 300ms ease-in-out;
   white-space: nowrap;
 
@@ -17,7 +18,7 @@ const Input = styled.input`
   &:hover,
   &:focus,
   &:active {
-    outline-color: var(--purple);
+    border-color: var(--purple);
   }
 
   &:focus,
