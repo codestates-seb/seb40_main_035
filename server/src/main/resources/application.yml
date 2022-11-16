@@ -12,6 +12,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  redis:
+    host: localhost
+    port: 6379
 logging:
   level:
     org:
@@ -22,3 +25,8 @@ server:
   servlet:
     encoding:
       force-response: true
+jwt:
+  key:
+    secret: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
