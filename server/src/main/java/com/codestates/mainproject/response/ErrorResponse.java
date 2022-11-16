@@ -1,7 +1,8 @@
-package com.codestates.mainproject.security.response;
+package com.codestates.mainproject.response;
+
+
 
 import com.codestates.mainproject.exception.ExceptionCode;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -22,13 +23,10 @@ public class ErrorResponse {
         this.status = status;
         this.message = message;
     }
-
-    private ErrorResponse(final List<FieldError> fieldErrors,
-                          final List<ConstraintViolationError> violationErrors) {
+    private ErrorResponse(final List<FieldError> fieldErrors, final List<ConstraintViolationError> violationErrors) {
         this.fieldErrors = fieldErrors;
         this.violationErrors = violationErrors;
     }
-
     public static ErrorResponse of(BindingResult bindingResult) {
         return new ErrorResponse(FieldError.of(bindingResult), null);
     }
@@ -36,6 +34,7 @@ public class ErrorResponse {
     public static ErrorResponse of(Set<ConstraintViolation<?>> violations) {
         return new ErrorResponse(null, ConstraintViolationError.of(violations));
     }
+
 
     public static ErrorResponse of(ExceptionCode exceptionCode) {
         return new ErrorResponse(exceptionCode.getStatus(), exceptionCode.getMessage());
@@ -45,12 +44,7 @@ public class ErrorResponse {
         return new ErrorResponse(httpStatus.value(), httpStatus.getReasonPhrase());
     }
 
-    public static ErrorResponse of(HttpStatus httpStatus, String message) {
-        return new ErrorResponse(httpStatus.value(), message);
-    }
-
     @Getter
-
     public static class FieldError {
         private String field;
         private Object rejectedValue;
@@ -74,7 +68,6 @@ public class ErrorResponse {
                     .collect(Collectors.toList());
         }
     }
-
     @Getter
     public static class ConstraintViolationError {
         private String propertyPath;
@@ -99,3 +92,6 @@ public class ErrorResponse {
         }
     }
 }
+
+
+

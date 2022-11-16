@@ -6,6 +6,8 @@ import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.article.service.ArticleService;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.service.MemberService;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +60,6 @@ public class AnswerService {
 
     public Answer findVerifiedAnswer(long answerId){
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
-        return optionalAnswer.orElseThrow(() -> new RuntimeException("존재하는 답변이 없습니다."));
+        return optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
     }
 }

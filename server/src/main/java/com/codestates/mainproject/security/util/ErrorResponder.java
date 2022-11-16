@@ -1,11 +1,10 @@
 package com.codestates.mainproject.security.util;
 
-import com.codestates.mainproject.security.response.ErrorResponse;
+import com.codestates.mainproject.response.ErrorResponse;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 

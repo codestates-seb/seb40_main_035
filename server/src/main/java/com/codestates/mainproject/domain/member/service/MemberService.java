@@ -11,6 +11,8 @@ import com.codestates.mainproject.exception.ExceptionCode;
 
 import com.codestates.mainproject.domain.skill.entity.Skill;
 import com.codestates.mainproject.domain.skill.service.SkillService;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -137,14 +139,14 @@ public class MemberService {
 
     public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
-        return optionalMember.orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
+        return optionalMember.orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     private void verifyExistingEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
         if (optionalMember.isPresent()) {
-            throw new RuntimeException("중복된 이메일입니다.");
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EMAIL_ALREADY_EXISTS);
         }
     }
 
@@ -152,13 +154,13 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByName(name);
 
         if (optionalMember.isPresent()) {
-            throw new RuntimeException("중복된 이름입니다.");
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NAME_ALREADY_EXISTS);
         }
     }
 
     private void checkPassword(String password, String passwordCheck) {
         if (!password.equals(passwordCheck)) {
-            throw new RuntimeException("동일한 비밀번호를 입력하세요.");
+            throw new BusinessLogicException(ExceptionCode.BAD_PARAMETER_ERROR);
         }
     }
 

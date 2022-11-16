@@ -2,6 +2,8 @@ package com.codestates.mainproject.domain.hashtag.service;
 
 import com.codestates.mainproject.domain.hashtag.entity.Hashtag;
 import com.codestates.mainproject.domain.hashtag.repository.HashtagRepository;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +37,7 @@ public class HashtagService {
 
     public Hashtag findVerifiedHashtag(long hashtagId) {
         Optional<Hashtag> optionalHashtag = hashtagRepository.findById(hashtagId);
-        return optionalHashtag.orElseThrow(() -> new RuntimeException("존재하지 않는 태그입니다."));
+        return optionalHashtag.orElseThrow(() -> new BusinessLogicException(ExceptionCode.HASHTAG_NOT_FOUND));
     }
 
     public Hashtag findVerifiedHashtag(String name) {
@@ -53,7 +55,7 @@ public class HashtagService {
         Optional<Hashtag> optionalHashtag = hashtagRepository.findByName(name);
 
         if (optionalHashtag.isPresent()) {
-            throw new RuntimeException("이미 존재하는 태그입니다.");
+            throw new BusinessLogicException(ExceptionCode.HASHTAG_ALREADY_EXISTS);
         }
     }
 }

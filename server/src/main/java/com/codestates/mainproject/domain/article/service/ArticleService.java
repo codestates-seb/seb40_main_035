@@ -12,6 +12,8 @@ import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.service.MemberService;
 import com.codestates.mainproject.domain.skill.entity.Skill;
 import com.codestates.mainproject.domain.skill.service.SkillService;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -203,7 +205,7 @@ public class ArticleService {
 
     public Article findVerifiedArticle(long articleId) {
         Optional<Article> optionalArticle = articleRepository.findById(articleId);
-        return optionalArticle.orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
+        return optionalArticle.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ARTICLE_NOT_FOUND));
     }
 
     private PageRequest sortBy(String sort, int page, int size) {

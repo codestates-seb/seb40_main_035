@@ -12,9 +12,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
   redis:
     host: localhost
     port: 6379
+
 logging:
   level:
     org:
@@ -29,3 +31,6 @@ jwt:
   secret-key: KGdb9ZKIORNP3x54upr8wOXpeVoFXyGkWIAm2BNIAyd9lsu4rK
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
+sql:
+  init:
+    mode: always

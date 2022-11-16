@@ -2,6 +2,8 @@ package com.codestates.mainproject.domain.skill.service;
 
 import com.codestates.mainproject.domain.skill.entity.Skill;
 import com.codestates.mainproject.domain.skill.repository.SkillRepository;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,19 +46,19 @@ public class SkillService {
 
     public Skill findVerifiedSkill(long skillId) {
         Optional<Skill> optionalSkill = repository.findById(skillId);
-        return optionalSkill.orElseThrow(() -> new RuntimeException("존재하지 않는 기술입니다."));
+        return optionalSkill.orElseThrow(() -> new BusinessLogicException(ExceptionCode.SKILL_NOT_FOUND));
     }
 
     public Skill findVerifiedSkill(String name) {
         Optional<Skill> optionalSkill = repository.findByName(name);
-        return optionalSkill.orElseThrow(() -> new RuntimeException("존재하지 않는 기술입니다."));
+        return optionalSkill.orElseThrow(() -> new BusinessLogicException(ExceptionCode.SKILL_NOT_FOUND));
     }
 
     private void verifyExistingName(String name) {
         Optional<Skill> optionalSkill = repository.findByName(name);
 
         if (optionalSkill.isPresent()) {
-            throw new RuntimeException("이미 존재하는 기술입니다.");
+            throw new BusinessLogicException(ExceptionCode.SKILL_ALREADY_EXISTS);
         }
     }
 }
