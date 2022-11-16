@@ -2,6 +2,29 @@
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { activeIdxState, selectedTagsState } from '../atom/atom';
+import {
+  SiJavascript,
+  SiTypescript,
+  SiReact,
+  SiVuedotjs,
+  SiSvelte,
+  SiNextdotjs,
+  SiJava,
+  SiSpring,
+  SiNodedotjs,
+  SiGo,
+  SiKotlin,
+  SiExpress,
+  SiMysql,
+  SiMongodb,
+  SiPython,
+  SiDjango,
+  SiPhp,
+  SiGraphql,
+  SiFirebase,
+} from 'react-icons/si';
+
+import { RiDeleteBack2Fill } from 'react-icons/ri';
 
 // color/보더/커서 -> font -> w/h -> m/p -> flex -> 기타
 const Container = styled.div`
@@ -49,8 +72,26 @@ const Container = styled.div`
     border-radius: 25px;
     cursor: pointer;
 
+    display: flex;
+    align-items: center;
     margin: 15px 15px 15px 0;
     padding: 7px 10px;
+  }
+
+  .skill-tag:hover {
+    border: 1px solid var(--purple);
+
+    transition: all 0.5s;
+  }
+
+  .skill-tag-img {
+    width: 20px;
+    height: 20px;
+
+    margin-right: 6px;
+    border-radius: 100%;
+    border: 2px solid white;
+    background-color: white;
   }
 
   .skill-tag-input {
@@ -65,11 +106,6 @@ const Container = styled.div`
   .skill-tag-input:focus {
     outline: 4px solid var(--purple-medium);
     border: 1px solid var(--purple);
-  }
-
-  .active-tag {
-    background-color: var(--purple);
-    color: white;
   }
 
   .selected-tags > ul {
@@ -91,7 +127,9 @@ const Container = styled.div`
   }
 
   .skill-selected-tag > .delete {
-    margin-left: 5px;
+    margin: 2px 0 0 5px;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -102,25 +140,89 @@ function SkillStackSelect() {
   const tabContArr = [
     {
       tabTitle: '프론트엔드',
-      tabCont: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Svelte', 'Nextjs'],
+      tabCont: [
+        {
+          name: 'JavaScript',
+          img: <SiJavascript className="skill-tag-img" color="#F7DF1E" />,
+        },
+        {
+          name: 'TypeScript',
+          img: <SiTypescript className="skill-tag-img" color="#3178C6" />,
+        },
+        {
+          name: 'React',
+          img: <SiReact className="skill-tag-img" color="#61DAFB" />,
+        },
+        {
+          name: 'Vue',
+          img: <SiVuedotjs className="skill-tag-img" color="#4FC08D" />,
+        },
+        {
+          name: 'Svelte',
+          img: <SiSvelte className="skill-tag-img" color="#FF3E00" />,
+        },
+        {
+          name: 'Nextjs',
+          img: <SiNextdotjs className="skill-tag-img" color="#000000" />,
+        },
+      ],
     },
     {
       tabTitle: '백엔드',
       tabCont: [
-        'Java',
-        'Spring',
-        'Nodejs',
-        'Nextjs',
-        'Go',
-        'Kotlin',
-        'Express',
-        'MySQL',
-        'MongoDB',
-        'Python',
-        'Django',
-        'php',
-        'GraphQL',
-        'Firebase',
+        {
+          name: 'Java',
+          img: <SiJava className="skill-tag-img" color="#000000" />,
+        },
+        {
+          name: 'Spring',
+          img: <SiSpring className="skill-tag-img" color="#6DB33F" />,
+        },
+        {
+          name: 'Nodejs',
+          img: <SiNodedotjs className="skill-tag-img" color="#339933" />,
+        },
+        {
+          name: 'Nextjs',
+          img: <SiNextdotjs className="skill-tag-img" color="#000000" />,
+        },
+        { name: 'Go', img: <SiGo className="skill-tag-img" color="#00ADD8" /> },
+        {
+          name: 'Kotlin',
+          img: <SiKotlin className="skill-tag-img" color="#FE8901" />,
+        },
+        {
+          name: 'Express',
+          img: <SiExpress className="skill-tag-img" color="#000000" />,
+        },
+        {
+          name: 'MySQL',
+          img: <SiMysql className="skill-tag-img" color="#4479A1" />,
+        },
+        {
+          name: 'MongoDB',
+          img: <SiMongodb className="skill-tag-img" color="#47A248" />,
+        },
+        {
+          name: 'Python',
+          img: <SiPython className="skill-tag-img" color="#3776AB" />,
+        },
+        {
+          name: 'Django',
+          img: <SiDjango className="skill-tag-img" color="#092E20" />,
+        },
+        {
+          name: 'php',
+          img: <SiPhp className="skill-tag-img" color="#777BB4" />,
+        },
+        {
+          name: 'GraphQL',
+          img: <SiGraphql className="skill-tag-img" color="#E10098" />,
+        },
+        {
+          name: 'Firebase',
+          img: <SiFirebase className="skill-tag-img" color="#FFCA28" />,
+        },
       ],
     },
     {
@@ -165,9 +267,10 @@ function SkillStackSelect() {
     setSelectedTags(filtered);
   };
 
-  const onTagClick = (e) => {
+  const onTagClick = (e, name) => {
     const newSelectedTags = [...selectedTags];
     console.log(e.target.textContent);
+    console.log(name);
 
     const filterTarget = newSelectedTags.filter(
       (el) => el.tagName === e.target.textContent,
@@ -203,7 +306,7 @@ function SkillStackSelect() {
                   onClick={() => onDeleteClick(idx)}
                   aria-hidden="true"
                 >
-                  x
+                  <RiDeleteBack2Fill />
                 </div>
               </li>
             ))
@@ -242,16 +345,16 @@ function SkillStackSelect() {
                 <div
                   key={idx}
                   className={
-                    selectedTags.filter((el) => el.tagName === skillTag)
+                    selectedTags.filter((el) => el.tagName === skillTag.name)
                       .length !== 0
                       ? 'skill-tag skill-selected-tag'
                       : 'skill-tag'
                   }
-                  // className="skill-tag"
                   onClick={onTagClick}
                   aria-hidden="true" // ESlint 오류 해결 - 일단 스크린리더에서 제외
                 >
-                  {skillTag}
+                  {skillTag.img}
+                  {skillTag.name}
                 </div>
               );
             })
