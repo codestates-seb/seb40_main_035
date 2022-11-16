@@ -77,7 +77,6 @@ const Header = () => {
 
   const onMain = () => {
     navigate('/');
-    setMenu('main');
     setMenu(0);
   };
 
