@@ -4,8 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum ExceptionCode {
+    //303 Authentication
+    MEMBER_REDIRECTION_LOGIN_SUCCESS(303,"로그인 성공"),
+    MEMBER_REDIRECTION_FIND_PASSWORD(303,"패스워드 찾기"),
+
     //400 Bad Request
-    BAD_PARAMETER_ERROR(400,"동일한 비밀번호를 입력하세요."),
+    BAD_PARAMETER_ERROR(400, "동일한 비밀번호를 입력하세요."),
     INVALID_INPUT_VALUE(400, "유효한 입력값이 아닙니다."),
 
     //401 Unauthorized
@@ -21,7 +25,7 @@ public enum ExceptionCode {
     ARTICLE_NOT_FOUND(404, "게시글이 존재하지 않습니다."),
     ANSWER_NOT_FOUND(404, "답변이 존재하지 않습니다."),
     COMMENT_NOT_FOUND(404, "댓글이 존재하지 않습니다."),
-    HASHTAG_NOT_FOUND(404,"태그가 존재하지 않습니다."),
+    HASHTAG_NOT_FOUND(404, "태그가 존재하지 않습니다."),
     INTEREST_NOT_FOUND(404, "관심분야가 존재하지 않습니다."),
     SKILL_NOT_FOUND(404, "기술스택이 존재하지 않습니다."),
 
@@ -37,7 +41,7 @@ public enum ExceptionCode {
     SKILL_ALREADY_EXISTS(409, "이미 존재하는 기술스택입니다."),
 
     //500 Internal Server Error
-    INTERNAL_SERVER_ERROR(500,"서버 에러");
+    INTERNAL_SERVER_ERROR(500, "서버 에러");
 
     private int status;
 
@@ -48,5 +52,6 @@ public enum ExceptionCode {
         this.message = message;
     }
 
-
 }
+
+

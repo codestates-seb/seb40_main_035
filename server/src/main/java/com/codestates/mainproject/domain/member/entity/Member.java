@@ -6,8 +6,12 @@ import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.article.entity.Heart;
 import com.codestates.mainproject.domain.comment.entity.Comment;
 
+
+import lombok.Builder;
+
 import com.codestates.mainproject.domain.interest.entity.Interest;
 import com.codestates.mainproject.domain.skill.entity.Skill;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,19 +33,19 @@ public class Member extends Auditable {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 80)
     private String password;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 80)
     private String passwordCheck;
 
-    @Column(nullable = false, unique = true, length = 30)
+    @Column(nullable = false, unique = true, length = 20)
     private String name;
 
     @Column(nullable = false)
     private String description = "";
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 20)
     private String level = "";
 
     @Column(nullable = false, length = 50)
@@ -85,6 +89,19 @@ public class Member extends Auditable {
         comments.add(comment);
     }
 
+
+    @Builder
+    public Member(String email, String name) {
+        this.email = email;
+        this.name = name;
+    }
+
+    public Member update(String name) {
+        this.name = name;
+
+        return this;
+    }
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberInterest> memberInterests = new ArrayList<>();
 
@@ -110,4 +127,5 @@ public class Member extends Auditable {
                 .map(memberSkill -> memberSkill.getSkill())
                 .collect(Collectors.toList());
     }
+
 }

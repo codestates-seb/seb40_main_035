@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -412,6 +413,7 @@ class ArticleControllerTest {
     @Test
     void getArticles() throws Exception {
         //given
+        List<String> skill = new ArrayList<>(List.of("JAVA"));
         boolean status = false;
         String sort = "정렬기준";
         int page = 1;
@@ -441,7 +443,7 @@ class ArticleControllerTest {
                         List.of(new InterestResponseDto(1L,"제조")),List.of(new SkillResponseDto(1L,"Nodejs")))
                 );
 
-        given(articleService.findArticles(Mockito.anyBoolean(),Mockito.anyString(),Mockito.anyInt(),Mockito.anyInt()))
+        given(articleService.findArticles(Mockito.anyList(),Mockito.anyBoolean(),Mockito.anyString(),Mockito.anyInt(),Mockito.anyInt()))
                 .willReturn(new PageImpl<>(articles, PageRequest.of(page-1,size, Sort.by("articleId")
                         .descending()), articles.size()));
 
@@ -450,7 +452,7 @@ class ArticleControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(
-                get("/articles?status={status}&sort={sort}&page={page}&size={size}",status, sort, page,size)
+                get("/articles?skill={skill}&status={status}&sort={sort}&page={page}&size={size}",skill,status, sort, page,size)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -461,7 +463,8 @@ class ArticleControllerTest {
                 .andDo(document("get-articles",
                         preprocessResponse(prettyPrint()),
                         requestParameters(List.of(
-                                parameterWithName("status").description("페이지 상태"),
+                                parameterWithName("skill").description("기술 이름"),
+                                parameterWithName("status").description("게시글 모집종료여부"),
                                 parameterWithName("sort").description("페이지 정렬방식"),
                                 parameterWithName("page").description("페이지 번호"),
                                 parameterWithName("size").description("페이지 크기"))),
