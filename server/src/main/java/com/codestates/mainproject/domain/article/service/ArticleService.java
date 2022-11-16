@@ -14,6 +14,7 @@ import com.codestates.mainproject.domain.skill.entity.Skill;
 import com.codestates.mainproject.domain.skill.service.SkillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -174,16 +176,24 @@ public class ArticleService {
         return article;
     }
 
-    public Page<Article> findArticles(Boolean status, String sort, int page, int size) {
-        if (status != null) {
-            Page<Article> articlePage = articleRepository.findByIsCompleted(status, sortBy(sort, page, size));
-            articlePage.getContent().stream().forEach(article -> setCount(article));
-            return articlePage;
-        }
+    public Page<Article> findArticles(List<String> skill, Boolean status, String sort, int page, int size) {
+        articleRepository.findAll().stream().forEach(article -> setCount(article));
+        if (skill == null || skill.isEmpty()) {
+            if (status != null) {
+                return articleRepository.findByIsCompleted(status, sortBy(sort, page, size));
+            } else {
+                return articleRepository.findAll(sortBy(sort, page, size));
+            }
 
-        Page<Article> articlePage =  articleRepository.findAll(sortBy(sort, page, size));
-        articlePage.getContent().stream().forEach(article -> setCount(article));
-        return articlePage;
+        } else {
+            List<Article> articles = filterSkill(skill, sort);
+            if (status != null) {
+                List<Article> articlesStatus = articles.stream().filter(article -> article.getIsCompleted() == status).collect(Collectors.toList());
+                return listToPage(articlesStatus, page, size);
+            } else {
+                return listToPage(articles, page, size);
+            }
+        }
     }
 
     public void deleteArticle(long articleId) {
@@ -222,4 +232,36 @@ public class ArticleService {
         }
     }
 
+    private List<Article> filterSkill(List<String> skillNames, String sort) {
+        List<Article> articles = skillNames.stream()
+                .map(skillName -> skillService.findVerifiedSkill(skillName).getArticleSkills().stream()
+                        .map(articleSkill -> articleSkill.getArticle())
+                        .collect(Collectors.toList()))
+                .flatMap(articleList -> articleList.stream())
+                .distinct()
+                .collect(Collectors.toList());
+
+        switch (sort) {
+            case "view": {
+                return articles.stream().sorted(Comparator.comparing(Article::getViews).reversed().thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
+            }
+            case "heart": {
+                return articles.stream().sorted(Comparator.comparing(Article::getHeartCount).reversed().thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
+            }
+            case "answer": {
+                return articles.stream().sorted(Comparator.comparing(Article::getAnswerCount).reversed().thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
+            }
+            default: {
+                return articles.stream().sorted(Comparator.comparing(Article::getArticleId).reversed()).collect(Collectors.toList());
+            }
+        }
+    }
+
+    private Page<Article> listToPage(List<Article> articles, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page-1, size);
+        int start = (int)pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), articles.size());
+        List<Article> subList = start>=end?new ArrayList<>():articles.subList(start,end);
+        return new PageImpl<>(subList, pageRequest, (long) articles.size());
+    }
 }
