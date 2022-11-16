@@ -64,12 +64,13 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity getArticles(@RequestParam(value = "status", required = false) Boolean status,
+    public ResponseEntity getArticles(@RequestParam(value = "skill", required = false) List<@NotBlank String> skill,
+                                      @RequestParam(value = "status", required = false) Boolean status,
                                       @RequestParam(value = "sort", required = false, defaultValue = "new") String sort,
                                       @RequestParam("page") @Positive int page,
                                       @RequestParam("size") @Positive int size) {
 
-        Page<Article> articlePage = articleService.findArticles(status, sort, page, size);
+        Page<Article> articlePage = articleService.findArticles(skill, status, sort, page, size);
         List<Article> articles = articlePage.getContent();
         List<ArticleResponseDto> responseDtos = mapper.articlesToArticleResponseDtos(articles);
         PageInfo pageInfo = new PageInfo(articlePage.getNumber() + 1, articlePage.getSize(), articlePage.getTotalElements(), articlePage.getTotalPages());
