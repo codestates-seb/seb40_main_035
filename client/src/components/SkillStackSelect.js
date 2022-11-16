@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { activeIdxState, selectedTagsState } from '../atom/atom';
@@ -23,17 +22,14 @@ import {
   SiGraphql,
   SiFirebase,
 } from 'react-icons/si';
-
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 
-// color/보더/커서 -> font -> w/h -> m/p -> flex -> 기타
 const Container = styled.div`
-  /* border: 1px solid red; */
-  /* background-color: lightgray; */
   color: var(--grey-dark);
   font-size: 15px;
-  width: 600px;
-  height: 200px;
+  width: 100%;
+  height: auto;
+  min-width: 250px;
 
   .tab-menu {
     border-bottom: 1px solid var(--purple-medium);
@@ -46,7 +42,6 @@ const Container = styled.div`
   }
 
   .tab-title {
-    /* border: 1px solid green; */
     cursor: pointer;
 
     width: 100% auto;
@@ -61,8 +56,6 @@ const Container = styled.div`
   }
 
   .tab-content {
-    /* border: 1px solid orange; */
-
     display: flex;
     flex-wrap: wrap;
   }
@@ -108,9 +101,14 @@ const Container = styled.div`
     border: 1px solid var(--purple);
   }
 
+  .selected-tags {
+    width: 100%;
+  }
+
   .selected-tags > ul {
-    height: 65px;
+    height: 100%;
     display: flex;
+    flex-wrap: wrap;
   }
 
   .skill-selected-tag {
@@ -238,7 +236,7 @@ function SkillStackSelect() {
   const onInputKeyUp = (e) => {
     const newSelectedTags = [...selectedTags];
     const filterTarget = newSelectedTags.filter(
-      (el) => el.tagName === e.target.value,
+      (el) => el.skillName === e.target.value,
     );
     // 중복 확인 위한 arr(중복X:null, 중복:값O)
 
@@ -249,7 +247,7 @@ function SkillStackSelect() {
       newSelectedTags.length < 5
     ) {
       let tagObj = {};
-      tagObj.tagName = e.target.value;
+      tagObj.skillName = e.target.value;
       newSelectedTags.push(tagObj); // arr에 태그 추가
       setSelectedTags(newSelectedTags); // 태그가 추가된 arr를 선택태그리스트 값으로 재설정
       e.target.value = '';
@@ -273,12 +271,12 @@ function SkillStackSelect() {
     console.log(name);
 
     const filterTarget = newSelectedTags.filter(
-      (el) => el.tagName === e.target.textContent,
+      (el) => el.skillName === e.target.textContent,
     );
 
     if (filterTarget.length === 0 && newSelectedTags.length < 5) {
       let tagObj = {};
-      tagObj.tagName = e.target.textContent;
+      tagObj.skillName = e.target.textContent;
       newSelectedTags.push(tagObj);
       setSelectedTags(newSelectedTags);
     } else if (
@@ -300,7 +298,7 @@ function SkillStackSelect() {
             // 선택, 입력된 태그들 표시
             selectedTags.map((tag, idx) => (
               <li key={idx} className="skill-selected-tag">
-                <div>{tag.tagName}</div>
+                <div>{tag.skillName}</div>
                 <div
                   className="delete"
                   onClick={() => onDeleteClick(idx)}
@@ -345,7 +343,7 @@ function SkillStackSelect() {
                 <div
                   key={idx}
                   className={
-                    selectedTags.filter((el) => el.tagName === skillTag.name)
+                    selectedTags.filter((el) => el.skillName === skillTag.name)
                       .length !== 0
                       ? 'skill-tag skill-selected-tag'
                       : 'skill-tag'

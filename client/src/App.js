@@ -1,12 +1,9 @@
-// import Header from './components/Header';
-
-import SkillStackSelect from './components/SkillStackSelect';
+import Header from './components/Header';
 
 function App() {
   return (
     <>
-      {/* <Header /> */}
-      <SkillStackSelect />
+      <Header />
     </>
   );
 }
