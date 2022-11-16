@@ -26,9 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final InterestService interestService;
     private final SkillService skillService;
 

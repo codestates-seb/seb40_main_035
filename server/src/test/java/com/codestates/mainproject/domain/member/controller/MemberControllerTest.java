@@ -7,6 +7,7 @@ import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.mapper.MemberMapper;
 import com.codestates.mainproject.domain.member.service.MemberService;
 import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
+import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -49,6 +50,9 @@ class MemberControllerTest {
     @MockBean
     private MemberMapper mapper;
 
+    @MockBean
+    private JwtTokenizer jwtTokenizer;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -80,7 +84,7 @@ class MemberControllerTest {
         //when
         ResultActions actions =
                 mockMvc.perform(
-                        post("/members")
+                        post("/members/signup")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(content)

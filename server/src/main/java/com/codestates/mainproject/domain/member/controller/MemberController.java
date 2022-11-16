@@ -43,7 +43,6 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
-
     private final JwtTokenizer jwtTokenizer;
 
     @PostMapping("/signup")

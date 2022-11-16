@@ -24,3 +24,7 @@ server:
   servlet:
     encoding:
       force-response: true
+jwt:
+  secret-key: KGdb9ZKIORNP3x54upr8wOXpeVoFXyGkWIAm2BNIAyd9lsu4rK
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
