@@ -13,3 +13,15 @@ export const selectedTagsState = atom({
   key: 'selectedTagsState',
   default: [],
 });
+
+// 입력된 프론트엔드 참여 인원 상태
+export const feNumberState = atom({
+  key: 'feNumberState',
+  default: 0,
+});
+
+// 입력된 백엔드 참여 인원 상태
+export const beNumberState = atom({
+  key: 'beNumberState',
+  default: 0,
+});
