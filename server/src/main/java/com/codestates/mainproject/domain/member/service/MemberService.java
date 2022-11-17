@@ -41,6 +41,8 @@ public class MemberService {
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
+        String encryptedPasswordCheck = passwordEncoder.encode(member.getPasswordCheck());
+        member.setPasswordCheck(encryptedPasswordCheck);
 
 
         member.getMemberInterests().stream()

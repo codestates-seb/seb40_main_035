@@ -24,15 +24,11 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-import org.springframework.validation.FieldError;
-
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +96,7 @@ public class MemberController {
     @GetMapping("/reissue")
     public ResponseEntity reissue(@AuthenticationPrincipal MemberDetails memberDetails) throws JwtException {
         MemberResponseDto responseDto = mapper.memberToMemberResponseDto(memberDetails.getMember());
-        TokenResponse tokenResponseDto = jwtTokenizer.reissueAcTken(responseDto);
+        TokenResponse tokenResponseDto = jwtTokenizer.reissueAcToken(responseDto);
 
         Map<String, Object> claims = jwtTokenizer.getClaims(tokenResponseDto.getAcToken()).getBody();
         long memberId = Long.parseLong(claims.get("memberId").toString());

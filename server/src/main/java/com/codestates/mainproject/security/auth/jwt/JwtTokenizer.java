@@ -1,7 +1,6 @@
 package com.codestates.mainproject.security.auth.jwt;
 
 import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
-import com.codestates.mainproject.security.auth.filter.JwtAuthenticationFilter;
 import com.codestates.mainproject.security.redis.RedisDto;
 import com.codestates.mainproject.security.response.TokenResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -159,7 +158,7 @@ public class JwtTokenizer {
     }
 
     //
-    public TokenResponse reissueAcTken(MemberResponseDto memberResponseDto) throws JwtException {
+    public TokenResponse reissueAcToken(MemberResponseDto memberResponseDto) throws JwtException {
         String rtkInRedis = redisDto.getValues(memberResponseDto.getEmail());
         if (Objects.isNull(rtkInRedis)) {
             throw new JwtException("인증 정보가 만료되었습니다.");

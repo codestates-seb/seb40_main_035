@@ -4,10 +4,12 @@ import com.codestates.mainproject.domain.member.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Getter
+@Transactional
 public class MemberDetails extends User {
 
     private final Member member;
