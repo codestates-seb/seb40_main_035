@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { BsFillCaretDownFill } from 'react-icons/bs';
+import { FiChevronDown } from 'react-icons/fi';
 
 const WholeContainer = styled.div`
   width: 200px;
@@ -12,7 +12,8 @@ const WholeContainer = styled.div`
   flex-direction: column;
 
   .title {
-    margin-left: 5px;
+    font-size: 15px;
+    margin-left: 6px;
     margin-bottom: 5px;
     font-weight: 500;
   }
@@ -35,7 +36,7 @@ const DropdownBody = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 5px 14px;
-  border: solid 1px #cfcfe9;
+  border: solid 1px var(--grey-light);
   background-color: var(--purple-light);
   width: 180px;
   border-radius: 20px;
@@ -51,7 +52,7 @@ const DropdownMenu = styled.ul`
   width: 180px;
   background-color: var(--purple-light);
   position: absolute;
-  border: solid 1px var(--purple);
+  border: solid 1px var(--grey-light);
   border-radius: 8px;
 `;
 
@@ -60,7 +61,7 @@ const DropdownItem = styled.li`
   justify-content: space-between;
   align-items: center;
   padding: 5px 14px;
-  border-bottom: solid 1px var(--purple);
+  border-bottom: solid 1px var(--grey-light);
   border-top: none;
   &:hover {
     background-color: var(--purple);
@@ -133,12 +134,12 @@ const SelectLevel = () => {
           {selectedValue ? (
             <>
               <span>{selectedValue} </span>
-              <BsFillCaretDownFill id="down-icon" />
+              <FiChevronDown id="down-icon" />
             </>
           ) : (
             <>
               <span>숙련도를 선택해주세요.</span>
-              <BsFillCaretDownFill id="down-icon" />
+              <FiChevronDown id="down-icon" />
             </>
           )}
         </DropdownBody>
