@@ -1,17 +1,10 @@
-// import Header from './components/Header';
-import NumberSelect from './components/NumberSelect';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 40%;
-`;
+import Header from './components/Header';
 
 function App() {
   return (
-    <Container>
-      {/* <Header /> */}
-      <NumberSelect />
-    </Container>
+    <>
+      <Header />
+    </>
   );
 }
 
