@@ -1,10 +1,10 @@
-import NumberSelect from './components/NumberSelect';
+import Header from './components/Header';
 
 function App() {
   return (
-    <div>
-      <NumberSelect />
-    </div>
+    <>
+      <Header />
+    </>
   );
 }
 
