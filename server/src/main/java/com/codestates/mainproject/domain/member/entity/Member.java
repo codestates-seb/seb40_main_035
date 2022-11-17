@@ -89,19 +89,6 @@ public class Member extends Auditable {
         comments.add(comment);
     }
 
-
-    @Builder
-    public Member(String email, String name) {
-        this.email = email;
-        this.name = name;
-    }
-
-    public Member update(String name) {
-        this.name = name;
-
-        return this;
-    }
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberInterest> memberInterests = new ArrayList<>();
 
@@ -128,4 +115,8 @@ public class Member extends Auditable {
                 .collect(Collectors.toList());
     }
 
+    public Member(String email, String name) {
+        this.email = email;
+        this.name = name;
+    }
 }
