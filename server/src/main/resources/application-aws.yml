@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/testDB?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://ec2-54-180-30-124.ap-northeast-2.compute.amazonaws.com:3306/testDB?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: test
     password: test1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,7 +13,7 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
   redis:
-    host: localhost
+    host: ec2-54-180-30-124.ap-northeast-2.compute.amazonaws.com
     port: 6379
 logging:
   level:
@@ -26,7 +26,7 @@ server:
     encoding:
       force-response: true
 jwt:
-  secret-key: KGdb9ZKIORNP3x54upr8wOXpeVoFXyGkWIAm2BNIAyd9lsu4rK
+  secret-key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
 sql:
