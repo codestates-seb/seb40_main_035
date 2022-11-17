@@ -48,6 +48,9 @@ const Container = styled.div`
     height: 100%;
     margin-right: 15px;
     padding: 10px 10px;
+
+    background-color: transparent;
+    border: none;
   }
 
   .active-title {
@@ -63,6 +66,8 @@ const Container = styled.div`
   .skill-tag {
     border: 1px solid var(--purple-medium);
     border-radius: 25px;
+    background-color: white;
+    font-size: 15px;
     cursor: pointer;
 
     display: flex;
@@ -106,7 +111,7 @@ const Container = styled.div`
   }
 
   .selected-tags > ul {
-    height: 100%;
+    min-height: 67px;
     display: flex;
     flex-wrap: wrap;
   }
@@ -234,8 +239,7 @@ function SkillStackSelect() {
   };
 
   const onInputKeyUp = (e) => {
-    const newSelectedTags = [...selectedTags];
-    const filterTarget = newSelectedTags.filter(
+    const filterTarget = selectedTags.filter(
       (el) => el.skillName === e.target.value,
     );
     // 중복 확인 위한 arr(중복X:null, 중복:값O)
@@ -243,17 +247,15 @@ function SkillStackSelect() {
     if (
       e.key === 'Enter' &&
       filterTarget.length === 0 &&
-      e.target.value.length > 0 &&
-      newSelectedTags.length < 5
+      e.target.value.length > 0
     ) {
       let tagObj = {};
       tagObj.skillName = e.target.value;
-      newSelectedTags.push(tagObj); // arr에 태그 추가
-      setSelectedTags(newSelectedTags); // 태그가 추가된 arr를 선택태그리스트 값으로 재설정
+      setSelectedTags([...selectedTags, tagObj]); // 태그가 추가된 arr를 선택태그리스트 값으로 재설정
       e.target.value = '';
     } else if (
-      (filterTarget.length !== 0 && e.key === 'Enter') || // 중복 태그 시
-      (selectedTags.length >= 5 && e.key === 'Enter') // 태그 5개 이상 시
+      filterTarget.length !== 0 &&
+      e.key === 'Enter' // 중복 태그 시
     ) {
       e.target.value = '';
     }
@@ -266,17 +268,14 @@ function SkillStackSelect() {
   };
 
   const onTagClick = (e) => {
-    const newSelectedTags = [...selectedTags];
-
-    const filterTarget = newSelectedTags.filter(
+    const filterTarget = selectedTags.filter(
       (el) => el.skillName === e.target.textContent,
     );
 
-    if (filterTarget.length === 0 && newSelectedTags.length < 5) {
+    if (filterTarget.length === 0) {
       let tagObj = {};
       tagObj.skillName = e.target.textContent;
-      newSelectedTags.push(tagObj);
-      setSelectedTags(newSelectedTags);
+      setSelectedTags([...selectedTags, tagObj]);
     } else if (
       filterTarget.length !== 0 || // 중복 태그 시
       selectedTags.length >= 5 // 태그 5개 이상 시
@@ -311,16 +310,15 @@ function SkillStackSelect() {
       <ul className="tab-menu">
         {tabContArr.map((section, idx) => {
           return (
-            <li
+            <button
               key={idx}
               className={
                 activeIdx === idx ? 'tab-title active-title' : 'tab-title'
               }
               onClick={() => onTabClick(idx)}
-              aria-hidden="true" // ESlint 오류 해결 - 일단 스크린리더에서 제외
             >
               {section.tabTitle}
-            </li>
+            </button>
           );
         })}
       </ul>
@@ -337,7 +335,7 @@ function SkillStackSelect() {
             // FE, BE 선택 입력
             tabContArr[activeIdx].tabCont.map((skillTag, idx) => {
               return (
-                <div
+                <button
                   key={idx}
                   className={
                     selectedTags.filter((el) => el.skillName === skillTag.name)
@@ -346,11 +344,10 @@ function SkillStackSelect() {
                       : 'skill-tag'
                   }
                   onClick={onTagClick}
-                  aria-hidden="true" // ESlint 오류 해결 - 일단 스크린리더에서 제외
                 >
                   {skillTag.img}
                   {skillTag.name}
-                </div>
+                </button>
               );
             })
           )
