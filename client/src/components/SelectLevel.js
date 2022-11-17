@@ -77,12 +77,8 @@ const DropdownItem = styled.li`
   }
 `;
 
-const selectOptions = [
-  { value: '학생', id: '학생' },
-  { value: '취준생', id: '취준생' },
-  { value: '주니어', id: '주니어' },
-  { value: '시니어', id: '시니어' },
-];
+const selectOptions = ['학생', '취준생', '주니어', '시니어'];
+
 const SelectLevel = () => {
   // 드롭다운 상태 저장 => active ? 펼쳐집니다 : 닫힙니다
   const [isActive, setIsActive] = useState(false);
@@ -145,8 +141,8 @@ const SelectLevel = () => {
         </DropdownBody>
         <DropdownMenu isActive={isActive}>
           {selectOptions.map((item) => (
-            <DropdownItem id="item" key={item.id} onClick={onSelect}>
-              <span id="item_name">{item.value}</span>
+            <DropdownItem id="item" key={item.toString()} onClick={onSelect}>
+              <span id="item_name">{item}</span>
             </DropdownItem>
           ))}
         </DropdownMenu>
