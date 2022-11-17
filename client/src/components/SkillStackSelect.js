@@ -262,7 +262,6 @@ function SkillStackSelect() {
   };
 
   const onDeleteClick = (index) => {
-    // const newSelectedTags = [...selectedTags];
     const filtered = selectedTags.filter((el, idx) => idx !== index);
     setSelectedTags(filtered);
   };
