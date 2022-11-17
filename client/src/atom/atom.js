@@ -8,3 +8,13 @@ export const asideFocusState = atom({
   default: '/',
   effects_UNSTABLE: [persistAtom],
 });
+
+export const startDateState = atom({
+  key: 'startDateState',
+  default: null,
+});
+
+export const endDateState = atom({
+  key: 'endDateState',
+  default: null,
+});
