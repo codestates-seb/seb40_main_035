@@ -95,8 +95,8 @@ public class MemberController {
 
     @GetMapping("/reissue")
     public ResponseEntity reissue(@AuthenticationPrincipal MemberDetails memberDetails) throws JwtException {
-        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(memberDetails.getMember());
-        TokenResponse tokenResponseDto = jwtTokenizer.reissueAcToken(responseDto);
+        Member member = memberService.findVerifiedMember(memberDetails.getMember().getEmail());
+        TokenResponse tokenResponseDto = jwtTokenizer.reissueAcToken(member);
 
         Map<String, Object> claims = jwtTokenizer.getClaims(tokenResponseDto.getAcToken()).getBody();
         long memberId = Long.parseLong(claims.get("memberId").toString());
@@ -112,9 +112,8 @@ public class MemberController {
 
         Member member = mapper.loginDtoToMember(loginDto);
         Member authorizedMember = memberService.loginMember(member);
-        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(authorizedMember);
 
-        TokenResponse tokenResponse = jwtTokenizer.createTokensByLogin(responseDto);
+        TokenResponse tokenResponse = jwtTokenizer.createTokensByLogin(authorizedMember);
 
         Map<String, Object> claims = jwtTokenizer.getClaims(tokenResponse.getAcToken()).getBody();
         long memberId = Long.parseLong(claims.get("memberId").toString());
@@ -129,10 +128,10 @@ public class MemberController {
     @GetMapping("/logout")
     public ResponseEntity logout(@AuthenticationPrincipal MemberDetails memberDetails,
                                  @RequestHeader("Authorization") String bearerAtk) throws JwtException {
-        MemberResponseDto memberResponseDto = mapper.memberToMemberResponseDto(memberDetails.getMember());
+        Member member = memberService.findVerifiedMember(memberDetails.getMember().getEmail());
 
         jwtTokenizer.setBlackListAcToken(bearerAtk);
-        jwtTokenizer.deleteRfToken(memberResponseDto);
+        jwtTokenizer.deleteRfToken(member);
 
         return new ResponseEntity<>(new SingleResponseDto<>("로그아웃이 완료되었습니다."), HttpStatus.NO_CONTENT);
     }

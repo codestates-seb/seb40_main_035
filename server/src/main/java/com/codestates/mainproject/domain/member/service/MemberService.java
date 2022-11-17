@@ -175,4 +175,9 @@ public class MemberService {
 
         return findMember;
     }
+
+    public Member findVerifiedMember(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        return optionalMember.orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
 }

@@ -1,6 +1,7 @@
 package com.codestates.mainproject.security.auth.jwt;
 
 import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
+import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.security.redis.RedisDto;
 import com.codestates.mainproject.security.response.TokenResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -128,48 +129,48 @@ public class JwtTokenizer {
         return key;
     }
 
-    private String delegateAccessToken(MemberResponseDto memberResponseDto) {
+    private String delegateAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("name", memberResponseDto.getName());
-        claims.put("memberId", memberResponseDto.getMemberId());
+        claims.put("name", member.getName());
+        claims.put("memberId", member.getMemberId());
 
-        String subject = memberResponseDto.getEmail();
+        String subject = member.getEmail();
         Date expiration = getTokenExpiration(accessTokenExpirationMinutes);
         String base64EncodedSecretKey = encodedBase64SecretKey(secretKey);
 
         return generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
     }
 
-    private String delegateRefreshToken(MemberResponseDto memberResponseDto) {
-        String subject = memberResponseDto.getEmail();
+    private String delegateRefreshToken(Member member) {
+        String subject = member.getEmail();
         Date expiration = getTokenExpiration(refreshTokenExpirationMinutes);
         String base64EncodedSecretKey = encodedBase64SecretKey(secretKey);
 
         return generateRefreshToken(subject, expiration, base64EncodedSecretKey);
     }
 
-    public TokenResponse createTokensByLogin(MemberResponseDto memberResponseDto) throws JsonProcessingException {
+    public TokenResponse createTokensByLogin(Member member) throws JsonProcessingException {
 
 
-        String atk = delegateAccessToken(memberResponseDto);
-        String rtk = delegateRefreshToken(memberResponseDto);
-        redisDto.setValues(memberResponseDto.getEmail(), rtk, Duration.ofMinutes((long) refreshTokenExpirationMinutes));
+        String atk = delegateAccessToken(member);
+        String rtk = delegateRefreshToken(member);
+        redisDto.setValues(member.getEmail(), rtk, Duration.ofMinutes((long) refreshTokenExpirationMinutes));
         return new TokenResponse(atk, rtk);
     }
 
     //
-    public TokenResponse reissueAcToken(MemberResponseDto memberResponseDto) throws JwtException {
-        String rtkInRedis = redisDto.getValues(memberResponseDto.getEmail());
+    public TokenResponse reissueAcToken(Member member) throws JwtException {
+        String rtkInRedis = redisDto.getValues(member.getEmail());
         if (Objects.isNull(rtkInRedis)) {
             throw new JwtException("인증 정보가 만료되었습니다.");
         }
 
-        String atk = delegateAccessToken(memberResponseDto);
+        String atk = delegateAccessToken(member);
         return new TokenResponse(atk, null);
     }
 
-    public void deleteRfToken(MemberResponseDto memberResponseDto) throws JwtException {
-        redisDto.deleteValues(memberResponseDto.getEmail());
+    public void deleteRfToken(Member member) throws JwtException {
+        redisDto.deleteValues(member.getEmail());
     }
 //
     public void setBlackListAcToken(String bearerAtk) {
