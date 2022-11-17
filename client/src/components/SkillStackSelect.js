@@ -262,8 +262,8 @@ function SkillStackSelect() {
   };
 
   const onDeleteClick = (index) => {
-    const newSelectedTags = [...selectedTags];
-    const filtered = newSelectedTags.filter((el, idx) => idx !== index);
+    // const newSelectedTags = [...selectedTags];
+    const filtered = selectedTags.filter((el, idx) => idx !== index);
     setSelectedTags(filtered);
   };
 
@@ -277,8 +277,7 @@ function SkillStackSelect() {
       tagObj.skillName = e.target.textContent;
       setSelectedTags([...selectedTags, tagObj]);
     } else if (
-      filterTarget.length !== 0 || // 중복 태그 시
-      selectedTags.length >= 5 // 태그 5개 이상 시
+      filterTarget.length !== 0 // 중복 태그 시
     ) {
       {
         ('');
