@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import avatar from '../assets/image/userAvatar.png';
+import { useRecoilValue } from 'recoil';
+import { userProfileState } from '../atom/atom';
 
 const ProfileCardWrapper = styled.div`
   width: 762px;
@@ -7,6 +9,7 @@ const ProfileCardWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   border-radius: 8px;
   background-color: #fff;
   color: var(--grey-dark);
@@ -66,34 +69,44 @@ const ProfileCardWrapper = styled.div`
       margin-bottom: 10px;
     }
   }
+
+  .util-btn {
+    position: absolute;
+    top: 24px;
+    right: 20px;
+
+    button:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
 `;
 
-// 회원 조회 데이터 props 전달 예시
-// <ProfileCard
-//  name={dummy.data.name}
-//  description={dummy.data.description}
-//  level={dummy.data.level}
-//  github={dummy.data.github}
-// />
+const ProfileCard = ({ onEditProfile, onDeleteProfile }) => {
+  const userData = useRecoilValue(userProfileState);
 
-const ProfileCard = ({ name, description, level, github }) => {
   return (
     <ProfileCardWrapper>
       <div className="user-avatar">
-        <img src={avatar} alt={`${name}'의 프로필 이미지`} />
+        <img src={avatar} alt={`${userData.name}'의 프로필 이미지`} />
       </div>
       <div className="user-info">
-        <h3 className="user-name">{name}</h3>
-        <p className="user-description">{description}</p>
+        <h3 className="user-name">{userData.name}</h3>
+        <p className="user-description">{userData.description}</p>
         <div className="user-detail">
           <span>숙련도</span>
-          <span>{level}</span>
+          <span>{userData.level}</span>
         </div>
         <div className="user-detail">
           <span>깃허브</span>
-          <span>{github}</span>
+          <span>{userData.github}</span>
         </div>
       </div>
+      {onEditProfile && onDeleteProfile && (
+        <div className="util-btn">
+          <button onClick={onEditProfile}>수정하기</button>
+          <button onClick={onDeleteProfile}>삭제하기</button>
+        </div>
+      )}
     </ProfileCardWrapper>
   );
 };
