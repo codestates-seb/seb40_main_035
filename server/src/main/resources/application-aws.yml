@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://ec2-54-180-30-124.ap-northeast-2.compute.amazonaws.com:3306/testDB?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://ec2-15-165-2-129.ap-northeast-2.compute.amazonaws.com:3306/testDB?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: test
     password: test1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,7 +13,7 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
   redis:
-    host: ec2-54-180-30-124.ap-northeast-2.compute.amazonaws.com
+    host: ec2-15-165-2-129.ap-northeast-2.compute.amazonaws.com
     port: 6379
 logging:
   level:
