@@ -38,6 +38,12 @@ export const endDateState = atom({
   default: null,
 });
 
+// 선택된 관심 분야 상태
+export const selectedInterestsState = atom({
+  key: 'selectedInterestState',
+  default: [],
+});
+
 // 사용자의 관심 분야 목록 상태
 export const interestViewState = atom({
   key: 'interestViewState',
