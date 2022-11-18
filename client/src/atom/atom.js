@@ -26,6 +26,18 @@ export const beNumberState = atom({
   default: 0,
 });
 
+// 프로젝트 시작 날짜
+export const startDateState = atom({
+  key: 'startDateState',
+  default: null,
+});
+
+// 프로젝트 종료 날짜
+export const endDateState = atom({
+  key: 'endDateState',
+  default: null,
+});
+
 // 사용자의 관심 분야 목록 상태
 export const interestViewState = atom({
   key: 'interestViewState',
