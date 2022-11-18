@@ -22,7 +22,7 @@ const Input = styled.input`
   }
 `;
 
-const Defaultinput = ({ placeholder, value, onChange }) => {
+const DefaultInput = ({ placeholder, value, onChange }) => {
   return (
     <Input
       placeholder={placeholder}
@@ -32,4 +32,4 @@ const Defaultinput = ({ placeholder, value, onChange }) => {
   );
 };
 
-export default Defaultinput;
+export default DefaultInput;

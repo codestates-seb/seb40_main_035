@@ -8,7 +8,7 @@ const Button = styled.button`
   border: none;
 `;
 
-const Scrolltopbutton = () => {
+const ScrollTopButton = () => {
   const [showButton, setShowButton] = useState(false);
   const scrollToTop = () => {
     window.scrollTo({
@@ -18,11 +18,7 @@ const Scrolltopbutton = () => {
   };
   useEffect(() => {
     const ShowButtonClick = () => {
-      if (window.scrollY > 100) {
-        setShowButton(true);
-      } else {
-        setShowButton(false);
-      }
+      setShowButton(window.scrollY > 100);
     };
     window.addEventListener('scroll', ShowButtonClick);
     return () => {
@@ -41,4 +37,4 @@ const Scrolltopbutton = () => {
   );
 };
 
-export default Scrolltopbutton;
+export default ScrollTopButton;

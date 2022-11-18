@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-  width: 76px;
-  height: 36px;
+  width: 107px;
+  height: 63px;
   background-color: var(--purple-light);
   padding: 8px 8px 10px;
   border-radius: 8px;
   border: none;
   color: var(--purple);
   border: 1px solid var(--purple);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   &:hover {
     background-color: var(--purple);
     color: var(--purple-light);
@@ -22,8 +22,8 @@ const Button = styled.button`
   }
 `;
 
-const Minibutton = () => {
+const DefaultButton = () => {
   return <Button>테스트</Button>;
 };
 
-export default Minibutton;
+export default DefaultButton;
