@@ -79,7 +79,7 @@ const DropdownItem = styled.li`
 
 const selectOptions = ['학생', '취준생', '주니어', '시니어'];
 
-const SelectLevel = () => {
+const LevelSelect = () => {
   // 드롭다운 상태 저장 => active ? 펼쳐집니다 : 닫힙니다
   const [isActive, setIsActive] = useState(false);
   // 선택된 데이터 저장
@@ -151,4 +151,4 @@ const SelectLevel = () => {
   );
 };
 
-export default SelectLevel;
+export default LevelSelect;
