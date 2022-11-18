@@ -26,11 +26,13 @@ export const beNumberState = atom({
   default: 0,
 });
 
+// 프로젝트 시작 날짜
 export const startDateState = atom({
   key: 'startDateState',
   default: null,
 });
 
+// 프로젝트 종료 
 export const endDateState = atom({
   key: 'endDateState',
   default: null,
