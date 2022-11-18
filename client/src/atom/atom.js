@@ -49,7 +49,6 @@ export const userProfileState = atom({
     level: '학생',
     github: 'github.com/honggildong',
   },
-  effects_UNSTABLE: [persistAtom],
 });
 
 export const currentUserState = atom({
@@ -57,5 +56,4 @@ export const currentUserState = atom({
   default: {
     memberId: 1,
   },
-  effects_UNSTABLE: [persistAtom],
 });

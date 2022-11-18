@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import avatar from '../assets/image/userAvatar.png';
+import MiniButton from './MiniButton';
 import { useRecoilValue } from 'recoil';
 import { userProfileState, currentUserState } from '../atom/atom';
 
@@ -104,8 +105,8 @@ const ProfileCard = ({ onEditProfile, onDeleteProfile }) => {
       </div>
       {profileData.memberId === currentUser.memberId && (
         <div className="util-btn">
-          <button onClick={onEditProfile}>수정하기</button>
-          <button onClick={onDeleteProfile}>삭제하기</button>
+          <MiniButton text="수정하기" onClick={onEditProfile} />
+          <MiniButton text="탈퇴하기" onClick={onDeleteProfile} />
         </div>
       )}
     </ProfileCardWrapper>
