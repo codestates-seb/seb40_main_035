@@ -25,3 +25,13 @@ export const beNumberState = atom({
   key: 'beNumberState',
   default: 0,
 });
+
+export const startDateState = atom({
+  key: 'startDateState',
+  default: null,
+});
+
+export const endDateState = atom({
+  key: 'endDateState',
+  default: null,
+});
