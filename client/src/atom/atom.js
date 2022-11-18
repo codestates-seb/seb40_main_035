@@ -52,3 +52,15 @@ export const interestViewState = atom({
     },
   ],
 });
+
+// input body의 value를 담은 상태
+export const inputBodyState = atom({
+  key: 'inputBodyState',
+  default: '',
+});
+
+// 입력된 해시태그 목록 상태
+export const inputHashTagsState = atom({
+  key: 'inputHashTagsState',
+  default: [],
+});
