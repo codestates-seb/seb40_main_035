@@ -22,3 +22,11 @@ export const userProfileState = atom({
   },
   effects_UNSTABLE: [persistAtom],
 });
+
+export const currentUserState = atom({
+  key: 'isLoginState',
+  default: {
+    memberId: 1,
+  },
+  effects_UNSTABLE: [persistAtom],
+});

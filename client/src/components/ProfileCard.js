@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import avatar from '../assets/image/userAvatar.png';
 import { useRecoilValue } from 'recoil';
-import { userProfileState } from '../atom/atom';
+import { userProfileState, currentUserState } from '../atom/atom';
 
 const ProfileCardWrapper = styled.div`
   width: 762px;
@@ -82,26 +82,27 @@ const ProfileCardWrapper = styled.div`
 `;
 
 const ProfileCard = ({ onEditProfile, onDeleteProfile }) => {
-  const userData = useRecoilValue(userProfileState);
+  const profileData = useRecoilValue(userProfileState);
+  const currentUser = useRecoilValue(currentUserState);
 
   return (
     <ProfileCardWrapper>
       <div className="user-avatar">
-        <img src={avatar} alt={`${userData.name}'의 프로필 이미지`} />
+        <img src={avatar} alt={`${profileData.name}'의 프로필 이미지`} />
       </div>
       <div className="user-info">
-        <h3 className="user-name">{userData.name}</h3>
-        <p className="user-description">{userData.description}</p>
+        <h3 className="user-name">{profileData.name}</h3>
+        <p className="user-description">{profileData.description}</p>
         <div className="user-detail">
           <span>숙련도</span>
-          <span>{userData.level}</span>
+          <span>{profileData.level}</span>
         </div>
         <div className="user-detail">
           <span>깃허브</span>
-          <span>{userData.github}</span>
+          <span>{profileData.github}</span>
         </div>
       </div>
-      {onEditProfile && onDeleteProfile && (
+      {profileData.memberId === currentUser.memberId && (
         <div className="util-btn">
           <button onClick={onEditProfile}>수정하기</button>
           <button onClick={onDeleteProfile}>삭제하기</button>
