@@ -40,10 +40,10 @@ public class Article extends Auditable {
     @Column(nullable = false)
     private Boolean isCompleted = false;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 15)
     private String startDay;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 15)
     private String endDay;
 
     @Column(nullable = false)

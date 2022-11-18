@@ -5,9 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class LoginDto {
+public class VerifyNameDto {
     @NotBlank
-    private String email;
-    @NotBlank
-    private String password;
+    private String name;
 }

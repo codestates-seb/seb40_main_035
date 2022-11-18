@@ -6,6 +6,7 @@ import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.entity.MemberInterest;
 import com.codestates.mainproject.domain.member.repository.MemberRepository;
 
+import com.codestates.mainproject.email.service.EmailService;
 import com.codestates.mainproject.exception.BusinessLogicException;
 import com.codestates.mainproject.exception.ExceptionCode;
 
@@ -17,10 +18,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @Transactional
@@ -31,7 +35,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final InterestService interestService;
     private final SkillService skillService;
-
 
     public Member createMember(Member member) {
         verifyExistingEmail(member.getEmail());
@@ -59,7 +62,6 @@ public class MemberService {
                     skill.addMemberSkill(memberSkill);
                 });
 
-
         return memberRepository.save(member);
     }
 
@@ -69,13 +71,14 @@ public class MemberService {
         Optional.ofNullable(member.getPassword())
                 .ifPresent(password -> {
                     checkPassword(member.getPassword(), member.getPasswordCheck());
-                    findMember.setPassword(password);
+                    String encryptedPassword = passwordEncoder.encode(member.getPassword());
+                    findMember.setPassword(encryptedPassword);
                 });
 
         Optional.ofNullable(member.getPasswordCheck())
                 .ifPresent(passwordCheck -> {
-                    checkPassword(member.getPassword(), member.getPasswordCheck());
-                    findMember.setPasswordCheck(passwordCheck);
+                    String encryptedPasswordCheck = passwordEncoder.encode(member.getPasswordCheck());
+                    findMember.setPasswordCheck(encryptedPasswordCheck);
                 });
 
         Optional.ofNullable(member.getName())
@@ -144,7 +147,7 @@ public class MemberService {
         return optionalMember.orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
-    private void verifyExistingEmail(String email) {
+    public void verifyExistingEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
         if (optionalMember.isPresent()) {
@@ -152,7 +155,7 @@ public class MemberService {
         }
     }
 
-    private void verifyExistingName(String name) {
+    public void verifyExistingName(String name) {
         Optional<Member> optionalMember = memberRepository.findByName(name);
 
         if (optionalMember.isPresent()) {
@@ -179,5 +182,12 @@ public class MemberService {
     public Member findVerifiedMember(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         return optionalMember.orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
+    public void passwordChange(Member member, String password) {
+        member.setPassword(passwordEncoder.encode(password));
+        member.setPasswordCheck(passwordEncoder.encode(password));
+
+        memberRepository.save(member);
     }
 }

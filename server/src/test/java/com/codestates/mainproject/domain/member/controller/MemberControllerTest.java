@@ -7,6 +7,7 @@ import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.mapper.MemberMapper;
 import com.codestates.mainproject.domain.member.service.MemberService;
 import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
+import com.codestates.mainproject.email.service.EmailService;
 import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,9 @@ class MemberControllerTest {
 
     @MockBean
     private JwtTokenizer jwtTokenizer;
+
+    @MockBean
+    private EmailService emailService;
 
     @Autowired
     private MockMvc mockMvc;
