@@ -73,7 +73,7 @@ const ProfileCardWrapper = styled.div`
 
   .util-btn {
     position: absolute;
-    top: 24px;
+    top: 20px;
     right: 20px;
 
     button:not(:last-child) {
@@ -112,5 +112,8 @@ const ProfileCard = ({ onEditProfile, onDeleteProfile }) => {
     </ProfileCardWrapper>
   );
 };
+
+// 이미지 출처
+// <a href="https://kr.freepik.com/free-vector/people-avatars-round-icons-with-faces-of-male-and-female-characters-young-men-or-women-with-black-hair-color-different-portraits-for-social-media-and-web-design-isolated-line-art-flat-vector-set_26128227.htm">작가 upklyak</a> 출처 Freepik
 
 export default ProfileCard;
