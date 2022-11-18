@@ -32,7 +32,7 @@ export const startDateState = atom({
   default: null,
 });
 
-// 프로젝트 종료 
+// 프로젝트 종료 날짜
 export const endDateState = atom({
   key: 'endDateState',
   default: null,
