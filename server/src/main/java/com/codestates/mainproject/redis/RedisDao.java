@@ -1,4 +1,4 @@
-package com.codestates.mainproject.security.redis;
+package com.codestates.mainproject.redis;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 
 @Component
-public class RedisDto {
+public class RedisDao {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public RedisDto(RedisTemplate<String, String> redisTemplate) {
+    public RedisDao(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Heart extends Auditable {
+public class Heart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long heartId;

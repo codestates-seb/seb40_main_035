@@ -1,8 +1,7 @@
 package com.codestates.mainproject.security.auth.jwt;
 
-import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
 import com.codestates.mainproject.domain.member.entity.Member;
-import com.codestates.mainproject.security.redis.RedisDto;
+import com.codestates.mainproject.redis.RedisDao;
 import com.codestates.mainproject.security.response.TokenResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.Claims;
@@ -27,7 +26,7 @@ import java.util.*;
 @Component
 public class JwtTokenizer {
 
-    private final RedisDto redisDto;
+    private final RedisDao redisDao;
 
     @Getter
     @Value("${jwt.secret-key}")
@@ -154,13 +153,13 @@ public class JwtTokenizer {
 
         String atk = delegateAccessToken(member);
         String rtk = delegateRefreshToken(member);
-        redisDto.setValues(member.getEmail(), rtk, Duration.ofMinutes((long) refreshTokenExpirationMinutes));
+        redisDao.setValues(member.getEmail(), rtk, Duration.ofMinutes((long) refreshTokenExpirationMinutes));
         return new TokenResponse(atk, rtk);
     }
 
     //
     public TokenResponse reissueAcToken(Member member) throws JwtException {
-        String rtkInRedis = redisDto.getValues(member.getEmail());
+        String rtkInRedis = redisDao.getValues(member.getEmail());
         if (Objects.isNull(rtkInRedis)) {
             throw new JwtException("인증 정보가 만료되었습니다.");
         }
@@ -170,7 +169,7 @@ public class JwtTokenizer {
     }
 
     public void deleteRfToken(Member member) throws JwtException {
-        redisDto.deleteValues(member.getEmail());
+        redisDao.deleteValues(member.getEmail());
     }
 //
     public void setBlackListAcToken(String bearerAtk) {
@@ -178,11 +177,11 @@ public class JwtTokenizer {
         long expiration = getClaims(acToken).getBody().getExpiration().getTime();
         long now = Calendar.getInstance().getTime().getTime();
 
-        redisDto.setValues(acToken, "logout", Duration.ofMillis(expiration - now));
+        redisDao.setValues(acToken, "logout", Duration.ofMillis(expiration - now));
     }
 
     public boolean isBlackList(String atk) {
-        return StringUtils.hasText(redisDto.getValues(atk));
+        return StringUtils.hasText(redisDao.getValues(atk));
     }
 
 

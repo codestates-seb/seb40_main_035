@@ -14,6 +14,7 @@ public enum ExceptionCode {
 
     //401 Unauthorized
     TOKEN_IS_INVALID(401, "토큰이 유효하지 않습니다."),
+    CODE_IS_INVALID(401, "인증코드가 유효하지 않습니다."),
 
     //403 Forbidden
     HANDLE_ACCESS_DENIED(403, "접근 권한이 없습니다."),

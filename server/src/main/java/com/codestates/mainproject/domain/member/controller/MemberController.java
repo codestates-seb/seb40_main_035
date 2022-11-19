@@ -1,16 +1,13 @@
 package com.codestates.mainproject.domain.member.controller;
 
-import com.codestates.mainproject.domain.member.dto.LoginDto;
-import com.codestates.mainproject.domain.member.dto.MemberDetailResponseDto;
-import com.codestates.mainproject.domain.member.dto.MemberPatchDto;
-import com.codestates.mainproject.domain.member.dto.MemberPostDto;
-import com.codestates.mainproject.domain.member.dto.MemberResponseDto;
+import com.codestates.mainproject.domain.member.dto.*;
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.mapper.MemberMapper;
 import com.codestates.mainproject.domain.member.service.MemberService;
 import com.codestates.mainproject.dto.MultiResponseDto;
 import com.codestates.mainproject.dto.PageInfo;
 import com.codestates.mainproject.dto.SingleResponseDto;
+import com.codestates.mainproject.email.service.EmailService;
 import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
 import com.codestates.mainproject.security.auth.jwt.MemberDetails;
 import com.codestates.mainproject.security.response.TokenResponse;
@@ -27,8 +24,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +39,7 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
     private final JwtTokenizer jwtTokenizer;
+    private final EmailService emailService;
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto postDto) {
@@ -49,6 +49,31 @@ public class MemberController {
         MemberDetailResponseDto responseDto = mapper.memberToMemberDetailResponseDto(createdMember);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signup/email-send")
+    public ResponseEntity sendEmail(@RequestBody EmailDto emailDto) throws MessagingException, UnsupportedEncodingException {
+
+        memberService.verifyExistingEmail(emailDto.getEmail());
+        emailService.sendAuthMail(emailDto.getEmail());
+
+        return new ResponseEntity<>(new SingleResponseDto<>("입력한 이메일로 인증코드가 발송되었습니다."), HttpStatus.OK);
+    }
+
+    @PostMapping("/signup/email-auth")
+    public ResponseEntity authEmail(@RequestBody EmailDto authDto) {
+
+        emailService.verifyAuthCode(authDto.getEmail(), authDto.getCode());
+
+        return new ResponseEntity<>(new SingleResponseDto<>("이메일이 인증 되었습니다."), HttpStatus.OK);
+    }
+
+    @PostMapping("/signup/verify-name")
+    public ResponseEntity verifyName(@RequestBody VerifyNameDto verifyNameDto) {
+
+        memberService.verifyExistingName(verifyNameDto.getName());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/{member-id}")
@@ -80,7 +105,7 @@ public class MemberController {
         Page<Member> memberPage = memberService.findMembers(page, size);
         List<Member> members = memberPage.getContent();
         List<MemberResponseDto> responseDtos = mapper.membersToMemberResponseDtos(members);
-        PageInfo pageInfo = new PageInfo(memberPage.getNumber()+1, memberPage.getSize(), memberPage.getTotalElements(), memberPage.getTotalPages());
+        PageInfo pageInfo = new PageInfo(memberPage.getNumber() + 1, memberPage.getSize(), memberPage.getTotalElements(), memberPage.getTotalPages());
 
         return new ResponseEntity<>(new MultiResponseDto(responseDtos, pageInfo), HttpStatus.OK);
     }
@@ -134,6 +159,16 @@ public class MemberController {
         jwtTokenizer.deleteRfToken(member);
 
         return new ResponseEntity<>(new SingleResponseDto<>("로그아웃이 완료되었습니다."), HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/find-password")
+    public ResponseEntity sendPasswordEmail(@RequestBody EmailDto emailDto) throws MessagingException, UnsupportedEncodingException {
+
+        Member member = memberService.findVerifiedMember(emailDto.getEmail());
+        String password = emailService.sendPasswordMail(emailDto.getEmail());
+        memberService.passwordChange(member, password);
+
+        return new ResponseEntity<>(new SingleResponseDto<>("입력한 이메일로 임시 비밀번호가 발송되었습니다."), HttpStatus.OK);
     }
 }
 

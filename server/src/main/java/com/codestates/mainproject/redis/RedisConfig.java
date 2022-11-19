@@ -1,4 +1,4 @@
-package com.codestates.mainproject.security.redis;
+package com.codestates.mainproject.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
