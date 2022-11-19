@@ -8,6 +8,11 @@ export const activeIdxState = atom({
   default: 0,
 });
 
+// 기술 스택 보기란 메뉴 클릭 시, 활성화 탭 식별 위한 상태
+export const activeMenuState = atom({
+  key: 'activeMenuState',
+  default: 0,
+});
 // 선택 or 입력된 기술 스택 목록 상태
 export const selectedTagsState = atom({
   key: 'selectedTagsState',
@@ -49,6 +54,37 @@ export const interestViewState = atom({
     {
       interestId: 2,
       name: '에너지/친환경',
+    },
+  ],
+});
+
+// 사용자의 기술 스택 목록 상태
+export const skillStackViewState = atom({
+  key: 'skillViewState',
+  default: [
+    {
+      tabTitle: '프론트엔드',
+      tabCont: [
+        {
+          skillId: 1,
+          name: 'JavaScript',
+        },
+        {
+          skillId: 2,
+          name: 'TypeScript',
+        },
+      ],
+    },
+    {
+      tabTitle: '백엔드',
+      tabCont: [
+        { skillId: 1, name: 'Java' },
+        { skillId: 2, name: 'MongoDB' },
+      ],
+    },
+    {
+      tabTitle: '기타',
+      tabCont: [{ skillId: 1, name: 'Figma' }],
     },
   ],
 });
