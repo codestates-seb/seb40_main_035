@@ -5,7 +5,7 @@ import { ReactComponent as ViewsIcon } from '../assets/image/views.svg';
 import yearMonthDate from '../utils/dateFormat';
 
 const ArticleCardWrapper = styled(Link)`
-  display: block;
+  display: inline-block;
   width: 323px;
   height: 286px;
   border-radius: 25px;
@@ -39,7 +39,7 @@ const ArticleCardWrapper = styled(Link)`
     width: 100%;
     height: 100%;
     overflow: hidden;
-    padding: 37px 33px;
+    padding: 33px;
   }
 
   .article-header {
@@ -48,11 +48,13 @@ const ArticleCardWrapper = styled(Link)`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    font-size: 18px;
+    line-height: 24.52px;
     color: var(--black);
   }
 
   .project-info,
-  .hashtags {
+  .hashtag-list {
     margin-bottom: 4px;
     font-size: 15px;
     line-height: 18px;
@@ -84,8 +86,36 @@ const ArticleCardWrapper = styled(Link)`
     }
   }
 
-  .hashtags {
-    font-weight: 400;
+  .hashtag-list,
+  .skill-list {
+    overflow: hidden;
+
+    li {
+      display: inline-block;
+      margin-right: 7px;
+    }
+  }
+
+  .hashtag-list {
+    height: 20px;
+
+    li {
+      font-weight: 400;
+    }
+  }
+
+  .skill-list {
+    height: 26px;
+
+    li {
+      padding: 4px 10px;
+      border-radius: 13px;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 17.71px;
+      color: #fff;
+      background-color: var(--purple);
+    }
   }
 
   .project-summary {
@@ -109,32 +139,17 @@ const ArticleCardWrapper = styled(Link)`
 
       div {
         display: flex;
+        align-items: center;
 
         svg {
           margin-right: 4px;
         }
       }
 
-      div:first-child {
+      div:not(:last-child) {
         margin-right: 4px;
       }
     }
-  }
-`;
-
-const Tag = styled.li`
-  display: inline-block;
-  height: 26px;
-  margin-right: 7px;
-  padding: 4px 15px;
-  border-radius: 13px;
-  font-weight: 900;
-  font-size: 13px;
-  color: #fff;
-  background-color: var(--purple);
-
-  span {
-    vertical-align: middle;
   }
 `;
 
@@ -171,12 +186,16 @@ const ArticleCard = ({
           </p>
         </div>
         <div className="project-summary">
-          <p className="hashtags">{hashtags.map((tag) => '#' + tag.name)}</p>
-          <ul>
+          <ul className="hashtag-list">
+            {hashtags.map((tag) => (
+              <li key={tag.hashtagId}>{'#' + tag.name}</li>
+            ))}
+          </ul>
+          <ul className="skill-list">
             {skills.map((skill) => (
-              <Tag key={skill.skillId}>
+              <li key={skill.skillId}>
                 <span>{skill.name}</span>
-              </Tag>
+              </li>
             ))}
           </ul>
         </div>
