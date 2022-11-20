@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import styled from 'styled-components';
 
 const ToggleContainer = styled.div`
@@ -90,16 +89,14 @@ const CheckBox = styled.input`
   }
 `;
 
-const SwitchToggle = ({ left, right, setChecked, onClick, width }) => {
+const SwitchToggle = ({ right, setChecked, onClick }) => {
   return (
-    <ToggleContainer checked={!setChecked} width={width}>
+    <ToggleContainer checked={!setChecked} width="100px">
       <CheckBoxContainer>
         <CheckBox
-          left={left}
+          left="모집 중"
           right={right}
-          onChange={() => {}}
           value=""
-          checked={!setChecked}
           type="checkbox"
           onClick={onClick}
         ></CheckBox>
@@ -112,15 +109,14 @@ export default SwitchToggle;
 
 // 부모 컴포넌트 예시입니다. 추후 삭제 할 예정입니다.
 // export const ParentComponents = () => {
-//   const [ischeck, setIsCheck] = useState(true);
+//   const [isCheck, setIsCheck] = useState(true);
 //   return (
 //     <div>
 //       <SwitchToggle
-//         left="모집 중"
 //         right="모집 완료"
-//         setChecked={ischeck}
+//         setChecked={isCheck}
 //         onClick={() => {
-//           setIsCheck(!ischeck);
+//           setIsCheck(!isCheck);
 //         }}
 //         width="100px"
 //       />
