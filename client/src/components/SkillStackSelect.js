@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { activeIdxState, selectedTagsState } from '../atom/atom';
+import { activeIdxState, selectedSkillStacksState } from '../atom/atom';
 import {
   SiJavascript,
   SiTypescript,
@@ -138,7 +138,9 @@ const Container = styled.div`
 
 function SkillStackSelect() {
   const [activeIdx, setActiveIdx] = useRecoilState(activeIdxState);
-  const [selectedTags, setSelectedTags] = useRecoilState(selectedTagsState);
+  const [selectedTags, setSelectedTags] = useRecoilState(
+    selectedSkillStacksState,
+  );
 
   const tabContArr = [
     {

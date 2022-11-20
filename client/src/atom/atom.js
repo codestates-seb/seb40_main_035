@@ -9,8 +9,8 @@ export const activeIdxState = atom({
 });
 
 // 선택 or 입력된 기술 스택 목록 상태
-export const selectedTagsState = atom({
-  key: 'selectedTagsState',
+export const selectedSkillStacksState = atom({
+  key: 'selectedSkillStacksState',
   default: [],
 });
 
