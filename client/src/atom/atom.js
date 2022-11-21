@@ -38,6 +38,12 @@ export const endDateState = atom({
   default: null,
 });
 
+// 선택된 관심 분야 상태
+export const selectedInterestsState = atom({
+  key: 'selectedInterestState',
+  default: [],
+});
+
 // 사용자의 관심 분야 목록 상태
 export const interestViewState = atom({
   key: 'interestViewState',
@@ -51,6 +57,26 @@ export const interestViewState = atom({
       name: '에너지/친환경',
     },
   ],
+});
+
+export const userProfileState = atom({
+  key: 'userProfileState',
+  default: {
+    memberId: 1,
+    email: 'hgd@gmail.com',
+    password: 'hgd1234!',
+    name: '홍길동',
+    description: '길동이입니다',
+    level: '학생',
+    github: 'github.com/honggildong',
+  },
+});
+
+export const currentUserState = atom({
+  key: 'isLoginState',
+  default: {
+    memberId: 1,
+  },
 });
 
 // input body의 value를 담은 상태
