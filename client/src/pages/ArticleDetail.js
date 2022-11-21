@@ -11,6 +11,7 @@ import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
 // import { FaHeart } from 'react-icons/fa';
 import { FiShare } from 'react-icons/fi';
 import InterestView from '../components/InterestView';
+import { useNavigate } from 'react-router-dom';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -32,7 +33,7 @@ const TopContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 60px;
+  margin-top: 40px;
   align-items: center;
 
   .title-box {
@@ -42,6 +43,7 @@ const TopContainer = styled.div`
     justify-content: space-between;
   }
   .title-left-box {
+    margin-left: -50px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -49,6 +51,7 @@ const TopContainer = styled.div`
     font-size: 20px;
     font-weight: 500;
     > span {
+      margin-left: 10px;
       margin-right: 20px;
     }
   }
@@ -96,7 +99,8 @@ const LeftRightWholeConatiner = styled.div`
 const LeftViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 45%;
+  min-width: 350px;
   background-color: white;
   border-radius: 8px;
   padding: 30px;
@@ -108,6 +112,8 @@ const LeftViewTopBox = styled.div`
   flex-direction: column;
   margin-bottom: 25px;
   border-radius: 9px;
+  font-size: 15px;
+  font-weight: 500;
   padding: 25px;
 `;
 const LeftViewBottomBox = styled.div`
@@ -116,22 +122,31 @@ const LeftViewBottomBox = styled.div`
   margin-bottom: 10px;
   border-radius: 9px;
   padding: 25px;
+  > ul {
+    font-weight: 500;
+  }
   > ul > div {
     display: flex;
   }
   li {
     font-size: 13px;
-    margin: 10px 10px 10px 0;
-    padding: 10px;
+    margin: 10px 10px 15px 0;
+    padding: 9px;
     width: auto;
     border: 1px solid var(--purple-medium);
     border-radius: 8px;
+    > span {
+      width: auto;
+    }
+  }
+  .left-bottom-content {
+    font-weight: 400;
   }
 `;
 const RightViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 55%;
   background-color: white;
   border-radius: 8px;
   padding: 30px;
@@ -139,7 +154,12 @@ const RightViewContainer = styled.div`
   .content-plan {
     margin-bottom: 20px;
     padding-bottom: 20px;
+    font-size: 15px;
+    font-weight: 500;
     border-bottom: 1px solid var(--purple-medium);
+  }
+  span {
+    font-size: 15px;
   }
 `;
 // 하단 댓글 컨테이너
@@ -240,6 +260,7 @@ const CommnetWriteBox = styled.form`
 
 const ArticleDetail = () => {
   const [isCheck, setIsCheck] = useState(true);
+  const navigate = useNavigate();
   return (
     <WholeContainer>
       <TopContainer>
@@ -266,7 +287,12 @@ const ArticleDetail = () => {
                 <BsHeartFill />
               </span>
             </button>
-            <MiniButton text={'수정하기'} />
+            <MiniButton
+              onClick={() => {
+                navigate('/article/edit/:id');
+              }}
+              text={'수정하기'}
+            />
             <MiniButton text={'삭제하기'} />
           </form>
         </div>
@@ -285,7 +311,7 @@ const ArticleDetail = () => {
       <LeftRightWholeConatiner>
         <LeftViewContainer>
           <LeftViewTopBox>
-            <h4>이런 기술 스택을 사용하고 싶어요.</h4>
+            <span>이런 기술 스택을 사용하고 싶어요.</span>
             <SkillStackView />
             {/* <h4>이런 산업군에 관심이 있어요.</h4> */}
             <InterestView />
@@ -294,26 +320,41 @@ const ArticleDetail = () => {
             <ul>
               프로젝트 예정기간
               <div>
-                <li>시작 예정 일</li>
-                <li>마감 예정 일</li>
+                <li>
+                  <span>시작 예정 일</span>
+                  <span className="left-bottom-content"> 2022.11.01</span>
+                </li>
+                <li>
+                  {' '}
+                  <span>마감 예정 일</span>
+                  <span className="left-bottom-content"> 2022.12.01</span>
+                </li>
               </div>
             </ul>
             <ul>
               파트별 인원 수
               <div>
-                <li>프론트엔드</li>
-                <li>백엔드</li>
+                <li>
+                  <span>프론트엔드 </span>
+                  <span className="left-bottom-content">2</span>
+                </li>
+                <li>
+                  <span>백엔드 </span>
+                  <span className="left-bottom-content">3</span>
+                </li>
               </div>
             </ul>
             <ul>
               이런 분과 함께 하고 싶어요.
-              <li>학생,취준생</li>
+              <li>
+                <span className="left-bottom-content">학생,취준생</span>
+              </li>
             </ul>
           </LeftViewBottomBox>
         </LeftViewContainer>
         <RightViewContainer>
-          <h4 className="content-plan">프로젝트 계획을 설명해 주세요!</h4>
-          <div>프로젝트 내용 설명</div>
+          <span className="content-plan">프로젝트 계획을 설명해 주세요!</span>
+          <span>프로젝트 내용 설명</span>
         </RightViewContainer>
       </LeftRightWholeConatiner>
       <BottomCommentConatiner>
