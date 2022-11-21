@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const Input = styled.input`
-  width: auto;
+  width: ${(props) => (props.width ? `${props.width}` : `100%`)};
+  height: ${(props) => (props.height ? `${props.height}` : `100%`)};
   padding: 8px 8px 10px;
   border-radius: 8px;
   border: none;
@@ -22,12 +23,14 @@ const Input = styled.input`
   }
 `;
 
-const DefaultInput = ({ placeholder, value, onChange }) => {
+const DefaultInput = ({ placeholder, value, onChange, width, height }) => {
   return (
     <Input
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      width={width}
+      height={height}
     />
   );
 };
