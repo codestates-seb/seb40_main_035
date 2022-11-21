@@ -55,9 +55,9 @@ class SkillControllerTest {
     @Test
     void postSkill() throws Exception {
         //given
-        SkillPostDto postDto = new SkillPostDto("JAVA");
+        SkillPostDto postDto = new SkillPostDto("JAVA", Skill.SkillSort.BACKEND);
         String content = gson.toJson(postDto);
-        SkillResponseDto responseDto = new SkillResponseDto(1L, "JAVA");
+        SkillResponseDto responseDto = new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND);
 
         given(mapper.skillPostDtoToSkill(Mockito.any(SkillPostDto.class)))
                 .willReturn(new Skill());
@@ -84,14 +84,16 @@ class SkillControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("name").type(JsonFieldType.STRING).description("기술스택 이름")
+                                        fieldWithPath("name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("skillSort").type(JsonFieldType.STRING).description("기술스택 종류")
                                 )
                         ),
                         responseFields(
                                 List.of(
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                         fieldWithPath("data.skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("기술스택 이름")
+                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data.skillSort").type(JsonFieldType.STRING).description("기술스택 종류")
                                 )
                         )
                 ));
@@ -106,7 +108,7 @@ class SkillControllerTest {
 
         String content = gson.toJson(patchDto);
 
-        SkillResponseDto responseDto = new SkillResponseDto(skillId, "Spring");
+        SkillResponseDto responseDto = new SkillResponseDto(skillId, "Spring", Skill.SkillSort.BACKEND);
 
         given(mapper.skillPatchDtoToSkill(Mockito.any(SkillPatchDto.class)))
                 .willReturn(new Skill());
@@ -136,14 +138,16 @@ class SkillControllerTest {
                         requestFields(
                                 List.of(
                                         fieldWithPath("skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자").ignored(),
-                                        fieldWithPath("name").type(JsonFieldType.STRING).description("기술스택 이름")
+                                        fieldWithPath("name").type(JsonFieldType.STRING).description("기술스택 이름").optional(),
+                                        fieldWithPath("skillSort").type(JsonFieldType.STRING).description("기술스택 종류").optional()
                                 )
                         ),
                         responseFields(
                                 List.of(
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                         fieldWithPath("data.skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("기술스택 이름")
+                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data.skillSort").type(JsonFieldType.STRING).description("기술스택 종류")
                                 )
                         )
                 ));
@@ -154,7 +158,7 @@ class SkillControllerTest {
         //given
         long skillId = 1L;
 
-        SkillResponseDto responseDto = new SkillResponseDto(1L, "JAVA");
+        SkillResponseDto responseDto = new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND);
 
         given(skillService.findSkill(Mockito.anyLong()))
                 .willReturn(new Skill());
@@ -179,7 +183,8 @@ class SkillControllerTest {
                                 List.of(
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                         fieldWithPath("data.skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("기술스택 이름")
+                                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data.skillSort").type(JsonFieldType.STRING).description("기술스택 종류")
                                 )
                         ))
                 );
@@ -188,9 +193,9 @@ class SkillControllerTest {
     @Test
     void getSkills() throws Exception {
         List<SkillResponseDto> responseDtos = new ArrayList<>(List.of(
-                new SkillResponseDto(1L, "JAVA"),
-                new SkillResponseDto(2L, "Spring"),
-                new SkillResponseDto(3L, "Nodejs")
+                new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND),
+                new SkillResponseDto(2L, "Spring", Skill.SkillSort.BACKEND),
+                new SkillResponseDto(3L, "Nodejs", Skill.SkillSort.BACKEND)
         ));
 
         given(skillService.findSkills())
@@ -215,7 +220,8 @@ class SkillControllerTest {
                                 List.of(
                                         fieldWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터"),
                                         fieldWithPath("data[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("data[].name").type(JsonFieldType.STRING).description("기술스택 이름")
+                                        fieldWithPath("data[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류")
                                 )
                         ))
                 );
