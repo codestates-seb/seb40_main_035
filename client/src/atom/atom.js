@@ -64,7 +64,6 @@ export const interestViewState = atom({
   ],
 });
 
-
 // 사용자의 기술 스택 목록 상태
 export const skillStackViewState = atom({
   key: 'skillViewState',
@@ -94,7 +93,9 @@ export const skillStackViewState = atom({
       tabCont: [{ skillId: 1, name: 'Figma' }],
     },
   ],
+});
 
+// 유저 프로필 기본 정보
 export const userProfileState = atom({
   key: 'userProfileState',
   default: {
@@ -108,6 +109,7 @@ export const userProfileState = atom({
   },
 });
 
+// 로그인된 유저의 정보 (유저 아이디)
 export const currentUserState = atom({
   key: 'isLoginState',
   default: {
