@@ -7,6 +7,10 @@ import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
 import com.codestates.mainproject.domain.article.entity.Article;
 import com.codestates.mainproject.domain.article.mapper.ArticleMapper;
 import com.codestates.mainproject.domain.article.service.ArticleService;
+import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
+import com.codestates.mainproject.domain.skill.entity.Skill;
+import com.codestates.mainproject.domain.skill.mapper.SkillMapper;
+import com.codestates.mainproject.domain.skill.service.SkillService;
 import com.codestates.mainproject.dto.MultiResponseDto;
 import com.codestates.mainproject.dto.PageInfo;
 import com.codestates.mainproject.dto.SingleResponseDto;
@@ -31,6 +35,8 @@ import java.util.Locale;
 public class ArticleController {
     private final ArticleService articleService;
     private final ArticleMapper mapper;
+    private final SkillService skillService;
+    private final SkillMapper skillMapper;
 
     @PostMapping
     public ResponseEntity postArticle(@Valid @RequestBody ArticlePostDto postDto) {
@@ -75,7 +81,11 @@ public class ArticleController {
         List<ArticleResponseDto> responseDtos = mapper.articlesToArticleResponseDtos(articles);
         PageInfo pageInfo = new PageInfo(articlePage.getNumber() + 1, articlePage.getSize(), articlePage.getTotalElements(), articlePage.getTotalPages());
 
-        return new ResponseEntity(new MultiResponseDto<>(responseDtos, pageInfo), HttpStatus.OK);
+        List<Skill> skills = skillService.findSkills();
+        List<SkillResponseDto> skillResponseDtos = skillMapper.skillsToSkillResponseDtos(skills);
+
+
+        return new ResponseEntity(new MultiResponseDto<>(responseDtos, skillResponseDtos, pageInfo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{article-id}")

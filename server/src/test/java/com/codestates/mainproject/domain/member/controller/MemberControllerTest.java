@@ -7,6 +7,7 @@ import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.mapper.MemberMapper;
 import com.codestates.mainproject.domain.member.service.MemberService;
 import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
+import com.codestates.mainproject.domain.skill.entity.Skill;
 import com.codestates.mainproject.email.service.EmailService;
 import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
 import com.google.gson.Gson;
@@ -75,7 +76,7 @@ class MemberControllerTest {
         MemberDetailResponseDto detailResponseDto= new MemberDetailResponseDto(
                 1L,"hgd@gmail.com", "hgd1234!",  "홍길동", "길동이입니다","학생",
                 "github.com/honggildong", List.of(new InterestResponseDto(1L, "교육")),
-                List.of(new SkillResponseDto(1L, "JAVA")), LocalDateTime.now(), LocalDateTime.now(),
+                List.of(new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND)), LocalDateTime.now(), LocalDateTime.now(),
                 List.of(new ArticleSimpleResponseDto(1L,"제목1")), List.of(new ArticleSimpleResponseDto(1L,"제목1")));
 
         given(mapper.memberPostDtoToMember(Mockito.any(MemberPostDto.class)))
@@ -137,6 +138,7 @@ class MemberControllerTest {
                                         fieldWithPath("data.skills").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
                                         fieldWithPath("data.skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data.skills[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data.skills[].skillSort").type(JsonFieldType.STRING).description("회원 기술스택 종류"),
 
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
@@ -172,7 +174,7 @@ class MemberControllerTest {
         MemberDetailResponseDto detailResponseDto =
                 new MemberDetailResponseDto(1L, "hgd@gmail.com","hgd1234@","고길동", "홍길동아닙니다",
                         "시니어", "github.com/gogildong", List.of(new InterestResponseDto(1L, "미디어")),
-                        List.of(new SkillResponseDto(1L, "Spring")), LocalDateTime.now(), LocalDateTime.now(),
+                        List.of(new SkillResponseDto(1L, "Spring", Skill.SkillSort.BACKEND)), LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new ArticleSimpleResponseDto(1L,"제목1")), List.of(new ArticleSimpleResponseDto(1L,"제목1")));
 
         given(mapper.memberPatchDtoToMember(Mockito.any(MemberPatchDto.class)))
@@ -241,6 +243,7 @@ class MemberControllerTest {
                                         fieldWithPath("data.skills").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
                                         fieldWithPath("data.skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data.skills[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data.skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
@@ -265,7 +268,7 @@ class MemberControllerTest {
 
         MemberDetailResponseDto detailResponseDto = new MemberDetailResponseDto(memberId, "hgd@gmail.com",
                 "hgd1234!", "홍길동","길동이입니다","학생", "github.com/honggildong",
-                List.of(new InterestResponseDto(1L, "교육")), List.of(new SkillResponseDto(1L, "JAVA")),
+                List.of(new InterestResponseDto(1L, "교육")), List.of(new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND)),
                 LocalDateTime.now(), LocalDateTime.now(),List.of(new ArticleSimpleResponseDto(1L,"제목1")),
                 List.of(new ArticleSimpleResponseDto(1L,"제목1")));
 
@@ -307,6 +310,7 @@ class MemberControllerTest {
                                         fieldWithPath("data.skills").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
                                         fieldWithPath("data.skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data.skills[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data.skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
@@ -341,13 +345,13 @@ class MemberControllerTest {
                         new MemberResponseDto(
                                 1L,"hgd@gmail.com", "hgd1234!", "홍길동", "길동이입니다","학생",
                                 "github.com/honggildong", List.of(new InterestResponseDto(1L, "교육")),
-                                List.of(new SkillResponseDto(1L, "JAVA")), LocalDateTime.now(), LocalDateTime.now()),
+                                List.of(new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND)), LocalDateTime.now(), LocalDateTime.now()),
                         new MemberResponseDto(2L, "ggd@gmail.com", "ggd1234@", "고길동", "길동이아닙니다",
                                 "시니어", "github.com/gogildong", List.of(new InterestResponseDto(1L, "미디어")),
-                                List.of(new SkillResponseDto(1L, "Spring")), LocalDateTime.now(), LocalDateTime.now()),
+                                List.of(new SkillResponseDto(1L, "Spring", Skill.SkillSort.BACKEND)), LocalDateTime.now(), LocalDateTime.now()),
                        new MemberResponseDto(3L, "kgd@gmail.com", "hgd1234#", "김길동", "길동",
                                "주니어", "github.com/kimgildong",List.of(new InterestResponseDto(1L, "제조")),
-                               List.of(new SkillResponseDto(1L, "Nodejs")), LocalDateTime.now(), LocalDateTime.now())
+                               List.of(new SkillResponseDto(1L, "Nodejs", Skill.SkillSort.BACKEND)), LocalDateTime.now(), LocalDateTime.now())
                         ));
 
         //when
@@ -383,9 +387,12 @@ class MemberControllerTest {
                                         fieldWithPath("data[].skills").type(JsonFieldType.ARRAY).description("회원 기술스택 정보"),
                                         fieldWithPath("data[].skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data[].skills[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data[].skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+
+                                        fieldWithPath("additionalData").type(JsonFieldType.NULL).description("추가 데이터"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 번호"),

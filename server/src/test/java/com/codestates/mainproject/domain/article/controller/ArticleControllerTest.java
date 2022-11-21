@@ -9,6 +9,9 @@ import com.codestates.mainproject.domain.comment.dto.CommentResponseDto;
 import com.codestates.mainproject.domain.hashtag.dto.HashtagResponseDto;
 import com.codestates.mainproject.domain.interest.dto.InterestResponseDto;
 import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
+import com.codestates.mainproject.domain.skill.entity.Skill;
+import com.codestates.mainproject.domain.skill.mapper.SkillMapper;
+import com.codestates.mainproject.domain.skill.service.SkillService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -51,6 +54,12 @@ class ArticleControllerTest {
     @MockBean
     private ArticleMapper mapper;
 
+    @MockBean
+    private SkillService skillService;
+
+    @MockBean
+    private SkillMapper skillMapper;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -71,7 +80,7 @@ class ArticleControllerTest {
                 "20221109", "20221210", 3,3,
                 1L, "홍길동", LocalDateTime.now(),
                 LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"게시글태그1")),
-                List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA")),
+                List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND)),
                 List.of(new AnswerResponseDto(1L,"본문1",1L,"홍길동", 1L,
                         LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
@@ -158,6 +167,7 @@ class ArticleControllerTest {
                                         fieldWithPath("data.skills").type(JsonFieldType.ARRAY).description("게시글 기술스택"),
                                         fieldWithPath("data.skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data.skills[].name").type(JsonFieldType.STRING).description("기술스택 이름"),
+                                        fieldWithPath("data.skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
                                         fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
@@ -204,7 +214,7 @@ class ArticleControllerTest {
                 0, true, "20221111","20221130",2,2,
                 1L, "홍길동", LocalDateTime.now(),LocalDateTime.now(),
                 1,1, List.of(new HashtagResponseDto(1L,"해시태그1")),
-                List.of(new InterestResponseDto(1L,"미디어")),List.of(new SkillResponseDto(1L,"Spring")),
+                List.of(new InterestResponseDto(1L,"미디어")),List.of(new SkillResponseDto(1L,"Spring", Skill.SkillSort.BACKEND)),
                 List.of(new AnswerResponseDto(1L, "본문1",1L,"홍길동", 1L,
                         LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
@@ -298,6 +308,7 @@ class ArticleControllerTest {
                                         fieldWithPath("data.skills").type(JsonFieldType.ARRAY).description("기술스택 정보"),
                                         fieldWithPath("data.skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data.skills[].name").type(JsonFieldType.STRING).description("기술스택 내용"),
+                                        fieldWithPath("data.skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
                                         fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
@@ -331,7 +342,7 @@ class ArticleControllerTest {
                 "20221109", "20221210", 3, 3,
                 1L, "홍길동", LocalDateTime.now(),
                 LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA")),
+                List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND)),
                 List.of(new AnswerResponseDto(1L,"본문1",1L,"홍길동",
                         1L,LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new CommentResponseDto(1L, "댓글1",1L, "홍길동",
@@ -387,6 +398,7 @@ class ArticleControllerTest {
                                         fieldWithPath("data.skills").type(JsonFieldType.ARRAY).description("기술스택 정보"),
                                         fieldWithPath("data.skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data.skills[].name").type(JsonFieldType.STRING).description("기술스택 내용"),
+                                        fieldWithPath("data.skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("게시글 답변 정보"),
                                         fieldWithPath("data.answers[].answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
@@ -427,21 +439,23 @@ class ArticleControllerTest {
                         "20221109", "20221210", 3, 3,
                         1L, "홍길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                        List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA"))
+                        List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND))
                 ),
                 new ArticleResponseDto(
                         2L, "제목2", "본문2", 0, false,
                         "20221110", "20221211", 2, 2,
                         2L, "고길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                        List.of(new InterestResponseDto(1L,"미디어")),List.of(new SkillResponseDto(1L,"spring"))),
+                        List.of(new InterestResponseDto(1L,"미디어")),List.of(new SkillResponseDto(2L,"spring", Skill.SkillSort.BACKEND))),
                 new ArticleResponseDto(
                         3L, "제목3", "본문3", 0, true,
                         "20221111", "20221212", 3, 4,
                         3L, "김길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
-                        List.of(new InterestResponseDto(1L,"제조")),List.of(new SkillResponseDto(1L,"Nodejs")))
+                        List.of(new InterestResponseDto(1L,"제조")),List.of(new SkillResponseDto(3L,"Nodejs", Skill.SkillSort.BACKEND)))
                 );
+
+        List<SkillResponseDto> skillResponseDtos = new ArrayList<>(List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND), new SkillResponseDto(2L,"spring", Skill.SkillSort.BACKEND), new SkillResponseDto(3L,"Nodejs", Skill.SkillSort.BACKEND)));
 
         given(articleService.findArticles(Mockito.anyList(),Mockito.anyBoolean(),Mockito.anyString(),Mockito.anyInt(),Mockito.anyInt()))
                 .willReturn(new PageImpl<>(articles, PageRequest.of(page-1,size, Sort.by("articleId")
@@ -449,6 +463,12 @@ class ArticleControllerTest {
 
         given(mapper.articlesToArticleResponseDtos(Mockito.anyList()))
                 .willReturn(responseDtos);
+
+        given(skillService.findSkills())
+                .willReturn(List.of(new Skill(), new Skill(), new Skill()));
+
+        given(skillMapper.skillsToSkillResponseDtos(Mockito.anyList()))
+                .willReturn(skillResponseDtos);
 
         //when
         ResultActions actions = mockMvc.perform(
@@ -498,6 +518,12 @@ class ArticleControllerTest {
                                         fieldWithPath("data[].skills").type(JsonFieldType.ARRAY).description("기술스택 정보"),
                                         fieldWithPath("data[].skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data[].skills[].name").type(JsonFieldType.STRING).description("기술스택 내용"),
+                                        fieldWithPath("data[].skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
+
+                                        fieldWithPath("additionalData").type(JsonFieldType.ARRAY).description("추가 데이터"),
+                                        fieldWithPath("additionalData[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
+                                        fieldWithPath("additionalData[].name").type(JsonFieldType.STRING).description("기술스택 내용"),
+                                        fieldWithPath("additionalData[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 번호"),

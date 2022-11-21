@@ -22,6 +22,24 @@ public class Skill {
     @Column(nullable = false, unique = true, length = 20)
     private String name;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private SkillSort skillSort;
+
+    public enum SkillSort {
+        BACKEND("백엔드"),
+        FRONTEND("프론트엔드"),
+        MOBILE("모바일"),
+        ETC("기타");
+
+        @Getter
+        private String sortName;
+
+        SkillSort(String sortName) {
+            this.sortName = sortName;
+        }
+    }
+
     @OneToMany(mappedBy = "skill", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<MemberSkill> memberSkills = new ArrayList<>();
 

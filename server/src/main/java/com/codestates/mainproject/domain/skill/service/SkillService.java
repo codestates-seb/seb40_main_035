@@ -27,6 +27,8 @@ public class SkillService {
 
         Optional.ofNullable(skill.getName())
                 .ifPresent(name -> findSkill.setName(name));
+        Optional.ofNullable(skill.getSkillSort())
+                .ifPresent(skillSort -> findSkill.setSkillSort(skillSort));
 
         return repository.save(findSkill);
     }

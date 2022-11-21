@@ -513,13 +513,78 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph">
-<p>v1.0.1, 2022.11.15</p>
+<div class="imageblock">
+<div class="content">
+<img src="https://user-images.githubusercontent.com/107581387/202951829-721a746a-9d5f-4d28-8376-63f63c43ee10.png" alt="202951829 721a746a 9d5f 4d28 8376 63f63c43ee10">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>notion</code>: <a href="https://codestates.notion.site/3355-9a952847d618434287a8632770088ca4" class="bare">https://codestates.notion.site/3355-9a952847d618434287a8632770088ca4</a></p>
+</li>
+<li>
+<p><code>github</code>: <a href="https://github.com/codestates-seb/seb40_main_035" class="bare">https://github.com/codestates-seb/seb40_main_035</a></p>
+</li>
+</ul>
 </div>
 <hr>
 <div class="paragraph">
-<p>Unresolved directive in index.adoc - include::overview.adoc[]</p>
+<p>v1.0.1, 2022.11.21</p>
 </div>
+<hr>
+<div class="paragraph">
+<p><em>Overview</em></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>HTTP status codes</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">상태 코드</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>200 OK</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>400 Bad Request</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">잘못된 요청</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>401 Unauthorized</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비인증 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>403 Forbidden</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한 거부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>404 Not Found</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">존재하지 않는 요청 리소스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>409 Conflict</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미 존재하여 충돌</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>500 Internal Server Error</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">서버 에러</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
@@ -649,7 +714,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 642
+Content-Length: 675
 
 {
   "data" : {
@@ -666,10 +731,11 @@ Content-Length: 642
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "JAVA"
+      "name" : "JAVA",
+      "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-19T01:58:15.393124",
-    "modifiedAt" : "2022-11-19T01:58:15.393135",
+    "createdAt" : "2022-11-21T12:00:35.181969",
+    "modifiedAt" : "2022-11-21T12:00:35.181981",
     "articles" : [ {
       "articleId" : 1,
       "title" : "제목1"
@@ -766,6 +832,11 @@ Content-Length: 642
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 기술스택 종류</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdAt</code></p></td>
@@ -953,7 +1024,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 651
+Content-Length: 684
 
 {
   "data" : {
@@ -970,10 +1041,11 @@ Content-Length: 651
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "Spring"
+      "name" : "Spring",
+      "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-19T01:58:15.369532",
-    "modifiedAt" : "2022-11-19T01:58:15.369541",
+    "createdAt" : "2022-11-21T12:00:35.153612",
+    "modifiedAt" : "2022-11-21T12:00:35.153624",
     "articles" : [ {
       "articleId" : 1,
       "title" : "제목1"
@@ -1072,6 +1144,11 @@ Content-Length: 651
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성 날짜</p></td>
@@ -1142,7 +1219,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 641
+Content-Length: 675
 
 {
   "data" : {
@@ -1159,10 +1236,11 @@ Content-Length: 641
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "JAVA"
+      "name" : "JAVA",
+      "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-19T01:58:15.384647",
-    "modifiedAt" : "2022-11-19T01:58:15.38466",
+    "createdAt" : "2022-11-21T12:00:35.172417",
+    "modifiedAt" : "2022-11-21T12:00:35.172428",
     "articles" : [ {
       "articleId" : 1,
       "title" : "제목1"
@@ -1261,6 +1339,11 @@ Content-Length: 641
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성 날짜</p></td>
@@ -1331,7 +1414,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1515
+Content-Length: 1641
 
 {
   "data" : [ {
@@ -1348,10 +1431,11 @@ Content-Length: 1515
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "JAVA"
+      "name" : "JAVA",
+      "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-19T01:58:15.41204",
-    "modifiedAt" : "2022-11-19T01:58:15.412051"
+    "createdAt" : "2022-11-21T12:00:35.201439",
+    "modifiedAt" : "2022-11-21T12:00:35.20145"
   }, {
     "memberId" : 2,
     "email" : "ggd@gmail.com",
@@ -1366,10 +1450,11 @@ Content-Length: 1515
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "Spring"
+      "name" : "Spring",
+      "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-19T01:58:15.412064",
-    "modifiedAt" : "2022-11-19T01:58:15.412066"
+    "createdAt" : "2022-11-21T12:00:35.201462",
+    "modifiedAt" : "2022-11-21T12:00:35.201464"
   }, {
     "memberId" : 3,
     "email" : "kgd@gmail.com",
@@ -1384,11 +1469,13 @@ Content-Length: 1515
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "Nodejs"
+      "name" : "Nodejs",
+      "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-19T01:58:15.412074",
-    "modifiedAt" : "2022-11-19T01:58:15.412075"
+    "createdAt" : "2022-11-21T12:00:35.201472",
+    "modifiedAt" : "2022-11-21T12:00:35.201473"
   } ],
+  "additionalData" : null,
   "pageInfo" : {
     "page" : 1,
     "size" : 5,
@@ -1484,6 +1571,11 @@ Content-Length: 1515
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].createdAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성 날짜</p></td>
@@ -1492,6 +1584,11 @@ Content-Length: 1515
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].modifiedAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>additionalData</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">추가 데이터</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageInfo</code></p></td>
@@ -1878,6 +1975,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.answers</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 답변 정보</p></td>
@@ -1964,7 +2066,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1190
+Content-Length: 1223
 
 {
   "data" : {
@@ -1979,8 +2081,8 @@ Content-Length: 1190
     "frontend" : 3,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-19T01:58:14.330753",
-    "modifiedAt" : "2022-11-19T01:58:14.330763",
+    "createdAt" : "2022-11-21T12:00:34.142836",
+    "modifiedAt" : "2022-11-21T12:00:34.142846",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -1993,7 +2095,8 @@ Content-Length: 1190
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "JAVA"
+      "name" : "JAVA",
+      "skillSort" : "백엔드"
     } ],
     "answers" : [ {
       "answerId" : 1,
@@ -2001,16 +2104,16 @@ Content-Length: 1190
       "memberId" : 1,
       "memberName" : "홍길동",
       "articleId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.330797",
-      "modifiedAt" : "2022-11-19T01:58:14.330799",
+      "createdAt" : "2022-11-21T12:00:34.142877",
+      "modifiedAt" : "2022-11-21T12:00:34.142879",
       "comments" : [ {
         "commentId" : 1,
         "body" : "댓글1",
         "memberId" : 1,
         "memberName" : "홍길동",
         "answerId" : 1,
-        "createdAt" : "2022-11-19T01:58:14.330802",
-        "modifiedAt" : "2022-11-19T01:58:14.330804"
+        "createdAt" : "2022-11-21T12:00:34.142882",
+        "modifiedAt" : "2022-11-21T12:00:34.142884"
       } ]
     } ]
   }
@@ -2364,6 +2467,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.answers</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 답변 정보</p></td>
@@ -2450,7 +2558,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1191
+Content-Length: 1223
 
 {
   "data" : {
@@ -2465,8 +2573,8 @@ Content-Length: 1191
     "frontend" : 2,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-19T01:58:14.410566",
-    "modifiedAt" : "2022-11-19T01:58:14.410577",
+    "createdAt" : "2022-11-21T12:00:34.219444",
+    "modifiedAt" : "2022-11-21T12:00:34.219454",
     "heartCount" : 1,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -2479,7 +2587,8 @@ Content-Length: 1191
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "Spring"
+      "name" : "Spring",
+      "skillSort" : "백엔드"
     } ],
     "answers" : [ {
       "answerId" : 1,
@@ -2487,16 +2596,16 @@ Content-Length: 1191
       "memberId" : 1,
       "memberName" : "홍길동",
       "articleId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.410583",
-      "modifiedAt" : "2022-11-19T01:58:14.410585",
+      "createdAt" : "2022-11-21T12:00:34.21946",
+      "modifiedAt" : "2022-11-21T12:00:34.219461",
       "comments" : [ {
         "commentId" : 1,
         "body" : "댓글1",
         "memberId" : 1,
         "memberName" : "홍길동",
         "answerId" : 1,
-        "createdAt" : "2022-11-19T01:58:14.410587",
-        "modifiedAt" : "2022-11-19T01:58:14.410588"
+        "createdAt" : "2022-11-21T12:00:34.219463",
+        "modifiedAt" : "2022-11-21T12:00:34.219465"
       } ]
     } ]
   }
@@ -2688,6 +2797,11 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.answers</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 답변 정보</p></td>
@@ -2774,7 +2888,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1186
+Content-Length: 1218
 
 {
   "data" : {
@@ -2789,8 +2903,8 @@ Content-Length: 1186
     "frontend" : 3,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-19T01:58:14.370544",
-    "modifiedAt" : "2022-11-19T01:58:14.370558",
+    "createdAt" : "2022-11-21T12:00:34.177778",
+    "modifiedAt" : "2022-11-21T12:00:34.177789",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -2803,7 +2917,8 @@ Content-Length: 1186
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "JAVA"
+      "name" : "JAVA",
+      "skillSort" : "백엔드"
     } ],
     "answers" : [ {
       "answerId" : 1,
@@ -2811,16 +2926,16 @@ Content-Length: 1186
       "memberId" : 1,
       "memberName" : "홍길동",
       "articleId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.370568",
-      "modifiedAt" : "2022-11-19T01:58:14.37057",
+      "createdAt" : "2022-11-21T12:00:34.1778",
+      "modifiedAt" : "2022-11-21T12:00:34.177802",
       "comments" : [ {
         "commentId" : 1,
         "body" : "댓글1",
         "memberId" : 1,
         "memberName" : "홍길동",
         "answerId" : 1,
-        "createdAt" : "2022-11-19T01:58:14.370572",
-        "modifiedAt" : "2022-11-19T01:58:14.370574"
+        "createdAt" : "2022-11-21T12:00:34.177804",
+        "modifiedAt" : "2022-11-21T12:00:34.177806"
       } ]
     } ]
   }
@@ -3028,6 +3143,31 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>additionalData</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">추가 데이터</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>additionalData[].skillId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>additionalData[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>additionalData[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageInfo</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 정보</p></td>
@@ -3059,7 +3199,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 2050
+Content-Length: 2411
 
 {
   "data" : [ {
@@ -3074,8 +3214,8 @@ Content-Length: 2050
     "frontend" : 3,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-19T01:58:14.383624",
-    "modifiedAt" : "2022-11-19T01:58:14.383635",
+    "createdAt" : "2022-11-21T12:00:34.191798",
+    "modifiedAt" : "2022-11-21T12:00:34.191809",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -3088,7 +3228,8 @@ Content-Length: 2050
     } ],
     "skills" : [ {
       "skillId" : 1,
-      "name" : "JAVA"
+      "name" : "JAVA",
+      "skillSort" : "백엔드"
     } ]
   }, {
     "articleId" : 2,
@@ -3102,8 +3243,8 @@ Content-Length: 2050
     "frontend" : 2,
     "memberId" : 2,
     "memberName" : "고길동",
-    "createdAt" : "2022-11-19T01:58:14.38366",
-    "modifiedAt" : "2022-11-19T01:58:14.383662",
+    "createdAt" : "2022-11-21T12:00:34.191831",
+    "modifiedAt" : "2022-11-21T12:00:34.191833",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -3115,8 +3256,9 @@ Content-Length: 2050
       "name" : "미디어"
     } ],
     "skills" : [ {
-      "skillId" : 1,
-      "name" : "spring"
+      "skillId" : 2,
+      "name" : "spring",
+      "skillSort" : "백엔드"
     } ]
   }, {
     "articleId" : 3,
@@ -3130,8 +3272,8 @@ Content-Length: 2050
     "frontend" : 4,
     "memberId" : 3,
     "memberName" : "김길동",
-    "createdAt" : "2022-11-19T01:58:14.383669",
-    "modifiedAt" : "2022-11-19T01:58:14.38367",
+    "createdAt" : "2022-11-21T12:00:34.191841",
+    "modifiedAt" : "2022-11-21T12:00:34.191843",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -3143,9 +3285,23 @@ Content-Length: 2050
       "name" : "제조"
     } ],
     "skills" : [ {
-      "skillId" : 1,
-      "name" : "Nodejs"
+      "skillId" : 3,
+      "name" : "Nodejs",
+      "skillSort" : "백엔드"
     } ]
+  } ],
+  "additionalData" : [ {
+    "skillId" : 1,
+    "name" : "JAVA",
+    "skillSort" : "백엔드"
+  }, {
+    "skillId" : 2,
+    "name" : "spring",
+    "skillSort" : "백엔드"
+  }, {
+    "skillId" : 3,
+    "name" : "Nodejs",
+    "skillSort" : "백엔드"
   } ],
   "pageInfo" : {
     "page" : 1,
@@ -3386,7 +3542,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 726
+Content-Length: 725
 
 {
   "data" : {
@@ -3395,24 +3551,24 @@ Content-Length: 726
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.060941",
-    "modifiedAt" : "2022-11-19T01:58:14.060953",
+    "createdAt" : "2022-11-21T12:00:33.875755",
+    "modifiedAt" : "2022-11-21T12:00:33.875766",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.060955",
-      "modifiedAt" : "2022-11-19T01:58:14.060957"
+      "createdAt" : "2022-11-21T12:00:33.875768",
+      "modifiedAt" : "2022-11-21T12:00:33.87577"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.060967",
-      "modifiedAt" : "2022-11-19T01:58:14.060969"
+      "createdAt" : "2022-11-21T12:00:33.875773",
+      "modifiedAt" : "2022-11-21T12:00:33.875775"
     } ]
   }
 }</code></pre>
@@ -3602,7 +3758,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 724
+Content-Length: 726
 
 {
   "data" : {
@@ -3611,24 +3767,24 @@ Content-Length: 724
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-19T01:58:13.91615",
-    "modifiedAt" : "2022-11-19T01:58:13.916165",
+    "createdAt" : "2022-11-21T12:00:33.736624",
+    "modifiedAt" : "2022-11-21T12:00:33.736639",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:13.916188",
-      "modifiedAt" : "2022-11-19T01:58:13.91619"
+      "createdAt" : "2022-11-21T12:00:33.736661",
+      "modifiedAt" : "2022-11-21T12:00:33.736664"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:13.916197",
-      "modifiedAt" : "2022-11-19T01:58:13.916199"
+      "createdAt" : "2022-11-21T12:00:33.736671",
+      "modifiedAt" : "2022-11-21T12:00:33.736673"
     } ]
   }
 }</code></pre>
@@ -3780,7 +3936,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 726
+Content-Length: 725
 
 {
   "data" : {
@@ -3789,24 +3945,24 @@ Content-Length: 726
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.044066",
-    "modifiedAt" : "2022-11-19T01:58:14.044077",
+    "createdAt" : "2022-11-21T12:00:33.858808",
+    "modifiedAt" : "2022-11-21T12:00:33.85882",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.044079",
-      "modifiedAt" : "2022-11-19T01:58:14.044081"
+      "createdAt" : "2022-11-21T12:00:33.858823",
+      "modifiedAt" : "2022-11-21T12:00:33.858825"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.044084",
-      "modifiedAt" : "2022-11-19T01:58:14.044085"
+      "createdAt" : "2022-11-21T12:00:33.858827",
+      "modifiedAt" : "2022-11-21T12:00:33.858829"
     } ]
   }
 }</code></pre>
@@ -3939,7 +4095,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 2156
+Content-Length: 2155
 
 {
   "data" : [ {
@@ -3948,24 +4104,24 @@ Content-Length: 2156
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.026373",
-    "modifiedAt" : "2022-11-19T01:58:14.026384",
+    "createdAt" : "2022-11-21T12:00:33.841635",
+    "modifiedAt" : "2022-11-21T12:00:33.841645",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.026386",
-      "modifiedAt" : "2022-11-19T01:58:14.026388"
+      "createdAt" : "2022-11-21T12:00:33.841647",
+      "modifiedAt" : "2022-11-21T12:00:33.841649"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 3,
       "memberName" : "김길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-19T01:58:14.026392",
-      "modifiedAt" : "2022-11-19T01:58:14.026394"
+      "createdAt" : "2022-11-21T12:00:33.841653",
+      "modifiedAt" : "2022-11-21T12:00:33.841655"
     } ]
   }, {
     "answerId" : 2,
@@ -3973,24 +4129,24 @@ Content-Length: 2156
     "memberId" : 2,
     "memberName" : "고길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.026397",
-    "modifiedAt" : "2022-11-19T01:58:14.026399",
+    "createdAt" : "2022-11-21T12:00:33.841658",
+    "modifiedAt" : "2022-11-21T12:00:33.84166",
     "comments" : [ {
       "commentId" : 3,
       "body" : "댓글3",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 2,
-      "createdAt" : "2022-11-19T01:58:14.026402",
-      "modifiedAt" : "2022-11-19T01:58:14.026403"
+      "createdAt" : "2022-11-21T12:00:33.841662",
+      "modifiedAt" : "2022-11-21T12:00:33.841664"
     }, {
       "commentId" : 4,
       "body" : "댓글4",
       "memberId" : 3,
       "memberName" : "김길동",
       "answerId" : 2,
-      "createdAt" : "2022-11-19T01:58:14.026406",
-      "modifiedAt" : "2022-11-19T01:58:14.026408"
+      "createdAt" : "2022-11-21T12:00:33.841667",
+      "modifiedAt" : "2022-11-21T12:00:33.841669"
     } ]
   }, {
     "answerId" : 3,
@@ -3998,24 +4154,24 @@ Content-Length: 2156
     "memberId" : 3,
     "memberName" : "김길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.026411",
-    "modifiedAt" : "2022-11-19T01:58:14.026412",
+    "createdAt" : "2022-11-21T12:00:33.841672",
+    "modifiedAt" : "2022-11-21T12:00:33.841674",
     "comments" : [ {
       "commentId" : 5,
       "body" : "댓글5",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 3,
-      "createdAt" : "2022-11-19T01:58:14.026415",
-      "modifiedAt" : "2022-11-19T01:58:14.026417"
+      "createdAt" : "2022-11-21T12:00:33.841676",
+      "modifiedAt" : "2022-11-21T12:00:33.841678"
     }, {
       "commentId" : 6,
       "body" : "댓글6",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 3,
-      "createdAt" : "2022-11-19T01:58:14.026419",
-      "modifiedAt" : "2022-11-19T01:58:14.026421"
+      "createdAt" : "2022-11-21T12:00:33.841681",
+      "modifiedAt" : "2022-11-21T12:00:33.841683"
     } ]
   } ]
 }</code></pre>
@@ -4220,8 +4376,8 @@ Content-Length: 233
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.676812",
-    "modifiedAt" : "2022-11-19T01:58:14.676824"
+    "createdAt" : "2022-11-21T12:00:34.464613",
+    "modifiedAt" : "2022-11-21T12:00:34.464624"
   }
 }</code></pre>
 </div>
@@ -4370,7 +4526,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 232
+Content-Length: 233
 
 {
   "data" : {
@@ -4379,8 +4535,8 @@ Content-Length: 232
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.642536",
-    "modifiedAt" : "2022-11-19T01:58:14.64254"
+    "createdAt" : "2022-11-21T12:00:34.436092",
+    "modifiedAt" : "2022-11-21T12:00:34.436096"
   }
 }</code></pre>
 </div>
@@ -4491,7 +4647,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 233
+Content-Length: 232
 
 {
   "data" : {
@@ -4500,8 +4656,8 @@ Content-Length: 233
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.686468",
-    "modifiedAt" : "2022-11-19T01:58:14.686481"
+    "createdAt" : "2022-11-21T12:00:34.473958",
+    "modifiedAt" : "2022-11-21T12:00:34.47397"
   }
 }</code></pre>
 </div>
@@ -4602,24 +4758,24 @@ Content-Length: 677
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.665517",
-    "modifiedAt" : "2022-11-19T01:58:14.665529"
+    "createdAt" : "2022-11-21T12:00:34.456906",
+    "modifiedAt" : "2022-11-21T12:00:34.456916"
   }, {
     "commentId" : 2,
     "body" : "댓글2",
     "memberId" : 2,
     "memberName" : "고길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.665532",
-    "modifiedAt" : "2022-11-19T01:58:14.665533"
+    "createdAt" : "2022-11-21T12:00:34.456919",
+    "modifiedAt" : "2022-11-21T12:00:34.456921"
   }, {
     "commentId" : 3,
     "body" : "댓글3",
     "memberId" : 3,
     "memberName" : "김길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-19T01:58:14.665536",
-    "modifiedAt" : "2022-11-19T01:58:14.665538"
+    "createdAt" : "2022-11-21T12:00:34.456923",
+    "modifiedAt" : "2022-11-21T12:00:34.456925"
   } ]
 }</code></pre>
 </div>
@@ -5471,7 +5627,8 @@ Host: localhost:8080</code></pre>
     -H 'Content-Type: application/json;charset=UTF-8' \
     -H 'Accept: application/json' \
     -d '{
-  "name" : "JAVA"
+  "name" : "JAVA",
+  "skillSort" : "BACKEND"
 }'</code></pre>
 </div>
 </div>
@@ -5495,6 +5652,11 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
 </tbody>
 </table>
 <div class="listingblock">
@@ -5503,11 +5665,12 @@ Host: localhost:8080</code></pre>
 <pre class="prettyprint highlight nowrap"><code data-lang="http">POST /skills HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 21
+Content-Length: 48
 Host: localhost:8080
 
 {
-  "name" : "JAVA"
+  "name" : "JAVA",
+  "skillSort" : "BACKEND"
 }</code></pre>
 </div>
 </div>
@@ -5515,7 +5678,8 @@ Host: localhost:8080
 <div class="title">httpie-request</div>
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="bash">$ echo '{
-  "name" : "JAVA"
+  "name" : "JAVA",
+  "skillSort" : "BACKEND"
 }' | http POST 'http://localhost:8080/skills' \
     'Content-Type:application/json;charset=UTF-8' \
     'Accept:application/json'</code></pre>
@@ -5551,6 +5715,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
 </tbody>
 </table>
 <div class="listingblock">
@@ -5558,12 +5727,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 59
+Content-Length: 90
 
 {
   "data" : {
     "skillId" : 1,
-    "name" : "JAVA"
+    "name" : "JAVA",
+    "skillSort" : "백엔드"
   }
 }</code></pre>
 </div>
@@ -5621,6 +5791,11 @@ Content-Length: 59
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
 </tr>
 </tbody>
 </table>
@@ -5680,6 +5855,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
 </tbody>
 </table>
 <div class="listingblock">
@@ -5687,12 +5867,13 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 61
+Content-Length: 92
 
 {
   "data" : {
     "skillId" : 1,
-    "name" : "Spring"
+    "name" : "Spring",
+    "skillSort" : "백엔드"
   }
 }</code></pre>
 </div>
@@ -5771,6 +5952,11 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
 </tbody>
 </table>
 <div class="listingblock">
@@ -5778,12 +5964,13 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 59
+Content-Length: 90
 
 {
   "data" : {
     "skillId" : 1,
-    "name" : "JAVA"
+    "name" : "JAVA",
+    "skillSort" : "백엔드"
   }
 }</code></pre>
 </div>
@@ -5843,6 +6030,11 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 이름</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
 </tbody>
 </table>
 <div class="listingblock">
@@ -5850,18 +6042,21 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 159
+Content-Length: 252
 
 {
   "data" : [ {
     "skillId" : 1,
-    "name" : "JAVA"
+    "name" : "JAVA",
+    "skillSort" : "백엔드"
   }, {
     "skillId" : 2,
-    "name" : "Spring"
+    "name" : "Spring",
+    "skillSort" : "백엔드"
   }, {
     "skillId" : 3,
-    "name" : "Nodejs"
+    "name" : "Nodejs",
+    "skillSort" : "백엔드"
   } ]
 }</code></pre>
 </div>
@@ -5920,7 +6115,7 @@ Host: localhost:8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-18 00:40:39 +0900
+Last updated 2022-11-21 11:57:07 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
