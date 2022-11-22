@@ -70,6 +70,10 @@ public class Article extends Auditable {
         return member.getName();
     }
 
+    public String getMemberLevel() {
+        return member.getLevel();
+    }
+
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleHashtag> articleHashtags = new ArrayList<>();
 

@@ -28,6 +28,7 @@ public class ArticleDetailResponseDto {
     private int frontend;
     private long memberId;
     private String memberName;
+    private String memberLevel;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private int heartCount;
