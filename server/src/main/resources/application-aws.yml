@@ -15,6 +15,9 @@ spring:
   redis:
     host: ec2-15-165-2-129.ap-northeast-2.compute.amazonaws.com
     port: 6379
+  sql:
+    init:
+      mode: always
 logging:
   level:
     org:
@@ -29,9 +32,7 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
-sql:
-  init:
-    mode: always
+
 mail:
   smtp:
     auth: true
