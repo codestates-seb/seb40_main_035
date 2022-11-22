@@ -1,6 +1,6 @@
 package com.codestates.mainproject.domain.member.dto;
 
-import com.codestates.mainproject.domain.article.dto.ArticleSimpleResponseDto;
+import com.codestates.mainproject.domain.article.dto.ArticleResponseDto;
 import com.codestates.mainproject.domain.interest.dto.InterestResponseDto;
 import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
 
@@ -17,7 +17,6 @@ import java.util.List;
 public class MemberDetailResponseDto {
     private long memberId;
     private String email;
-    private String password;
     private String name;
     private String description;
     private String level;
@@ -26,6 +25,6 @@ public class MemberDetailResponseDto {
     private List<SkillResponseDto> skills;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private List<ArticleSimpleResponseDto> articles;
-    private List<ArticleSimpleResponseDto> heartArticles;
+    private List<ArticleResponseDto> articles;
+    private List<ArticleResponseDto> heartArticles;
 }
