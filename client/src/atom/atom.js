@@ -52,16 +52,7 @@ export const selectedInterestsState = atom({
 // 사용자의 관심 분야 목록 상태
 export const interestViewState = atom({
   key: 'interestViewState',
-  default: [
-    {
-      interestId: 1,
-      name: '교육',
-    },
-    {
-      interestId: 2,
-      name: '에너지/친환경',
-    },
-  ],
+  default: [],
 });
 
 // 사용자의 기술 스택 목록 상태
@@ -70,27 +61,15 @@ export const skillStackViewState = atom({
   default: [
     {
       tabTitle: '프론트엔드',
-      tabCont: [
-        {
-          skillId: 1,
-          name: 'JavaScript',
-        },
-        {
-          skillId: 2,
-          name: 'TypeScript',
-        },
-      ],
+      tabCont: [],
     },
     {
       tabTitle: '백엔드',
-      tabCont: [
-        { skillId: 1, name: 'Java' },
-        { skillId: 2, name: 'MongoDB' },
-      ],
+      tabCont: [],
     },
     {
       tabTitle: '기타',
-      tabCont: [{ skillId: 1, name: 'Figma' }],
+      tabCont: [],
     },
   ],
 });
@@ -98,15 +77,7 @@ export const skillStackViewState = atom({
 // 유저 프로필 기본 정보
 export const userProfileState = atom({
   key: 'userProfileState',
-  default: {
-    memberId: 1,
-    email: 'hgd@gmail.com',
-    password: 'hgd1234!',
-    name: '홍길동',
-    description: '길동이입니다',
-    level: '학생',
-    github: 'github.com/honggildong',
-  },
+  default: {},
 });
 
 // 로그인된 유저의 정보 (유저 아이디)
@@ -126,5 +97,17 @@ export const inputBodyState = atom({
 // 입력된 해시태그 목록 상태
 export const inputHashTagsState = atom({
   key: 'inputHashTagsState',
+  default: [],
+});
+
+// 사용자가 모집한 프로젝트 목록 상태
+export const recruitedArticlesState = atom({
+  key: 'recruitedArticlesState',
+  default: [],
+});
+
+// 사용자가 좋아요한 프로젝트 목록 상태
+export const likedArticlesState = atom({
+  key: 'likedArticlesState',
   default: [],
 });
