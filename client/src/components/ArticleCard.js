@@ -169,7 +169,7 @@ const ArticleCard = ({
 }) => {
   return (
     <ArticleCardWrapper
-      to={articleId}
+      to={`/articles/${articleId}`}
       className={isCompleted === false ? '' : 'closed'}
     >
       <article>
