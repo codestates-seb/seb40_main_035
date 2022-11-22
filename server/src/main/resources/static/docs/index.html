@@ -714,13 +714,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 675
+Content-Length: 1996
 
 {
   "data" : {
     "memberId" : 1,
     "email" : "hgd@gmail.com",
-    "password" : "hgd1234!",
     "name" : "홍길동",
     "description" : "길동이입니다",
     "level" : "학생",
@@ -734,15 +733,67 @@ Content-Length: 675
       "name" : "JAVA",
       "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-21T12:00:35.181969",
-    "modifiedAt" : "2022-11-21T12:00:35.181981",
+    "createdAt" : "2022-11-22T11:18:18.92904",
+    "modifiedAt" : "2022-11-22T11:18:18.929052",
     "articles" : [ {
       "articleId" : 1,
-      "title" : "제목1"
+      "title" : "제목1",
+      "body" : "본문1",
+      "views" : 0,
+      "isCompleted" : false,
+      "startDay" : "20221109",
+      "endDay" : "20221210",
+      "backend" : 3,
+      "frontend" : 3,
+      "memberId" : 1,
+      "memberName" : "홍길동",
+      "createdAt" : "2022-11-22T11:18:18.929055",
+      "modifiedAt" : "2022-11-22T11:18:18.929057",
+      "heartCount" : 0,
+      "answerCount" : 1,
+      "hashtags" : [ {
+        "hashtagId" : 1,
+        "name" : "해쉬태그1"
+      } ],
+      "interests" : [ {
+        "interestId" : 1,
+        "name" : "교육"
+      } ],
+      "skills" : [ {
+        "skillId" : 1,
+        "name" : "JAVA",
+        "skillSort" : "백엔드"
+      } ]
     } ],
     "heartArticles" : [ {
       "articleId" : 1,
-      "title" : "제목1"
+      "title" : "제목1",
+      "body" : "본문1",
+      "views" : 0,
+      "isCompleted" : false,
+      "startDay" : "20221109",
+      "endDay" : "20221210",
+      "backend" : 3,
+      "frontend" : 3,
+      "memberId" : 1,
+      "memberName" : "홍길동",
+      "createdAt" : "2022-11-22T11:18:18.92906",
+      "modifiedAt" : "2022-11-22T11:18:18.929062",
+      "heartCount" : 0,
+      "answerCount" : 1,
+      "hashtags" : [ {
+        "hashtagId" : 1,
+        "name" : "해쉬태그1"
+      } ],
+      "interests" : [ {
+        "interestId" : 1,
+        "name" : "교육"
+      } ],
+      "skills" : [ {
+        "skillId" : 1,
+        "name" : "JAVA",
+        "skillSort" : "백엔드"
+      } ]
     } ]
   }
 }</code></pre>
@@ -777,11 +828,6 @@ Content-Length: 675
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.email</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이메일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 비밀번호</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.name</code></p></td>
@@ -864,19 +910,249 @@ Content-Length: 675
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성글 제목</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 본문</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].views</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].isCompleted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 모집종료여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].startDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프로젝트 개시일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].endDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프로젝트 마감일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].backend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 백엔드 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].frontend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프론트 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 회원 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].memberName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 회원 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].heartCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 좋아요수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].answerCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 답변수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags[].hashtagId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests[].interestId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].skillId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 좋아요 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 좋아요 게시글 정보</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].articleId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 식별자</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 식별자</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 제목</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 본문</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].views</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].isCompleted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 모집종료여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].startDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프로젝트 개시일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].endDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프로젝트 마감일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].backend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 백엔드 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].frontend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프론트 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 회원 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].memberName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 회원 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].heartCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 좋아요수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].answerCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 답변수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags[].hashtagId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests[].interestId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].skillId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
 </tr>
 </tbody>
 </table>
@@ -1024,13 +1300,12 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 684
+Content-Length: 2007
 
 {
   "data" : {
     "memberId" : 1,
     "email" : "hgd@gmail.com",
-    "password" : "hgd1234@",
     "name" : "고길동",
     "description" : "홍길동아닙니다",
     "level" : "시니어",
@@ -1044,15 +1319,67 @@ Content-Length: 684
       "name" : "Spring",
       "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-21T12:00:35.153612",
-    "modifiedAt" : "2022-11-21T12:00:35.153624",
+    "createdAt" : "2022-11-22T11:18:18.894565",
+    "modifiedAt" : "2022-11-22T11:18:18.894576",
     "articles" : [ {
       "articleId" : 1,
-      "title" : "제목1"
+      "title" : "제목1",
+      "body" : "본문1",
+      "views" : 0,
+      "isCompleted" : false,
+      "startDay" : "20221109",
+      "endDay" : "20221210",
+      "backend" : 3,
+      "frontend" : 3,
+      "memberId" : 1,
+      "memberName" : "고길동",
+      "createdAt" : "2022-11-22T11:18:18.894585",
+      "modifiedAt" : "2022-11-22T11:18:18.894586",
+      "heartCount" : 0,
+      "answerCount" : 1,
+      "hashtags" : [ {
+        "hashtagId" : 1,
+        "name" : "해쉬태그1"
+      } ],
+      "interests" : [ {
+        "interestId" : 1,
+        "name" : "교육"
+      } ],
+      "skills" : [ {
+        "skillId" : 1,
+        "name" : "JAVA",
+        "skillSort" : "백엔드"
+      } ]
     } ],
     "heartArticles" : [ {
       "articleId" : 1,
-      "title" : "제목1"
+      "title" : "제목1",
+      "body" : "본문1",
+      "views" : 0,
+      "isCompleted" : false,
+      "startDay" : "20221109",
+      "endDay" : "20221210",
+      "backend" : 3,
+      "frontend" : 3,
+      "memberId" : 1,
+      "memberName" : "고길동",
+      "createdAt" : "2022-11-22T11:18:18.894605",
+      "modifiedAt" : "2022-11-22T11:18:18.894607",
+      "heartCount" : 0,
+      "answerCount" : 1,
+      "hashtags" : [ {
+        "hashtagId" : 1,
+        "name" : "해쉬태그1"
+      } ],
+      "interests" : [ {
+        "interestId" : 1,
+        "name" : "교육"
+      } ],
+      "skills" : [ {
+        "skillId" : 1,
+        "name" : "JAVA",
+        "skillSort" : "백엔드"
+      } ]
     } ]
   }
 }</code></pre>
@@ -1089,11 +1416,6 @@ Content-Length: 684
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이메일</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 비밀번호</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이름</p></td>
@@ -1146,7 +1468,7 @@ Content-Length: 684
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 기술스택 종류</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdAt</code></p></td>
@@ -1174,19 +1496,249 @@ Content-Length: 684
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성글 제목</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 본문</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].views</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].isCompleted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 모집종료여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].startDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프로젝트 개시일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].endDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프로젝트 마감일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].backend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 백엔드 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].frontend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프론트 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 회원 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].memberName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 회원 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].heartCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 좋아요수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].answerCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 답변수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags[].hashtagId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests[].interestId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].skillId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 좋아요 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 좋아요 게시글 정보</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].articleId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 식별자</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 식별자</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 제목</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 본문</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].views</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].isCompleted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 모집종료여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].startDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프로젝트 개시일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].endDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프로젝트 마감일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].backend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 백엔드 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].frontend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프론트 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 회원 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].memberName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 회원 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].heartCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 좋아요수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].answerCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 답변수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags[].hashtagId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests[].interestId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].skillId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
 </tr>
 </tbody>
 </table>
@@ -1219,13 +1771,12 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 675
+Content-Length: 1998
 
 {
   "data" : {
     "memberId" : 1,
     "email" : "hgd@gmail.com",
-    "password" : "hgd1234!",
     "name" : "홍길동",
     "description" : "길동이입니다",
     "level" : "학생",
@@ -1239,15 +1790,67 @@ Content-Length: 675
       "name" : "JAVA",
       "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-21T12:00:35.172417",
-    "modifiedAt" : "2022-11-21T12:00:35.172428",
+    "createdAt" : "2022-11-22T11:18:18.916384",
+    "modifiedAt" : "2022-11-22T11:18:18.916395",
     "articles" : [ {
       "articleId" : 1,
-      "title" : "제목1"
+      "title" : "제목1",
+      "body" : "본문1",
+      "views" : 0,
+      "isCompleted" : false,
+      "startDay" : "20221109",
+      "endDay" : "20221210",
+      "backend" : 3,
+      "frontend" : 3,
+      "memberId" : 1,
+      "memberName" : "고길동",
+      "createdAt" : "2022-11-22T11:18:18.916398",
+      "modifiedAt" : "2022-11-22T11:18:18.916399",
+      "heartCount" : 0,
+      "answerCount" : 1,
+      "hashtags" : [ {
+        "hashtagId" : 1,
+        "name" : "해쉬태그1"
+      } ],
+      "interests" : [ {
+        "interestId" : 1,
+        "name" : "교육"
+      } ],
+      "skills" : [ {
+        "skillId" : 1,
+        "name" : "JAVA",
+        "skillSort" : "백엔드"
+      } ]
     } ],
     "heartArticles" : [ {
       "articleId" : 1,
-      "title" : "제목1"
+      "title" : "제목1",
+      "body" : "본문1",
+      "views" : 0,
+      "isCompleted" : false,
+      "startDay" : "20221109",
+      "endDay" : "20221210",
+      "backend" : 3,
+      "frontend" : 3,
+      "memberId" : 1,
+      "memberName" : "고길동",
+      "createdAt" : "2022-11-22T11:18:18.916403",
+      "modifiedAt" : "2022-11-22T11:18:18.916404",
+      "heartCount" : 0,
+      "answerCount" : 1,
+      "hashtags" : [ {
+        "hashtagId" : 1,
+        "name" : "해쉬태그1"
+      } ],
+      "interests" : [ {
+        "interestId" : 1,
+        "name" : "교육"
+      } ],
+      "skills" : [ {
+        "skillId" : 1,
+        "name" : "JAVA",
+        "skillSort" : "백엔드"
+      } ]
     } ]
   }
 }</code></pre>
@@ -1284,11 +1887,6 @@ Content-Length: 675
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이메일</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 비밀번호</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이름</p></td>
@@ -1341,7 +1939,7 @@ Content-Length: 675
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.skills[].skillSort</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 기술스택 종류</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdAt</code></p></td>
@@ -1369,19 +1967,249 @@ Content-Length: 675
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성글 제목</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 본문</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].views</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].isCompleted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 모집종료여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].startDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프로젝트 개시일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].endDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프로젝트 마감일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].backend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 백엔드 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].frontend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 프론트 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 회원 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].memberName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 회원 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].heartCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 좋아요수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].answerCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성글 답변수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags[].hashtagId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].hashtags[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests[].interestId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].interests[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].skillId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.articles[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 좋아요 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 좋아요 게시글 정보</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].articleId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 식별자</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 식별자</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 제목</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].body</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 본문</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].views</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].isCompleted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 모집종료여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].startDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프로젝트 개시일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].endDay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프로젝트 마감일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].backend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 백엔드 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].frontend</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 프론트 인원수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].memberId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 회원 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].memberName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 회원 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].modifiedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].heartCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 좋아요수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].answerCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 게시글 답변수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags[].hashtagId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].hashtags[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests[].interestId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].interests[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">관심분야 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].skillId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 식별자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.heartArticles[].skills[].skillSort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술스택 종류</p></td>
 </tr>
 </tbody>
 </table>
@@ -1414,13 +2242,12 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1641
+Content-Length: 1555
 
 {
   "data" : [ {
     "memberId" : 1,
     "email" : "hgd@gmail.com",
-    "password" : "hgd1234!",
     "name" : "홍길동",
     "description" : "길동이입니다",
     "level" : "학생",
@@ -1434,12 +2261,11 @@ Content-Length: 1641
       "name" : "JAVA",
       "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-21T12:00:35.201439",
-    "modifiedAt" : "2022-11-21T12:00:35.20145"
+    "createdAt" : "2022-11-22T11:18:18.953832",
+    "modifiedAt" : "2022-11-22T11:18:18.953843"
   }, {
     "memberId" : 2,
     "email" : "ggd@gmail.com",
-    "password" : "ggd1234@",
     "name" : "고길동",
     "description" : "길동이아닙니다",
     "level" : "시니어",
@@ -1453,12 +2279,11 @@ Content-Length: 1641
       "name" : "Spring",
       "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-21T12:00:35.201462",
-    "modifiedAt" : "2022-11-21T12:00:35.201464"
+    "createdAt" : "2022-11-22T11:18:18.953853",
+    "modifiedAt" : "2022-11-22T11:18:18.953855"
   }, {
     "memberId" : 3,
     "email" : "kgd@gmail.com",
-    "password" : "hgd1234#",
     "name" : "김길동",
     "description" : "길동",
     "level" : "주니어",
@@ -1472,8 +2297,8 @@ Content-Length: 1641
       "name" : "Nodejs",
       "skillSort" : "백엔드"
     } ],
-    "createdAt" : "2022-11-21T12:00:35.201472",
-    "modifiedAt" : "2022-11-21T12:00:35.201473"
+    "createdAt" : "2022-11-22T11:18:18.953861",
+    "modifiedAt" : "2022-11-22T11:18:18.953863"
   } ],
   "additionalData" : null,
   "pageInfo" : {
@@ -1514,11 +2339,6 @@ Content-Length: 1641
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].email</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이메일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 비밀번호</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].name</code></p></td>
@@ -2081,8 +2901,8 @@ Content-Length: 1223
     "frontend" : 3,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-21T12:00:34.142836",
-    "modifiedAt" : "2022-11-21T12:00:34.142846",
+    "createdAt" : "2022-11-22T11:18:17.720255",
+    "modifiedAt" : "2022-11-22T11:18:17.720268",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -2104,16 +2924,16 @@ Content-Length: 1223
       "memberId" : 1,
       "memberName" : "홍길동",
       "articleId" : 1,
-      "createdAt" : "2022-11-21T12:00:34.142877",
-      "modifiedAt" : "2022-11-21T12:00:34.142879",
+      "createdAt" : "2022-11-22T11:18:17.720523",
+      "modifiedAt" : "2022-11-22T11:18:17.720526",
       "comments" : [ {
         "commentId" : 1,
         "body" : "댓글1",
         "memberId" : 1,
         "memberName" : "홍길동",
         "answerId" : 1,
-        "createdAt" : "2022-11-21T12:00:34.142882",
-        "modifiedAt" : "2022-11-21T12:00:34.142884"
+        "createdAt" : "2022-11-22T11:18:17.720529",
+        "modifiedAt" : "2022-11-22T11:18:17.720531"
       } ]
     } ]
   }
@@ -2558,7 +3378,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1223
+Content-Length: 1222
 
 {
   "data" : {
@@ -2573,8 +3393,8 @@ Content-Length: 1223
     "frontend" : 2,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-21T12:00:34.219444",
-    "modifiedAt" : "2022-11-21T12:00:34.219454",
+    "createdAt" : "2022-11-22T11:18:17.800783",
+    "modifiedAt" : "2022-11-22T11:18:17.800793",
     "heartCount" : 1,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -2596,16 +3416,16 @@ Content-Length: 1223
       "memberId" : 1,
       "memberName" : "홍길동",
       "articleId" : 1,
-      "createdAt" : "2022-11-21T12:00:34.21946",
-      "modifiedAt" : "2022-11-21T12:00:34.219461",
+      "createdAt" : "2022-11-22T11:18:17.800798",
+      "modifiedAt" : "2022-11-22T11:18:17.8008",
       "comments" : [ {
         "commentId" : 1,
         "body" : "댓글1",
         "memberId" : 1,
         "memberName" : "홍길동",
         "answerId" : 1,
-        "createdAt" : "2022-11-21T12:00:34.219463",
-        "modifiedAt" : "2022-11-21T12:00:34.219465"
+        "createdAt" : "2022-11-22T11:18:17.800802",
+        "modifiedAt" : "2022-11-22T11:18:17.800804"
       } ]
     } ]
   }
@@ -2888,7 +3708,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1218
+Content-Length: 1219
 
 {
   "data" : {
@@ -2903,8 +3723,8 @@ Content-Length: 1218
     "frontend" : 3,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-21T12:00:34.177778",
-    "modifiedAt" : "2022-11-21T12:00:34.177789",
+    "createdAt" : "2022-11-22T11:18:17.758165",
+    "modifiedAt" : "2022-11-22T11:18:17.758175",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -2926,16 +3746,16 @@ Content-Length: 1218
       "memberId" : 1,
       "memberName" : "홍길동",
       "articleId" : 1,
-      "createdAt" : "2022-11-21T12:00:34.1778",
-      "modifiedAt" : "2022-11-21T12:00:34.177802",
+      "createdAt" : "2022-11-22T11:18:17.758184",
+      "modifiedAt" : "2022-11-22T11:18:17.758186",
       "comments" : [ {
         "commentId" : 1,
         "body" : "댓글1",
         "memberId" : 1,
         "memberName" : "홍길동",
         "answerId" : 1,
-        "createdAt" : "2022-11-21T12:00:34.177804",
-        "modifiedAt" : "2022-11-21T12:00:34.177806"
+        "createdAt" : "2022-11-22T11:18:17.758188",
+        "modifiedAt" : "2022-11-22T11:18:17.75819"
       } ]
     } ]
   }
@@ -3214,8 +4034,8 @@ Content-Length: 2411
     "frontend" : 3,
     "memberId" : 1,
     "memberName" : "홍길동",
-    "createdAt" : "2022-11-21T12:00:34.191798",
-    "modifiedAt" : "2022-11-21T12:00:34.191809",
+    "createdAt" : "2022-11-22T11:18:17.772012",
+    "modifiedAt" : "2022-11-22T11:18:17.772022",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -3243,8 +4063,8 @@ Content-Length: 2411
     "frontend" : 2,
     "memberId" : 2,
     "memberName" : "고길동",
-    "createdAt" : "2022-11-21T12:00:34.191831",
-    "modifiedAt" : "2022-11-21T12:00:34.191833",
+    "createdAt" : "2022-11-22T11:18:17.772041",
+    "modifiedAt" : "2022-11-22T11:18:17.772043",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -3272,8 +4092,8 @@ Content-Length: 2411
     "frontend" : 4,
     "memberId" : 3,
     "memberName" : "김길동",
-    "createdAt" : "2022-11-21T12:00:34.191841",
-    "modifiedAt" : "2022-11-21T12:00:34.191843",
+    "createdAt" : "2022-11-22T11:18:17.772051",
+    "modifiedAt" : "2022-11-22T11:18:17.772053",
     "heartCount" : 0,
     "answerCount" : 1,
     "hashtags" : [ {
@@ -3551,24 +4371,24 @@ Content-Length: 725
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-21T12:00:33.875755",
-    "modifiedAt" : "2022-11-21T12:00:33.875766",
+    "createdAt" : "2022-11-22T11:18:17.406838",
+    "modifiedAt" : "2022-11-22T11:18:17.406848",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.875768",
-      "modifiedAt" : "2022-11-21T12:00:33.87577"
+      "createdAt" : "2022-11-22T11:18:17.40685",
+      "modifiedAt" : "2022-11-22T11:18:17.406852"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.875773",
-      "modifiedAt" : "2022-11-21T12:00:33.875775"
+      "createdAt" : "2022-11-22T11:18:17.406857",
+      "modifiedAt" : "2022-11-22T11:18:17.406859"
     } ]
   }
 }</code></pre>
@@ -3767,24 +4587,24 @@ Content-Length: 726
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-21T12:00:33.736624",
-    "modifiedAt" : "2022-11-21T12:00:33.736639",
+    "createdAt" : "2022-11-22T11:18:17.269418",
+    "modifiedAt" : "2022-11-22T11:18:17.269433",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.736661",
-      "modifiedAt" : "2022-11-21T12:00:33.736664"
+      "createdAt" : "2022-11-22T11:18:17.269689",
+      "modifiedAt" : "2022-11-22T11:18:17.269695"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.736671",
-      "modifiedAt" : "2022-11-21T12:00:33.736673"
+      "createdAt" : "2022-11-22T11:18:17.269702",
+      "modifiedAt" : "2022-11-22T11:18:17.269705"
     } ]
   }
 }</code></pre>
@@ -3945,24 +4765,24 @@ Content-Length: 725
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-21T12:00:33.858808",
-    "modifiedAt" : "2022-11-21T12:00:33.85882",
+    "createdAt" : "2022-11-22T11:18:17.39171",
+    "modifiedAt" : "2022-11-22T11:18:17.391719",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.858823",
-      "modifiedAt" : "2022-11-21T12:00:33.858825"
+      "createdAt" : "2022-11-22T11:18:17.391722",
+      "modifiedAt" : "2022-11-22T11:18:17.391724"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.858827",
-      "modifiedAt" : "2022-11-21T12:00:33.858829"
+      "createdAt" : "2022-11-22T11:18:17.391727",
+      "modifiedAt" : "2022-11-22T11:18:17.391729"
     } ]
   }
 }</code></pre>
@@ -4095,7 +4915,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 2155
+Content-Length: 2153
 
 {
   "data" : [ {
@@ -4104,24 +4924,24 @@ Content-Length: 2155
     "memberId" : 1,
     "memberName" : "홍길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-21T12:00:33.841635",
-    "modifiedAt" : "2022-11-21T12:00:33.841645",
+    "createdAt" : "2022-11-22T11:18:17.373368",
+    "modifiedAt" : "2022-11-22T11:18:17.373377",
     "comments" : [ {
       "commentId" : 1,
       "body" : "댓글1",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.841647",
-      "modifiedAt" : "2022-11-21T12:00:33.841649"
+      "createdAt" : "2022-11-22T11:18:17.37338",
+      "modifiedAt" : "2022-11-22T11:18:17.373382"
     }, {
       "commentId" : 2,
       "body" : "댓글2",
       "memberId" : 3,
       "memberName" : "김길동",
       "answerId" : 1,
-      "createdAt" : "2022-11-21T12:00:33.841653",
-      "modifiedAt" : "2022-11-21T12:00:33.841655"
+      "createdAt" : "2022-11-22T11:18:17.373385",
+      "modifiedAt" : "2022-11-22T11:18:17.373387"
     } ]
   }, {
     "answerId" : 2,
@@ -4129,24 +4949,24 @@ Content-Length: 2155
     "memberId" : 2,
     "memberName" : "고길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-21T12:00:33.841658",
-    "modifiedAt" : "2022-11-21T12:00:33.84166",
+    "createdAt" : "2022-11-22T11:18:17.37339",
+    "modifiedAt" : "2022-11-22T11:18:17.373392",
     "comments" : [ {
       "commentId" : 3,
       "body" : "댓글3",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 2,
-      "createdAt" : "2022-11-21T12:00:33.841662",
-      "modifiedAt" : "2022-11-21T12:00:33.841664"
+      "createdAt" : "2022-11-22T11:18:17.373394",
+      "modifiedAt" : "2022-11-22T11:18:17.373396"
     }, {
       "commentId" : 4,
       "body" : "댓글4",
       "memberId" : 3,
       "memberName" : "김길동",
       "answerId" : 2,
-      "createdAt" : "2022-11-21T12:00:33.841667",
-      "modifiedAt" : "2022-11-21T12:00:33.841669"
+      "createdAt" : "2022-11-22T11:18:17.373399",
+      "modifiedAt" : "2022-11-22T11:18:17.373401"
     } ]
   }, {
     "answerId" : 3,
@@ -4154,24 +4974,24 @@ Content-Length: 2155
     "memberId" : 3,
     "memberName" : "김길동",
     "articleId" : 1,
-    "createdAt" : "2022-11-21T12:00:33.841672",
-    "modifiedAt" : "2022-11-21T12:00:33.841674",
+    "createdAt" : "2022-11-22T11:18:17.373404",
+    "modifiedAt" : "2022-11-22T11:18:17.373406",
     "comments" : [ {
       "commentId" : 5,
       "body" : "댓글5",
       "memberId" : 1,
       "memberName" : "홍길동",
       "answerId" : 3,
-      "createdAt" : "2022-11-21T12:00:33.841676",
-      "modifiedAt" : "2022-11-21T12:00:33.841678"
+      "createdAt" : "2022-11-22T11:18:17.373408",
+      "modifiedAt" : "2022-11-22T11:18:17.37341"
     }, {
       "commentId" : 6,
       "body" : "댓글6",
       "memberId" : 2,
       "memberName" : "고길동",
       "answerId" : 3,
-      "createdAt" : "2022-11-21T12:00:33.841681",
-      "modifiedAt" : "2022-11-21T12:00:33.841683"
+      "createdAt" : "2022-11-22T11:18:17.373413",
+      "modifiedAt" : "2022-11-22T11:18:17.373414"
     } ]
   } ]
 }</code></pre>
@@ -4376,8 +5196,8 @@ Content-Length: 233
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-21T12:00:34.464613",
-    "modifiedAt" : "2022-11-21T12:00:34.464624"
+    "createdAt" : "2022-11-22T11:18:18.105647",
+    "modifiedAt" : "2022-11-22T11:18:18.105665"
   }
 }</code></pre>
 </div>
@@ -4535,8 +5355,8 @@ Content-Length: 233
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-21T12:00:34.436092",
-    "modifiedAt" : "2022-11-21T12:00:34.436096"
+    "createdAt" : "2022-11-22T11:18:18.072604",
+    "modifiedAt" : "2022-11-22T11:18:18.072608"
   }
 }</code></pre>
 </div>
@@ -4647,7 +5467,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 232
+Content-Length: 233
 
 {
   "data" : {
@@ -4656,8 +5476,8 @@ Content-Length: 232
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-21T12:00:34.473958",
-    "modifiedAt" : "2022-11-21T12:00:34.47397"
+    "createdAt" : "2022-11-22T11:18:18.116251",
+    "modifiedAt" : "2022-11-22T11:18:18.116262"
   }
 }</code></pre>
 </div>
@@ -4758,24 +5578,24 @@ Content-Length: 677
     "memberId" : 1,
     "memberName" : "홍길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-21T12:00:34.456906",
-    "modifiedAt" : "2022-11-21T12:00:34.456916"
+    "createdAt" : "2022-11-22T11:18:18.094805",
+    "modifiedAt" : "2022-11-22T11:18:18.094828"
   }, {
     "commentId" : 2,
     "body" : "댓글2",
     "memberId" : 2,
     "memberName" : "고길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-21T12:00:34.456919",
-    "modifiedAt" : "2022-11-21T12:00:34.456921"
+    "createdAt" : "2022-11-22T11:18:18.094831",
+    "modifiedAt" : "2022-11-22T11:18:18.094833"
   }, {
     "commentId" : 3,
     "body" : "댓글3",
     "memberId" : 3,
     "memberName" : "김길동",
     "answerId" : 1,
-    "createdAt" : "2022-11-21T12:00:34.456923",
-    "modifiedAt" : "2022-11-21T12:00:34.456925"
+    "createdAt" : "2022-11-22T11:18:18.094836",
+    "modifiedAt" : "2022-11-22T11:18:18.094838"
   } ]
 }</code></pre>
 </div>

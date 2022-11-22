@@ -16,7 +16,6 @@ import java.util.List;
 public class MemberResponseDto {
     private long memberId;
     private String email;
-    private String password;
     private String name;
     private String description;
     private String level;
