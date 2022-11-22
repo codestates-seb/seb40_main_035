@@ -210,12 +210,21 @@ const MyPage = () => {
 
   const onlinkToEdit = () => {
     location.href = `/mypage/edit/${profileData.memberId}`;
-    // location.href = `/mypage/edit/${profileData.memberId}`;
+    // location.href = `/mypage/edit/${currentUser.memberId}`;
   };
 
   const onMemberDelete = () => {
-    axios.delete(`/members/${currentUser.memberId}`);
-    location.href = `/`;
+    let isGo = window.confirm('탈퇴하시겠습니까?');
+
+    if (isGo) {
+      window.alert('탈퇴되었습니다');
+      // axios.delete(`/members/${currentUser.memberId}`); // 서버에 탈퇴 요청
+      // 로그인 여부 상태 초기화 코드 자리
+      // 로그인된 유저의 정보 (유저 아이디) 상태 초기화 코드 자리
+      window.location = '/';
+    } else {
+      console.log('stay');
+    }
   };
 
   return (
