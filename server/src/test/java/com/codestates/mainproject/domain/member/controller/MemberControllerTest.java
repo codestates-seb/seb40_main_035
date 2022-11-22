@@ -79,12 +79,12 @@ class MemberControllerTest {
                 "github.com/honggildong", List.of(new InterestResponseDto(1L, "교육")),
                 List.of(new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND)), LocalDateTime.now(), LocalDateTime.now(),
                 List.of(new ArticleResponseDto(
-                        1L, "제목1", "본문1", 0, false,
+                        1L, "제목1", 0, false,
                         "20221109", "20221210", 3, 3,
                         1L, "홍길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
                         List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND))
-                )), List.of(new ArticleResponseDto(1L, "제목1", "본문1", 0, false,
+                )), List.of(new ArticleResponseDto(1L, "제목1", 0, false,
                 "20221109", "20221210", 3, 3,
                 1L, "홍길동", LocalDateTime.now(),
                 LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
@@ -155,7 +155,6 @@ class MemberControllerTest {
                                         fieldWithPath("data.articles").type(JsonFieldType.ARRAY).description("회원 작성글 정보"),
                                         fieldWithPath("data.articles[].articleId").type(JsonFieldType.NUMBER).description("작성글 식별자"),
                                         fieldWithPath("data.articles[].title").type(JsonFieldType.STRING).description("작성글 제목"),
-                                        fieldWithPath("data.articles[].body").type(JsonFieldType.STRING).description("작성글 본문"),
                                         fieldWithPath("data.articles[].views").type(JsonFieldType.NUMBER).description("작성글 조회수"),
                                         fieldWithPath("data.articles[].isCompleted").type(JsonFieldType.BOOLEAN).description("작성글 모집종료여부"),
                                         fieldWithPath("data.articles[].startDay").type(JsonFieldType.STRING).description("작성글 프로젝트 개시일"),
@@ -185,7 +184,6 @@ class MemberControllerTest {
                                         fieldWithPath("data.heartArticles").type(JsonFieldType.ARRAY).description("회원 좋아요 게시글 정보"),
                                         fieldWithPath("data.heartArticles[].articleId").type(JsonFieldType.NUMBER).description("좋아요 게시글 식별자"),
                                         fieldWithPath("data.heartArticles[].title").type(JsonFieldType.STRING).description("좋아요 게시글 제목"),
-                                        fieldWithPath("data.heartArticles[].body").type(JsonFieldType.STRING).description("좋아요 게시글 본문"),
                                         fieldWithPath("data.heartArticles[].views").type(JsonFieldType.NUMBER).description("좋아요 게시글 조회수"),
                                         fieldWithPath("data.heartArticles[].isCompleted").type(JsonFieldType.BOOLEAN).description("좋아요 게시글 모집종료여부"),
                                         fieldWithPath("data.heartArticles[].startDay").type(JsonFieldType.STRING).description("좋아요 게시글 프로젝트 개시일"),
@@ -237,13 +235,13 @@ class MemberControllerTest {
                         "시니어", "github.com/gogildong", List.of(new InterestResponseDto(1L, "미디어")),
                         List.of(new SkillResponseDto(1L, "Spring", Skill.SkillSort.BACKEND)), LocalDateTime.now(), LocalDateTime.now(),
                         List.of(new ArticleResponseDto(
-                                1L, "제목1", "본문1", 0, false,
+                                1L, "제목1", 0, false,
                                 "20221109", "20221210", 3, 3,
                                 1L, "고길동", LocalDateTime.now(),
                                 LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
                                 List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND))
                         )), List.of(new ArticleResponseDto(
-                        1L, "제목1", "본문1", 0, false,
+                        1L, "제목1", 0, false,
                         "20221109", "20221210", 3, 3,
                         1L, "고길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
@@ -322,7 +320,6 @@ class MemberControllerTest {
                                         fieldWithPath("data.articles").type(JsonFieldType.ARRAY).description("회원 작성글 정보"),
                                         fieldWithPath("data.articles[].articleId").type(JsonFieldType.NUMBER).description("작성글 식별자"),
                                         fieldWithPath("data.articles[].title").type(JsonFieldType.STRING).description("작성글 제목"),
-                                        fieldWithPath("data.articles[].body").type(JsonFieldType.STRING).description("작성글 본문"),
                                         fieldWithPath("data.articles[].views").type(JsonFieldType.NUMBER).description("작성글 조회수"),
                                         fieldWithPath("data.articles[].isCompleted").type(JsonFieldType.BOOLEAN).description("작성글 모집종료여부"),
                                         fieldWithPath("data.articles[].startDay").type(JsonFieldType.STRING).description("작성글 프로젝트 개시일"),
@@ -352,7 +349,6 @@ class MemberControllerTest {
                                         fieldWithPath("data.heartArticles").type(JsonFieldType.ARRAY).description("회원 좋아요 게시글 정보"),
                                         fieldWithPath("data.heartArticles[].articleId").type(JsonFieldType.NUMBER).description("좋아요 게시글 식별자"),
                                         fieldWithPath("data.heartArticles[].title").type(JsonFieldType.STRING).description("좋아요 게시글 제목"),
-                                        fieldWithPath("data.heartArticles[].body").type(JsonFieldType.STRING).description("좋아요 게시글 본문"),
                                         fieldWithPath("data.heartArticles[].views").type(JsonFieldType.NUMBER).description("좋아요 게시글 조회수"),
                                         fieldWithPath("data.heartArticles[].isCompleted").type(JsonFieldType.BOOLEAN).description("좋아요 게시글 모집종료여부"),
                                         fieldWithPath("data.heartArticles[].startDay").type(JsonFieldType.STRING).description("좋아요 게시글 프로젝트 개시일"),
@@ -393,14 +389,14 @@ class MemberControllerTest {
                 "홍길동","길동이입니다","학생", "github.com/honggildong",
                 List.of(new InterestResponseDto(1L, "교육")), List.of(new SkillResponseDto(1L, "JAVA", Skill.SkillSort.BACKEND)),
                 LocalDateTime.now(), LocalDateTime.now(),List.of(new ArticleResponseDto(
-                1L, "제목1", "본문1", 0, false,
+                1L, "제목1", 0, false,
                 "20221109", "20221210", 3, 3,
                 1L, "고길동", LocalDateTime.now(),
                 LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
                 List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND))
         )),
                 List.of(new ArticleResponseDto(
-                        1L, "제목1", "본문1", 0, false,
+                        1L, "제목1", 0, false,
                         "20221109", "20221210", 3, 3,
                         1L, "고길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
@@ -452,7 +448,6 @@ class MemberControllerTest {
                                         fieldWithPath("data.articles").type(JsonFieldType.ARRAY).description("회원 작성글 정보"),
                                         fieldWithPath("data.articles[].articleId").type(JsonFieldType.NUMBER).description("작성글 식별자"),
                                         fieldWithPath("data.articles[].title").type(JsonFieldType.STRING).description("작성글 제목"),
-                                        fieldWithPath("data.articles[].body").type(JsonFieldType.STRING).description("작성글 본문"),
                                         fieldWithPath("data.articles[].views").type(JsonFieldType.NUMBER).description("작성글 조회수"),
                                         fieldWithPath("data.articles[].isCompleted").type(JsonFieldType.BOOLEAN).description("작성글 모집종료여부"),
                                         fieldWithPath("data.articles[].startDay").type(JsonFieldType.STRING).description("작성글 프로젝트 개시일"),
@@ -482,7 +477,6 @@ class MemberControllerTest {
                                         fieldWithPath("data.heartArticles").type(JsonFieldType.ARRAY).description("회원 좋아요 게시글 정보"),
                                         fieldWithPath("data.heartArticles[].articleId").type(JsonFieldType.NUMBER).description("좋아요 게시글 식별자"),
                                         fieldWithPath("data.heartArticles[].title").type(JsonFieldType.STRING).description("좋아요 게시글 제목"),
-                                        fieldWithPath("data.heartArticles[].body").type(JsonFieldType.STRING).description("좋아요 게시글 본문"),
                                         fieldWithPath("data.heartArticles[].views").type(JsonFieldType.NUMBER).description("좋아요 게시글 조회수"),
                                         fieldWithPath("data.heartArticles[].isCompleted").type(JsonFieldType.BOOLEAN).description("좋아요 게시글 모집종료여부"),
                                         fieldWithPath("data.heartArticles[].startDay").type(JsonFieldType.STRING).description("좋아요 게시글 프로젝트 개시일"),
@@ -576,8 +570,6 @@ class MemberControllerTest {
 
                                         fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                         fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("수정 날짜"),
-
-                                        fieldWithPath("additionalData").type(JsonFieldType.NULL).description("추가 데이터"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 번호"),

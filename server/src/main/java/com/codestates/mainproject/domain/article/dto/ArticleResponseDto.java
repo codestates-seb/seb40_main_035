@@ -17,7 +17,6 @@ import java.util.List;
 public class ArticleResponseDto {
     private long articleId;
     private String title;
-    private String body;
     private long views;
     private Boolean isCompleted;
     private String startDay;

@@ -81,11 +81,7 @@ public class ArticleController {
         List<ArticleResponseDto> responseDtos = mapper.articlesToArticleResponseDtos(articles);
         PageInfo pageInfo = new PageInfo(articlePage.getNumber() + 1, articlePage.getSize(), articlePage.getTotalElements(), articlePage.getTotalPages());
 
-        List<Skill> skills = skillService.findSkills();
-        List<SkillResponseDto> skillResponseDtos = skillMapper.skillsToSkillResponseDtos(skills);
-
-
-        return new ResponseEntity(new MultiResponseDto<>(responseDtos, skillResponseDtos, pageInfo), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto<>(responseDtos, pageInfo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{article-id}")

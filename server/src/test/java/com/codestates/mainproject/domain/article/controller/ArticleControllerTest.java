@@ -438,20 +438,20 @@ class ArticleControllerTest {
 
         List<ArticleResponseDto> responseDtos = List.of(
                 new ArticleResponseDto(
-                        1L, "제목1", "본문1", 0, false,
+                        1L, "제목1", 0, false,
                         "20221109", "20221210", 3, 3,
                         1L, "홍길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
                         List.of(new InterestResponseDto(1L,"교육")),List.of(new SkillResponseDto(1L,"JAVA", Skill.SkillSort.BACKEND))
                 ),
                 new ArticleResponseDto(
-                        2L, "제목2", "본문2", 0, false,
+                        2L, "제목2", 0, false,
                         "20221110", "20221211", 2, 2,
                         2L, "고길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
                         List.of(new InterestResponseDto(1L,"미디어")),List.of(new SkillResponseDto(2L,"spring", Skill.SkillSort.BACKEND))),
                 new ArticleResponseDto(
-                        3L, "제목3", "본문3", 0, true,
+                        3L, "제목3", 0, true,
                         "20221111", "20221212", 3, 4,
                         3L, "김길동", LocalDateTime.now(),
                         LocalDateTime.now(),0, 1, List.of(new HashtagResponseDto(1L,"해쉬태그1")),
@@ -496,7 +496,6 @@ class ArticleControllerTest {
                                         fieldWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터"),
                                         fieldWithPath("data[].articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                         fieldWithPath("data[].title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                        fieldWithPath("data[].body").type(JsonFieldType.STRING).description("게시글 본문"),
                                         fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("게시글 조회수"),
                                         fieldWithPath("data[].isCompleted").type(JsonFieldType.BOOLEAN).description("게시글 모집종료여부"),
                                         fieldWithPath("data[].startDay").type(JsonFieldType.STRING).description("프로젝트 개시일"),
@@ -522,11 +521,6 @@ class ArticleControllerTest {
                                         fieldWithPath("data[].skills[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
                                         fieldWithPath("data[].skills[].name").type(JsonFieldType.STRING).description("기술스택 내용"),
                                         fieldWithPath("data[].skills[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
-
-                                        fieldWithPath("additionalData").type(JsonFieldType.ARRAY).description("추가 데이터"),
-                                        fieldWithPath("additionalData[].skillId").type(JsonFieldType.NUMBER).description("기술스택 식별자"),
-                                        fieldWithPath("additionalData[].name").type(JsonFieldType.STRING).description("기술스택 내용"),
-                                        fieldWithPath("additionalData[].skillSort").type(JsonFieldType.STRING).description("기술스택 종류"),
 
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("페이지 번호"),
