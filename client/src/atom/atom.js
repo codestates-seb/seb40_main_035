@@ -57,7 +57,7 @@ export const interestViewState = atom({
 
 // 사용자의 기술 스택 목록 상태
 export const skillStackViewState = atom({
-  key: 'skillViewState',
+  key: 'skillStackViewState',
   default: [
     {
       tabTitle: '프론트엔드',
@@ -84,7 +84,7 @@ export const userProfileState = atom({
 export const currentUserState = atom({
   key: 'isLoginState',
   default: {
-    memberId: 1,
+    memberId: 2,
   },
 });
 
