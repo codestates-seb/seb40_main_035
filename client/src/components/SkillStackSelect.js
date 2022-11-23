@@ -22,7 +22,18 @@ import {
   SiPhp,
   SiGraphql,
   SiFirebase,
+  SiFlutter,
+  SiSwift,
+  SiUnity,
+  SiAmazonaws,
+  SiKubernetes,
+  SiDocker,
+  SiGit,
+  SiFigma,
+  SiJest,
+  SiCplusplus,
 } from 'react-icons/si';
+import { GiZeppelin } from 'react-icons/gi';
 
 const InterestSelectWrapper = styled.div`
   width: 100%;
@@ -71,32 +82,6 @@ const InterestSelectWrapper = styled.div`
   .active-title {
     color: var(--purple);
     border-bottom: 3px solid var(--purple);
-  }
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 30px;
-  padding: 8px 8px 10px;
-  margin: 10px 10px;
-  border-radius: 8px;
-  border: none;
-  color: var(--black);
-  outline: none;
-  border: 1px solid var(--purple-medium);
-  transition: 300ms ease-in-out;
-  white-space: nowrap;
-  line-height: 0;
-
-  &:hover,
-  &:focus,
-  &:active {
-    border-color: var(--purple);
-  }
-
-  &:focus,
-  &:active {
-    box-shadow: 0px 0px 0px 4px var(--purple-medium);
   }
 `;
 
@@ -240,19 +225,69 @@ const tabContArr = [
   },
   {
     tabTitle: '기타',
-    tabCont: [],
+    tabCont: [
+      {
+        name: 'Flutter',
+        img: <SiFlutter className="interest-tag-img" color="#02569B" />,
+      },
+      {
+        name: 'Switft',
+        img: <SiSwift className="interest-tag-img" color="#F05138" />,
+      },
+      {
+        name: 'ReactNative',
+        img: <SiReact className="interest-tag-img" color="#61DAFB" />,
+      },
+      {
+        name: 'Unity',
+        img: <SiUnity className="interest-tag-img" color="#000000" />,
+      },
+      {
+        name: 'AWS',
+        img: <SiAmazonaws className="interest-tag-img" color="#232F3E" />,
+      },
+      {
+        name: 'Kubernetes',
+        img: <SiKubernetes className="interest-tag-img" color="#326CE5" />,
+      },
+      {
+        name: 'Docker',
+        img: <SiDocker className="interest-tag-img" color="#2496ED" />,
+      },
+      {
+        name: 'Git',
+        img: <SiGit className="interest-tag-img" color="#F05032" />,
+      },
+      {
+        name: 'Figma',
+        img: <SiFigma className="interest-tag-img" color="#5B0BB5" />,
+      },
+      {
+        name: 'Zeplin',
+        img: <GiZeppelin className="interest-tag-img" color="#FF9900" />,
+      },
+      {
+        name: 'Jest',
+        img: <SiJest className="interest-tag-img" color="#C21325" />,
+      },
+      {
+        name: 'C',
+        img: <SiCplusplus className="interest-tag-img" color="#00599C" />,
+      },
+    ],
   },
 ];
 
-const Tag = ({ tag, onClick, isSelected, onDelete, icon }) => {
+const Tag = ({ tag, onClick, isSelected, onDelete, icon, icon2 }) => {
   return (
     <li>
       <TagBtn
-        onClick={() => (isSelected ? onDelete(tag) : onClick(tag))}
+        onClick={() => (isSelected ? onDelete(tag) : onClick(tag, icon))}
         className={isSelected ? 'selected-tag' : ''}
       >
         {icon}
         {tag}
+        {icon2}
       </TagBtn>
     </li>
   );
@@ -263,6 +298,7 @@ const SkillStackSelect = () => {
   const [selectedSkillstacks, setSelectedSkillstacks] = useRecoilState(
     selectedSkillstacksState,
   );
+  let selectedSkillstacksNameArr = [];
 
   const onTabClick = (index) => {
     setActiveIdx(index); // 클릭한 탭으로 활성화 탭 변경
@@ -270,36 +306,23 @@ const SkillStackSelect = () => {
 
   const onDeleteClick = (selectedTag) => {
     setSelectedSkillstacks([
-      ...selectedSkillstacks.filter((tag) => tag !== selectedTag),
+      ...selectedSkillstacks.filter((tag) => tag.name !== selectedTag),
     ]);
   };
 
-  const onTagClick = (selectedTag) => {
+  const onTagClick = (selectedTag, icon) => {
     if (!selectedSkillstacks.includes(selectedTag)) {
-      setSelectedSkillstacks([...selectedSkillstacks, selectedTag]);
+      let selected = {
+        name: selectedTag,
+        img: icon,
+      };
+      setSelectedSkillstacks([...selectedSkillstacks, selected]);
     }
   };
 
-  const onInputKeyUp = (e) => {
-    const duplicateCheck = selectedSkillstacks.filter(
-      (el) => el === e.target.value,
-    );
-    // 중복 확인 위한 arr(중복X: null, 중복: 값O)
-
-    if (
-      e.key === 'Enter' &&
-      duplicateCheck.length === 0 &&
-      e.target.value.length > 0
-    ) {
-      let newSkillName = e.target.value;
-      setSelectedSkillstacks([...selectedSkillstacks, newSkillName]); // 태그가 추가된 arr를 선택태그리스트 값으로 재설정
-      e.target.value = '';
-    } else if (
-      duplicateCheck.length !== 0 &&
-      e.key === 'Enter' // 중복 태그 시
-    ) {
-      e.target.value = '';
-    }
+  const selectedSkillstacksName = (selectedSkillstacks, selectedTag) => {
+    selectedSkillstacksNameArr = selectedSkillstacks.map((el) => el.name);
+    return selectedSkillstacksNameArr.includes(selectedTag);
   };
 
   return (
@@ -307,9 +330,10 @@ const SkillStackSelect = () => {
       <TagList className="selected-tag-list">
         {selectedSkillstacks.map((item, idx) => (
           <Tag
-            icon={<RiDeleteBack2Fill className="delete-btn" />}
+            icon={item.img}
+            icon2={<RiDeleteBack2Fill className="delete-btn" />}
             key={idx}
-            tag={item}
+            tag={item.name}
             onDelete={onDeleteClick}
             isSelected={true}
           ></Tag>
@@ -331,24 +355,16 @@ const SkillStackSelect = () => {
         })}
       </ul>
       <TagList className="tag-list">
-        {activeIdx === 2 ? (
-          <Input
-            className="skill-tag-input"
-            placeholder="기술 태그를 직접 입력해주세요."
-            onKeyUp={onInputKeyUp}
-          ></Input>
-        ) : (
-          tabContArr[activeIdx].tabCont.map((item, idx) => (
-            <Tag
-              icon={item.img}
-              key={idx}
-              tag={item.name}
-              onClick={onTagClick}
-              onDelete={onDeleteClick}
-              isSelected={selectedSkillstacks.includes(item.name)}
-            />
-          ))
-        )}
+        {tabContArr[activeIdx].tabCont.map((item, idx) => (
+          <Tag
+            icon={item.img}
+            key={idx}
+            tag={item.name}
+            onClick={onTagClick}
+            onDelete={onDeleteClick}
+            isSelected={selectedSkillstacksName(selectedSkillstacks, item.name)}
+          />
+        ))}
       </TagList>
     </InterestSelectWrapper>
   );
