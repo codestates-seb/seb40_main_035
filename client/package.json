@@ -49,5 +49,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0"
-  }
+  },
+  "proxy": "http://ec2-15-165-2-129.ap-northeast-2.compute.amazonaws.com:8080"
 }

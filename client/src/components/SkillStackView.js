@@ -41,6 +41,8 @@ const SkillViewContainer = styled.div`
     align-items: center;
   }
   .menu-title {
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
     width: 100% auto;
     height: 100%;
@@ -181,7 +183,7 @@ const SkillStackView = () => {
     },
     {
       tabTitle: '기타',
-      tabCont: [{ skillId: 1, name: 'Figma' }],
+      tabCont: [],
     },
   ];
   // 클릭된 탭으로 변경
