@@ -9,7 +9,7 @@ const Button = styled.button`
   color: var(--purple);
   border: 1px solid var(--purple);
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   transition: 300ms ease-in-out;
 
   &:hover {
@@ -23,8 +23,12 @@ const Button = styled.button`
   }
 `;
 
-const DefaultButton = ({ text, onClick }) => {
-  return <Button onClick={onClick}>{text}</Button>;
+const DefaultButton = ({ text, onClick, className }) => {
+  return (
+    <Button onClick={onClick} className={className || ''}>
+      {text}
+    </Button>
+  );
 };
 
 export default DefaultButton;
