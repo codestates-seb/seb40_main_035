@@ -231,7 +231,7 @@ const tabContArr = [
         img: <SiFlutter className="interest-tag-img" color="#02569B" />,
       },
       {
-        name: 'Switft',
+        name: 'Swift',
         img: <SiSwift className="interest-tag-img" color="#F05138" />,
       },
       {
@@ -278,7 +278,7 @@ const tabContArr = [
   },
 ];
 
-const Tag = ({ tag, onClick, isSelected, onDelete, icon, icon2 }) => {
+const Tag = ({ tag, onClick, isSelected, onDelete, icon, iconDelete }) => {
   return (
     <li>
       <TagBtn
@@ -287,7 +287,7 @@ const Tag = ({ tag, onClick, isSelected, onDelete, icon, icon2 }) => {
       >
         {icon}
         {tag}
-        {icon2}
+        {iconDelete}
       </TagBtn>
     </li>
   );
@@ -298,7 +298,6 @@ const SkillStackSelect = () => {
   const [selectedSkillstacks, setSelectedSkillstacks] = useRecoilState(
     selectedSkillstacksState,
   );
-  let selectedSkillstacksNameArr = [];
 
   const onTabClick = (index) => {
     setActiveIdx(index); // 클릭한 탭으로 활성화 탭 변경
@@ -320,8 +319,8 @@ const SkillStackSelect = () => {
     }
   };
 
-  const selectedSkillstacksName = (selectedSkillstacks, selectedTag) => {
-    selectedSkillstacksNameArr = selectedSkillstacks.map((el) => el.name);
+  const onIsSelected = (selectedSkillstacks, selectedTag) => {
+    let selectedSkillstacksNameArr = selectedSkillstacks.map((el) => el.name);
     return selectedSkillstacksNameArr.includes(selectedTag);
   };
 
@@ -331,7 +330,7 @@ const SkillStackSelect = () => {
         {selectedSkillstacks.map((item, idx) => (
           <Tag
             icon={item.img}
-            icon2={<RiDeleteBack2Fill className="delete-btn" />}
+            iconDelete={<RiDeleteBack2Fill className="delete-btn" />}
             key={idx}
             tag={item.name}
             onDelete={onDeleteClick}
@@ -362,7 +361,7 @@ const SkillStackSelect = () => {
             tag={item.name}
             onClick={onTagClick}
             onDelete={onDeleteClick}
-            isSelected={selectedSkillstacksName(selectedSkillstacks, item.name)}
+            isSelected={onIsSelected(selectedSkillstacks, item.name)}
           />
         ))}
       </TagList>
