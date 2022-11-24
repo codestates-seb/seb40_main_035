@@ -218,7 +218,7 @@ const Main = () => {
   const [viewAllStatus, setViewStatus] = useState(true);
   // 스킬 스택 필터
   const [filterModalShow, setFilterModalShow] = useState(false);
-  const selectedSkillstacks = useRecoilValue(selectedSkillstacksState);
+  const selectedSkillStacks = useRecoilValue(selectedSkillstacksState);
   const [skillfilter, setSkillFilter] = useState([]);
   // 정렬 옵션
   const sortOptions = {
@@ -298,7 +298,13 @@ const Main = () => {
           />
           <SkillFilterSelector
             isOpened={filterModalShow}
-            onApply={() => setSkillFilter(selectedSkillstacks)}
+            onApply={() =>
+              setSkillFilter(
+                selectedSkillStacks.map((el) => {
+                  return el.name;
+                }),
+              )
+            }
             onClose={() => setFilterModalShow(!filterModalShow)}
           />
         </div>
