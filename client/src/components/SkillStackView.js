@@ -26,7 +26,7 @@ import { activeMenuState, skillStackViewState } from '../atom/atom';
 
 const SkillViewContainer = styled.div`
   color: var(--grey-dark);
-  font-size: 15px;
+  font-size: 13px;
   width: 100%;
   height: auto;
   min-width: 250px;
@@ -58,17 +58,18 @@ const SkillViewContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
+    margin-bottom: 10px;
   }
   .skill-view-tag {
     border: 1px solid var(--purple-medium);
     border-radius: 25px;
     background-color: white;
-    font-size: 15px;
+    font-size: 13px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 15px 10px 10px 0;
-    padding: 7px 10px;
+    margin: 15px 8px -5px 0;
+    padding: 5px 10px;
   }
   .selected-skill-view-tag {
     padding: 7px 10px;
@@ -181,7 +182,7 @@ const SkillStackView = () => {
     },
     {
       tabTitle: '기타',
-      tabCont: [{ skillId: 1, name: 'Figma' }],
+      tabCont: [],
     },
   ];
   // 클릭된 탭으로 변경
