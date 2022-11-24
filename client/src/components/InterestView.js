@@ -14,10 +14,9 @@ import {
 } from 'react-icons/fc';
 
 const Container = styled.div`
-  border: 1px solid red;
   width: 100%;
   color: var(--black);
-  font-size: 15px;
+  font-size: 13px;
 
   .title {
     border-bottom: 1px solid var(--purple-medium);
@@ -39,12 +38,12 @@ const Container = styled.div`
     border: 1px solid var(--purple-medium);
     border-radius: 25px;
     background-color: white;
-    font-size: 15px;
+    font-size: 13px;
 
     display: flex;
     align-items: center;
-    margin: 15px 15px 15px 0;
-    padding: 7px 10px;
+    margin: 15px 8px -5px 0;
+    padding: 5px 10px;
   }
 
   .interest-tag-img {
@@ -65,7 +64,7 @@ const Container = styled.div`
 
     display: flex;
     align-items: center;
-    margin: 15px 15px 15px 0;
+    margin: 15px 7px 1px 0;
     padding: 7px 10px;
   }
 `;
