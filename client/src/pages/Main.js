@@ -10,11 +10,11 @@ import axios from 'axios';
 import SwitchToggle from '../components/SwitchToggle';
 import DefaultButton from '../components/DefaultButton';
 import SkillStackSelect from '../components/SkillStackSelect';
+import ScrollTopButton from '../components/ScrollTopButton';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
   width: 100%;
-  margin: 0 170px;
 
   h1 {
     padding: 67px 0 77px;
@@ -330,6 +330,7 @@ const Main = () => {
           );
         })}
       </ArticlesGrid>
+      <ScrollTopButton />
       {isFetching && <Loading>게시글 불러오는 중...</Loading>}
     </Container>
   );
