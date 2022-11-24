@@ -66,17 +66,17 @@ const ArticlesGrid = styled.div`
 
 const FilterSelectorWrapper = styled.div`
   .filter-modal-toggle {
-    width: 100px;
     height: 36px;
     margin-left: 10px;
     padding-left: 4px;
 
     background-color: var(--purple-light);
-    border: solid 1px var(--purple);
+    border: solid 2px var(--purple);
     border-radius: 20px;
+    padding: 0 0.9em;
 
-    font-weight: 400;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 13px;
     color: var(--purple);
 
     transition: 300ms ease-in-out;
@@ -87,6 +87,11 @@ const FilterSelectorWrapper = styled.div`
 
     &.opened {
       background-color: var(--purple-medium);
+    }
+
+    svg {
+      stroke: var(--purple);
+      margin-right: -3px;
     }
   }
 
@@ -170,7 +175,7 @@ const SkillFilterSelector = ({ onApply, onClose, isOpened }) => {
         onClick={() => onClose()}
       >
         필터링
-        <TbFilter />
+        <TbFilter size={23} />
       </button>
       {isOpened && (
         <div className="filter-selector-modal">
@@ -285,7 +290,7 @@ const Main = () => {
           <SwitchToggle
             left="전체 보기"
             right="모집 중"
-            checked={viewAllStatus}
+            setChecked={viewAllStatus}
             width="100px"
             onClick={() => {
               setViewStatus(!viewAllStatus);
