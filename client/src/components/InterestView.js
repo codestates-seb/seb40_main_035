@@ -14,7 +14,6 @@ import {
 } from 'react-icons/fc';
 
 const Container = styled.div`
-  border: 1px solid red;
   width: 100%;
   color: var(--black);
   font-size: 15px;

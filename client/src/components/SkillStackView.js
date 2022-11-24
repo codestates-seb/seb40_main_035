@@ -21,7 +21,18 @@ import {
   SiPhp,
   SiGraphql,
   SiFirebase,
+  SiFlutter,
+  SiSwift,
+  SiUnity,
+  SiAmazonaws,
+  SiKubernetes,
+  SiDocker,
+  SiGit,
+  SiFigma,
+  SiJest,
+  SiCplusplus,
 } from 'react-icons/si';
+import { GiZeppelin } from 'react-icons/gi';
 import { activeMenuState, skillStackViewState } from '../atom/atom';
 
 const SkillViewContainer = styled.div`
@@ -41,6 +52,8 @@ const SkillViewContainer = styled.div`
     align-items: center;
   }
   .menu-title {
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
     width: 100% auto;
     height: 100%;
@@ -181,7 +194,56 @@ const SkillStackView = () => {
     },
     {
       tabTitle: '기타',
-      tabCont: [{ skillId: 1, name: 'Figma' }],
+      tabCont: [
+        {
+          name: 'Flutter',
+          img: <SiFlutter className="skill-tag-img" color="#02569B" />,
+        },
+        {
+          name: 'Switft',
+          img: <SiSwift className="skill-tag-img" color="#F05138" />,
+        },
+        {
+          name: 'ReactNative',
+          img: <SiReact className="skill-tag-img" color="#61DAFB" />,
+        },
+        {
+          name: 'Unity',
+          img: <SiUnity className="skill-tag-img" color="#000000" />,
+        },
+        {
+          name: 'AWS',
+          img: <SiAmazonaws className="skill-tag-img" color="#232F3E" />,
+        },
+        {
+          name: 'Kubernetes',
+          img: <SiKubernetes className="skill-tag-img" color="#326CE5" />,
+        },
+        {
+          name: 'Docker',
+          img: <SiDocker className="skill-tag-img" color="#2496ED" />,
+        },
+        {
+          name: 'Git',
+          img: <SiGit className="skill-tag-img" color="#F05032" />,
+        },
+        {
+          name: 'Figma',
+          img: <SiFigma className="skill-tag-img" color="#5B0BB5" />,
+        },
+        {
+          name: 'Zeplin',
+          img: <GiZeppelin className="skill-tag-img" color="#FF9900" />,
+        },
+        {
+          name: 'Jest',
+          img: <SiJest className="skill-tag-img" color="#C21325" />,
+        },
+        {
+          name: 'C',
+          img: <SiCplusplus className="skill-tag-img" color="#00599C" />,
+        },
+      ],
     },
   ];
   // 클릭된 탭으로 변경
