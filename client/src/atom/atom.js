@@ -128,3 +128,9 @@ export const inputHashTagsState = atom({
   key: 'inputHashTagsState',
   default: [],
 });
+
+// 게시글 목록
+export const articlesListState = atom({
+  key: 'articlesListState',
+  default: [],
+});
