@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Backbutton from '../components/BackButton';
 import MiniButton from '../components/MiniButton';
@@ -7,21 +7,23 @@ import SwitchToggle from '../components/SwitchToggle';
 import SkillStackView from '../components/SkillStackView';
 import avatar from '../assets/image/userAvatar.png';
 import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
-// import { CiShare1 } from 'react-icons/ci';
-// import { FaHeart } from 'react-icons/fa';
 import { FiShare } from 'react-icons/fi';
 import InterestView from '../components/InterestView';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { interestViewState, skillStackViewState } from '../atom/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
   width: 100%;
-  height: 115vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   color: var(--black);
+  padding: 0 45px 60px 45px;
   h3 {
     margin-right: 20px;
   }
@@ -99,7 +101,7 @@ const LeftRightWholeConatiner = styled.div`
 const LeftViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 45%;
+  width: 43%;
   min-width: 350px;
   background-color: white;
   border-radius: 8px;
@@ -124,20 +126,26 @@ const LeftViewBottomBox = styled.div`
   padding: 25px;
   > ul {
     font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 15px;
   }
   > ul > div {
     display: flex;
   }
+  .project-plan-title {
+    margin-right: 10px;
+  }
   li {
+    display: flex;
+    align-items: center;
     font-size: 13px;
     margin: 10px 10px 15px 0;
     padding: 9px;
     width: auto;
     border: 1px solid var(--purple-medium);
     border-radius: 8px;
-    > span {
-      width: auto;
-    }
   }
   .left-bottom-content {
     font-weight: 400;
@@ -146,7 +154,7 @@ const LeftViewBottomBox = styled.div`
 const RightViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 55%;
+  width: 57%;
   background-color: white;
   border-radius: 8px;
   padding: 30px;
@@ -168,13 +176,19 @@ const BottomCommentConatiner = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80vw;
+  width: 80%;
   height: auto;
   background-color: white;
   border-radius: 8px;
   padding: 45px;
+  .user-info {
+    font-size: 14px;
+  }
+  .comment {
+    font-size: 13px;
+  }
   input {
-    width: 100%;
+    width: 95%;
     height: 50px;
   }
   input,
@@ -184,7 +198,7 @@ const BottomCommentConatiner = styled.div`
   }
 
   .comment-count {
-    width: 80%;
+    width: 75%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -196,9 +210,9 @@ const BottomCommentConatiner = styled.div`
 const CommentBox = styled.form`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  justify-content: space-between;
-  align-items: flex-start;
+  width: 75%;
+  justify-content: center;
+  /* align-items: flex-start; */
   padding-bottom: 20px;
 
   .user {
@@ -209,6 +223,7 @@ const CommentBox = styled.form`
     .user-info {
       display: flex;
       align-items: center;
+      font-size: 14px;
     }
     .comment-created {
       margin-left: 40px;
@@ -237,9 +252,9 @@ const CommentBox = styled.form`
   }
 `;
 const CommnetWriteBox = styled.form`
-  width: 80%;
+  width: 75%;
   height: 70px;
-  background-color: var(--grey-light);
+  background-color: var(--purple-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -259,30 +274,134 @@ const CommnetWriteBox = styled.form`
 `;
 
 const ArticleDetail = () => {
+  // 1. 게시글(제목,내용,view,좋아요,작성일),기술스택 보기란,관심분야 보기란 => HTTP GET 요청 받아와 데이터 뿌려주기
+  // 2. 게시글 수정 버튼 => 클릭 시 edit 페이지로 이동 ( V구현완료 )
+  // 3. 게시글 삭제 (DELETE 요청) => ( V구현완료 )
+  // 2. 댓글 작성 (POST 요청) => 구현했으나 테스트 못함
+  // 3. 댓글 수정 (PUT 요청)
+  // 4. 댓글 삭제 (DELETE 요청) => 파라미터 어떻게 바꿔야하는지 찾아봐서 수정해야 함
+  // 5. 대댓글 GET,PUT,DELETE 기능 => 이중맵? 어떻게 구현해야하는지?
+  // 6. 모집중 토글 버튼 작동 => 401 axios Error
+  // 7. 좋아요 버튼 작동
   const [isCheck, setIsCheck] = useState(true);
+  const [articles, setArticles] = useState([]);
+  const [answers, setAnswers] = useState([]);
+  const setInterestView = useSetRecoilState(interestViewState);
+  // const [skillStackView, setSkillStackView] =
+  //   useRecoilState(skillStackViewState);
+  const [liked, setLiked] = useState(null);
+  const [answerInput, setAnswerInput] = useState('');
   const navigate = useNavigate();
+  let { id } = useParams();
+  const createdAtArticle = new Date(articles.createdAt);
+
+  // 토글 이벤트 핸들러
+  const onToggle = () => {
+    setIsCheck((isCheck) => !isCheck);
+    axios.put(`/articles/${id}`, {
+      isCompleted: isCheck,
+      headers: {
+        // 로그인 기능 완료시 수정 예정
+        Authorization:
+          'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTI3MTc2NSwiZXhwIjoxNjY5Mjg2MTY1fQ.upwb_w4zviAKlgsHAGlhceQH9Bea7DESD5aAZFJvgND9B8zbl5sZwbbrEq0gtDGs',
+      },
+    });
+  };
+
+  // 좋아요 이벤트 핸들러
+  const onHeart = () => {
+    setLiked((liked) => !liked);
+    axios.put(`/articles/${id}`, {
+      heartCount: liked,
+      headers: {
+        // 로그인 기능 완료시 수정 예정
+        Authorization:
+          'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTI3MTc2NSwiZXhwIjoxNjY5Mjg2MTY1fQ.upwb_w4zviAKlgsHAGlhceQH9Bea7DESD5aAZFJvgND9B8zbl5sZwbbrEq0gtDGs',
+      },
+    });
+  };
+
+  // 게시글 삭제 이벤트 핸들러
+  const onDeleteArticle = (e) => {
+    e.preventDefault();
+    deleteArticleSubmit();
+    navigate('/');
+  };
+  const deleteArticleSubmit = () => {
+    axios.delete(`/articles/${id}`, {
+      headers: {
+        // 로그인 기능 완료시 수정 예정
+        Authorization:
+          'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTI3MTc2NSwiZXhwIjoxNjY5Mjg2MTY1fQ.upwb_w4zviAKlgsHAGlhceQH9Bea7DESD5aAZFJvgND9B8zbl5sZwbbrEq0gtDGs',
+      },
+    });
+  };
+
+  // 댓글 등록 이벤트 핸들러
+  const onAnswerHandler = (e) => {
+    e.preventDefault();
+    let answerValue = e.currentTarget.value;
+    setAnswerInput(answerValue);
+    answerSubmit();
+  };
+  const answerSubmit = () => {
+    axios
+      .post(`/articles/${id}`, {
+        body: answerInput,
+      })
+      .then((response) => {
+        console.log(response.data.answer);
+      })
+      .catch(console.error);
+  };
+
+  // 댓글 삭제 이벤트 핸들러
+  const onDeleteComment = (e) => {
+    e.preventDefault();
+    deleteCommentSubmit();
+  };
+  const deleteCommentSubmit = () => {
+    // axios.delete(`/articles/${id}`);
+  };
+
+  // 비동기 통신
+  useEffect(() => {
+    axios.get(`/articles/${id}`).then((response) => {
+      setArticles(response.data.data);
+      setLiked(response.data.heartCount);
+      setInterestView(response.data.data.interests);
+      setAnswers(response.data.data.answers);
+      setIsCheck(response.data.data.isCompleted);
+      console.log(response.data.data);
+    });
+  }, []);
+
   return (
     <WholeContainer>
       <TopContainer>
         <div className="title-box">
           <div className="title-left-box">
             <Backbutton />
-            <span>프로젝트 제목</span>
+            {/* 게시글 제목 */}
+            <span>{articles.title} </span>
             <SwitchToggle
               right="모집 완료"
               setChecked={isCheck}
-              onClick={() => {
-                setIsCheck(!isCheck);
-              }}
+              onClick={onToggle}
+              // onClick={() => {
+              //   setIsCheck(!isCheck);
+              // }}
             />
           </div>
           <form className="title-right-box">
+            {/* 공유 버튼 */}
             <button className="title-btn">
               <span className="title-icons">
                 <FiShare />
               </span>
             </button>
-            <button className="title-btn">
+            {/* 좋아요 버튼 */}
+            <button className="title-btn" onClick={() => {}}>
               <span className="title-icons">
                 <BsHeartFill />
               </span>
@@ -293,26 +412,26 @@ const ArticleDetail = () => {
               }}
               text={'수정하기'}
             />
-            <MiniButton text={'삭제하기'} />
+            <MiniButton text={'삭제하기'} onClick={onDeleteArticle} />
           </form>
         </div>
         {/* 타이틀 하단 info */}
         <div className="content-detail">
           {/* 조회수 */}
-          <span>321 view</span>
+          <span>{articles.views} view</span>
           {/* 좋아요 수 */}
           <span>
-            <BsHeartFill /> 3
+            <BsHeartFill /> {articles.heartCount}
           </span>
           {/* 작성 일 */}
-          <span>작성일 2022.11.12</span>
+          <span>작성일 {createdAtArticle.toLocaleString()}</span>
         </div>
       </TopContainer>
       <LeftRightWholeConatiner>
         <LeftViewContainer>
           <LeftViewTopBox>
             <span>이런 기술 스택을 사용하고 싶어요.</span>
-            <SkillStackView />
+            <SkillStackView size="12px" />
             {/* <h4>이런 산업군에 관심이 있어요.</h4> */}
             <InterestView />
           </LeftViewTopBox>
@@ -321,13 +440,14 @@ const ArticleDetail = () => {
               프로젝트 예정기간
               <div>
                 <li>
-                  <span>시작 예정 일</span>
-                  <span className="left-bottom-content"> 2022.11.01</span>
+                  <span className="project-plan-title">시작 예정 일</span>
+                  <span className="left-bottom-content">
+                    {articles.startDay}
+                  </span>
                 </li>
                 <li>
-                  {' '}
-                  <span>마감 예정 일</span>
-                  <span className="left-bottom-content"> 2022.12.01</span>
+                  <span className="project-plan-title">마감 예정 일</span>
+                  <span className="left-bottom-content">{articles.endDay}</span>
                 </li>
               </div>
             </ul>
@@ -335,55 +455,78 @@ const ArticleDetail = () => {
               파트별 인원 수
               <div>
                 <li>
-                  <span>프론트엔드 </span>
-                  <span className="left-bottom-content">2</span>
+                  <span className="project-plan-title">프론트엔드 </span>
+                  <span className="left-bottom-content">
+                    {articles.frontend}
+                  </span>
                 </li>
                 <li>
-                  <span>백엔드 </span>
-                  <span className="left-bottom-content">3</span>
+                  <span className="project-plan-title">백엔드 </span>
+                  <span className="left-bottom-content">
+                    {articles.backend}
+                  </span>
                 </li>
               </div>
             </ul>
             <ul>
-              이런 분과 함께 하고 싶어요.
+              저의 숙련도는 아래와 같아요.
               <li>
-                <span className="left-bottom-content">학생,취준생</span>
+                <span className="left-bottom-content">
+                  {articles.memberLevel}
+                </span>
               </li>
             </ul>
           </LeftViewBottomBox>
         </LeftViewContainer>
         <RightViewContainer>
           <span className="content-plan">프로젝트 계획을 설명해 주세요!</span>
-          <span>프로젝트 내용 설명</span>
+          {/* 게시글 본문 내용 */}
+          <span>{articles.body}</span>
         </RightViewContainer>
       </LeftRightWholeConatiner>
       <BottomCommentConatiner>
         <div className="comment-count">
-          <span>개의 댓글이 있습니다.</span>
+          <span>{answers.length}개의 댓글이 있습니다.</span>
         </div>
         <CommentBox>
-          <div className="user">
-            <div className="user-info">
-              <img src={avatar} alt="" />
-              <span className="user-name">김코딩</span>
-              <span className="comment-created">22.11.1</span>
-            </div>
-            <span className="comment-btn">
-              <button>수정하기</button>
-              <button>삭제하기</button>
-            </span>
-          </div>
+          {answers.map((comment, idx) => {
+            return (
+              <div key={idx}>
+                <div className="user">
+                  <div className="user-info">
+                    <img src={avatar} alt="" />
+                    <span className="user-name">{comment.memberName}</span>
+                    <span className="comment-created">
+                      {new Date(comment.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <span className="comment-btn">
+                    <button>수정하기</button>
+                    <button onClick={onDeleteComment}>삭제하기</button>
+                  </span>
+                </div>
 
-          <span className="comment">댓글 내용입니다.</span>
+                <span className="comment">{comment.body}</span>
+                {/* <span className="comment">{comment.comments[idx].body}</span> */}
+                {/* <span className="comment">{comment.comments[idx].body}</span> */}
+              </div>
+            );
+          })}
         </CommentBox>
 
         <CommnetWriteBox>
           <input
+            type="text"
             className="comment-input"
             placeholder="댓글을 입력하세요."
+            value={answerInput || ''}
+            onChange={(e) => setAnswerInput(e.target.value)}
           ></input>
           <button>
-            <BsArrowUpCircleFill className="upload-btn" />
+            <BsArrowUpCircleFill
+              className="upload-btn"
+              onClick={onAnswerHandler}
+            />
           </button>
         </CommnetWriteBox>
       </BottomCommentConatiner>
