@@ -6,11 +6,11 @@ import { articlesListState, selectedSkillstacksState } from '../atom/atom';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import SwitchToggle from '../components/SwitchToggle';
-import DefaultButton from '../components/DefaultButton';
 import SkillStackSelect from '../components/SkillStackSelect';
 import ScrollTopButton from '../components/ScrollTopButton';
 import ArticlesGrid from '../components/ArticlesGrid';
 import CloseButton from '../components/CloseButton';
+import ExtendedButton from '../components/ExtendedButton';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -119,12 +119,6 @@ const FilterSelectorWrapper = styled.div`
   }
 `;
 
-const LongButton = styled(DefaultButton)`
-  width: calc(100% + 2px);
-  margin: -1px;
-  border-radius: 0 0 8px 8px;
-`;
-
 const SkillFilterSelector = ({ setSkillFilter, setModalDisplay, isOpened }) => {
   const [selectedSkillStacks, setSelectedSkillStacks] = useRecoilState(
     selectedSkillstacksState,
@@ -162,7 +156,7 @@ const SkillFilterSelector = ({ setSkillFilter, setModalDisplay, isOpened }) => {
             <p>기술 스택으로 필터를 설정해보세요!</p>
             <SkillStackSelect />
           </div>
-          <LongButton
+          <ExtendedButton
             text="적용하기"
             onClick={() => onApply()}
             className="apply-btn"
