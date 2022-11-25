@@ -1,6 +1,5 @@
 import ArticleCard from '../components/ArticleCard';
 import styled from 'styled-components';
-import { GrClose } from 'react-icons/gr';
 import { TbFilter } from 'react-icons/tb';
 import { useRecoilState } from 'recoil';
 import { articlesListState, selectedSkillstacksState } from '../atom/atom';
@@ -11,6 +10,7 @@ import DefaultButton from '../components/DefaultButton';
 import SkillStackSelect from '../components/SkillStackSelect';
 import ScrollTopButton from '../components/ScrollTopButton';
 import ArticlesGrid from '../components/ArticlesGrid';
+import CloseButton from '../components/CloseButton';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -119,39 +119,6 @@ const FilterSelectorWrapper = styled.div`
   }
 `;
 
-const CloseBtn = styled.button`
-  width: 30px;
-  height: 30px;
-  padding-top: 2px;
-  border-radius: 15px;
-  border: none;
-  background-color: transparent;
-  transition: 300ms ease-in-out;
-
-  svg path {
-    stroke: var(--purple);
-  }
-
-  &:hover {
-    background-color: var(--purple-medium);
-  }
-
-  &:active {
-    background-color: var(--purple);
-    svg path {
-      stroke: #fff;
-    }
-  }
-`;
-
-const CloseButton = ({ onClick, className }) => {
-  return (
-    <CloseBtn className={className} onClick={onClick}>
-      <GrClose />
-    </CloseBtn>
-  );
-};
-
 const LongButton = styled(DefaultButton)`
   width: calc(100% + 2px);
   margin: -1px;
@@ -200,9 +167,7 @@ const SkillFilterSelector = ({ setSkillFilter, setModalDisplay, isOpened }) => {
             onClick={() => onApply()}
             className="apply-btn"
           />
-          <CloseButton className="close-btn" onClick={() => onToggle()}>
-            <GrClose />
-          </CloseButton>
+          <CloseButton className="close-btn" onClick={() => onToggle()} />
         </div>
       )}
     </FilterSelectorWrapper>
