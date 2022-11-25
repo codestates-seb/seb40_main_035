@@ -165,14 +165,33 @@ const LongButton = styled(DefaultButton)`
   border-radius: 0 0 8px 8px;
 `;
 
-const SkillFilterSelector = ({ onApply, onClose, isOpened }) => {
+const SkillFilterSelector = ({ setSkillFilter, setModalDisplay, isOpened }) => {
+  const [selectedSkillStacks, setSelectedSkillStacks] = useRecoilState(
+    selectedSkillstacksState,
+  );
+  const [isFiltered, setIsFiltered] = useState(false);
+
+  const onToggle = () => {
+    setModalDisplay();
+    if (!isFiltered) setSelectedSkillStacks([]);
+  };
+
+  const onApply = () => {
+    setSkillFilter(
+      selectedSkillStacks.map((el) => {
+        return el.name;
+      }),
+    );
+    setIsFiltered(true);
+  };
+
   return (
     <FilterSelectorWrapper>
       <button
         className={
           isOpened ? 'filter-modal-toggle opened' : 'filter-modal-toggle'
         }
-        onClick={() => onClose()}
+        onClick={() => onToggle()}
       >
         필터링
         <TbFilter size={23} />
@@ -188,7 +207,7 @@ const SkillFilterSelector = ({ onApply, onClose, isOpened }) => {
             onClick={() => onApply()}
             className="apply-btn"
           />
-          <CloseButton className="close-btn" onClick={onClose}>
+          <CloseButton className="close-btn" onClick={() => onToggle()}>
             <GrClose />
           </CloseButton>
         </div>
@@ -217,8 +236,7 @@ const Main = () => {
   // 전체보기/모집중만 보기 선택 토글
   const [viewAllStatus, setViewStatus] = useState(true);
   // 스킬 스택 필터
-  const [filterModalShow, setFilterModalShow] = useState(false);
-  const selectedSkillStacks = useRecoilValue(selectedSkillstacksState);
+  const [filterModalDisplay, setFilterModalDisplay] = useState(false);
   const [skillfilter, setSkillFilter] = useState([]);
   // 정렬 옵션
   const sortOptions = {
@@ -263,6 +281,8 @@ const Main = () => {
 
   // 데이터 요청 콜백
   const fetchArticles = useCallback(async () => {
+    // console.log('recoil state', articlesList);
+
     const skill = skillfilter.join(',');
     const status = viewAllStatus ? '' : false;
     const sort = sortOptions[sortOption];
@@ -275,10 +295,11 @@ const Main = () => {
     setPageNumber(data.pageInfo.page + 1);
     setHasNextPage(data.pageInfo.totalPages !== data.pageInfo.page);
     setIsFetching(false);
-    console.log('FETCH DATA!');
+    // console.log('FETCH DATA!');
+    // console.log('states:', viewAllStatus, skillfilter, sortOption, pageNumber);
   }, [viewAllStatus, skillfilter, sortOption, pageNumber]);
 
-  console.log('PAINT!');
+  // console.log('PAINT!');
   return (
     <Container>
       <h1>
@@ -297,15 +318,9 @@ const Main = () => {
             }}
           />
           <SkillFilterSelector
-            isOpened={filterModalShow}
-            onApply={() =>
-              setSkillFilter(
-                selectedSkillStacks.map((el) => {
-                  return el.name;
-                }),
-              )
-            }
-            onClose={() => setFilterModalShow(!filterModalShow)}
+            isOpened={filterModalDisplay}
+            setSkillFilter={setSkillFilter}
+            setModalDisplay={() => setFilterModalDisplay(!filterModalDisplay)}
           />
         </div>
         <div className="sort-options">
@@ -322,6 +337,7 @@ const Main = () => {
       </div>
       <ArticlesGrid>
         {articlesList.map((article) => {
+          // console.log(article.articleId, article.title);
           return (
             <ArticleCard
               key={article.articleId}
