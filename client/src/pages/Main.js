@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import ArticleCard from '../components/ArticleCard';
 import styled from 'styled-components';
 import { GrClose } from 'react-icons/gr';
 import { TbFilter } from 'react-icons/tb';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { articlesListState, selectedSkillstacksState } from '../atom/atom';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
