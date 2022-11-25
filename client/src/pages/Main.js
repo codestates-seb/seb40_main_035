@@ -10,6 +10,7 @@ import SwitchToggle from '../components/SwitchToggle';
 import DefaultButton from '../components/DefaultButton';
 import SkillStackSelect from '../components/SkillStackSelect';
 import ScrollTopButton from '../components/ScrollTopButton';
+import ArticlesGrid from '../components/ArticlesGrid';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -54,13 +55,6 @@ const Container = styled.div`
       }
     }
   }
-`;
-
-const ArticlesGrid = styled.div`
-  display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  grid-template-columns: repeat(auto-fill, minmax(323px, 1fr));
-  gap: 30px;
 `;
 
 const FilterSelectorWrapper = styled.div`
