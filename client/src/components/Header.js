@@ -15,6 +15,12 @@ const HeaderContainer = styled.header`
   right: 0;
   left: 0;
 
+  z-index: 2;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+
   .header-container {
     width: 100%;
     padding: 13px;
