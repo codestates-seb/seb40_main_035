@@ -22,6 +22,7 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
@@ -41,12 +42,10 @@ public class MemberService {
         verifyExistingName(member.getName());
         checkPassword(member.getPassword(), member.getPasswordCheck());
 
-
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
         String encryptedPasswordCheck = passwordEncoder.encode(member.getPasswordCheck());
         member.setPasswordCheck(encryptedPasswordCheck);
-
 
         member.getMemberInterests().stream()
                 .forEach(memberInterest -> {
@@ -70,19 +69,22 @@ public class MemberService {
 
         Optional.ofNullable(member.getPassword())
                 .ifPresent(password -> {
-                    checkPassword(member.getPassword(), member.getPasswordCheck());
-                    String encryptedPassword = passwordEncoder.encode(member.getPassword());
+                    checkPassword(password, member.getPasswordCheck());
+                    String encryptedPassword = passwordEncoder.encode(password);
                     findMember.setPassword(encryptedPassword);
                 });
 
         Optional.ofNullable(member.getPasswordCheck())
                 .ifPresent(passwordCheck -> {
-                    String encryptedPasswordCheck = passwordEncoder.encode(member.getPasswordCheck());
+                    String encryptedPasswordCheck = passwordEncoder.encode(passwordCheck);
                     findMember.setPasswordCheck(encryptedPasswordCheck);
                 });
 
         Optional.ofNullable(member.getName())
-                .ifPresent(name -> findMember.setName(name));
+                .ifPresent(name -> {
+                    verifyExistingName(name);
+                    findMember.setName(name);
+                });
 
         Optional.ofNullable(member.getDescription())
                 .ifPresent(description -> findMember.setDescription(description));
@@ -91,7 +93,10 @@ public class MemberService {
                 .ifPresent(level -> findMember.setLevel(level));
 
         Optional.ofNullable(member.getGithub())
-                .ifPresent(github -> findMember.setGithub(github));
+                .ifPresent(github -> {
+                    verifyExistingGithub(github);
+                    findMember.setGithub(github);
+                });
 
         Optional.ofNullable(member.getMemberInterests())
                 .ifPresent(memberInterests -> {
@@ -160,6 +165,14 @@ public class MemberService {
 
         if (optionalMember.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NAME_ALREADY_EXISTS);
+        }
+    }
+
+    public void verifyExistingGithub(String github) {
+        Optional<Member> optionalMember = memberRepository.findByGithub(github);
+
+        if (optionalMember.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_GITHUB_ALREADY_EXISTS);
         }
     }
 

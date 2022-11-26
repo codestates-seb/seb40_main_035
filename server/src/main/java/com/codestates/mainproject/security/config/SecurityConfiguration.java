@@ -70,7 +70,7 @@ public class SecurityConfiguration {
         configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh"));
         configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 출처에 대해 HTTP 통신을 허용
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080/")); // 모든 출처에 대해 HTTP 통신을 허용
+        configuration.setAllowedOrigins(Arrays.asList("http://seb-main-035-client.s3-website.ap-northeast-2.amazonaws.com/")); // 모든 출처에 대해 HTTP 통신을 허용
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS")); //파라미터로 지정한 HTTP Method에 대한 HTTP 통신을 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

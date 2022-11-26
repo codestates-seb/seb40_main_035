@@ -76,6 +76,14 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/signup/verify-github")
+    public ResponseEntity verifyGithub(@RequestBody VerifyGithubDto verifyGithubDto) {
+
+        memberService.verifyExistingGithub(verifyGithubDto.getGithub());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId,
                                       @Valid @RequestBody MemberPatchDto patchDto) {

@@ -37,6 +37,7 @@ public enum ExceptionCode {
     MEMBER_ALREADY_EXISTS(409, "이미 존재하는 회원입니다"),
     MEMBER_NAME_ALREADY_EXISTS(409, "이미 존재하는 회원 이름입니다"),
     MEMBER_EMAIL_ALREADY_EXISTS(409, "이미 존재하는 회원 이메일입니다."),
+    MEMBER_GITHUB_ALREADY_EXISTS(409, "이미 존재하는 회원 깃허브입니다."),
     HASHTAG_ALREADY_EXISTS(409, "이미 존재하는 태그입니다."),
     INTEREST_ALREADY_EXISTS(409, "이미 존재하는 관심분야입니다."),
     SKILL_ALREADY_EXISTS(409, "이미 존재하는 기술스택입니다."),

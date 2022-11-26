@@ -28,6 +28,9 @@ public class MemberPostDto {
     @NotBlank
     private String passwordCheck;
 
+    @NotBlank
+    private String level;
+
     @NotEmpty
     private List<@Valid MemberInterestDto> memberInterests;
 

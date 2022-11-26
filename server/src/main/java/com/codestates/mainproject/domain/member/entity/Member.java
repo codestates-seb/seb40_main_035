@@ -46,7 +46,7 @@ public class Member extends Auditable {
     private String description = "";
 
     @Column(nullable = false, length = 20)
-    private String level = "";
+    private String level;
 
     @Column(nullable = false, length = 50)
     private String github = "";

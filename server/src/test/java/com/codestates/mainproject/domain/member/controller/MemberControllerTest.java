@@ -69,7 +69,7 @@ class MemberControllerTest {
     void postMember() throws Exception{
         //given
         MemberPostDto postDto = new MemberPostDto(
-                "hgd@gmail.com", "홍길동", "hgd1234!","hgd1234!",
+                "hgd@gmail.com", "홍길동", "hgd1234!","hgd1234!", "학생",
                 List.of(new MemberInterestDto("교육")),List.of(new MemberSkillDto("JAVA")));
 
         String content = gson.toJson(postDto);
@@ -122,6 +122,7 @@ class MemberControllerTest {
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호"),
                                         fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("비밀번호 재확인"),
+                                        fieldWithPath("level").type(JsonFieldType.STRING).description("회원 숙련도"),
 
                                         fieldWithPath("memberInterests").type(JsonFieldType.ARRAY).description("회원 관심분야"),
                                         fieldWithPath("memberInterests[].interestName").type(JsonFieldType.STRING).description("회원 관심분야 이름"),
