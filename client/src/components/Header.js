@@ -6,6 +6,7 @@ import { useState } from 'react';
 const HeaderContainer = styled.header`
   z-index: 1;
   width: 100%;
+  min-width: fit-content;
   height: 62px;
   display: flex;
   align-items: center;
