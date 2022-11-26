@@ -1,20 +1,27 @@
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { feNumberState, beNumberState } from '../atom/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  feNumberState,
+  beNumberState,
+  feNumberCheckState,
+  beNumberCheckState,
+} from '../atom/atom';
 import { HiPlus, HiMinus } from 'react-icons/hi';
 
 const Container = styled.div`
   color: var(--grey-dark);
-  min-width: max-content;
-  height: 40px;
+  width: 100%;
 
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
+  flex-wrap: wrap;
 
   .fe-number-box {
     border: 1px solid var(--purple-medium);
     border-radius: 8px;
-    width: 40%;
+    width: 47.5%;
+    height: 45px;
+    max-width: 300px;
     min-width: max-content;
     padding: 10px;
     margin-right: 10px;
@@ -27,7 +34,9 @@ const Container = styled.div`
   .be-number-box {
     border: 1px solid var(--purple-medium);
     border-radius: 8px;
-    width: 40%;
+    width: 47.5%;
+    height: 45px;
+    max-width: 300px;
     min-width: 163px;
     padding: 10px;
 
@@ -47,8 +56,8 @@ const Container = styled.div`
     border-radius: 100%;
     background-color: white;
     color: var(--purple);
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
   }
 
   .fe-number {
@@ -69,10 +78,16 @@ const Container = styled.div`
 function NumberSelect() {
   const [feNumber, setFeNumber] = useRecoilState(feNumberState);
   const [beNumber, setBeNumber] = useRecoilState(beNumberState);
+  const setFeNumberCheck = useSetRecoilState(feNumberCheckState);
+  const setBeNumberCheck = useSetRecoilState(beNumberCheckState);
 
   const onFeMinusClick = () => {
     if (feNumber > 0) {
       setFeNumber(feNumber - 1);
+    }
+
+    if (feNumber - 1 === 0) {
+      setBeNumberCheck(false);
     }
   };
 
@@ -80,17 +95,29 @@ function NumberSelect() {
     if (feNumber >= 0) {
       setFeNumber(feNumber + 1);
     }
+
+    if (feNumber + 1 > 0) {
+      setFeNumberCheck(true);
+    }
   };
 
   const onBeMinusClick = () => {
     if (beNumber > 0) {
       setBeNumber(beNumber - 1);
     }
+
+    if (beNumber - 1 === 0) {
+      setBeNumberCheck(false);
+    }
   };
 
   const onBePlusClick = () => {
     if (beNumber >= 0) {
       setBeNumber(beNumber + 1);
+    }
+
+    if (beNumber + 1 > 0) {
+      setBeNumberCheck(true);
     }
   };
 
