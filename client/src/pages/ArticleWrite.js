@@ -222,7 +222,7 @@ const ArticleWrite = () => {
       };
 
       let token = '';
-      // 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTQwMTc3NCwiZXhwIjoxNjY5NDE2MTc0fQ.bTiBx9EtXIfIMiPTsv-btdI_7FmM0ewNn9anl-16QQSjtrKIWDEtVKHChYfnaoDn';
+      // 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTQ5NDEwMywiZXhwIjoxNjY5NTA4NTAzfQ.subidPsgbabDGWdbimGCsQ1pALbtosMtqlAqAd8K9ttZ7LboPDnPMv4FqnLtKxy0';
       axios
         .post(`/articles`, writeBody, {
           headers: { Authorization: token },

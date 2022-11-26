@@ -70,7 +70,6 @@ const InputTitle = ({ placeholder, value, onChange }) => {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={(e) => onblur(e.target.value)}
-        autofocus="autofocus"
       />
       {inputTitleCheck ? (
         ''
