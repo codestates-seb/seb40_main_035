@@ -248,45 +248,34 @@ const ArticleWrite = () => {
     ) {
       return true;
     } else {
-      let warnArr = [];
-
       if (inputTitle === '') {
-        warnArr.push('제목을 작성해주세요.\n');
         setInputTitleCheck(false);
       }
       if (inputBody === '') {
-        warnArr.push('본문을 작성해주세요.\n');
         setInputBodyCheck(false);
       }
       if (getFormatDate(startDate).length !== 8) {
-        warnArr.push('시작 예정일을 선택해주세요.\n');
         setStartDateCheck(false);
       }
       if (getFormatDate(endDate).length !== 8) {
-        warnArr.push('마감 예정일을 선택해주세요.\n');
         setEndDateCheck(false);
       }
       if (beNumber === 0) {
-        warnArr.push('백엔드 인원을 선택해주세요.\n');
         setBeNumberCheck(false);
       }
       if (feNumber === 0) {
-        warnArr.push('프론트엔드 인원을 선택해주세요.\n');
         setFeNumberCheck(false);
       }
       if (inputHashTags.length === 0) {
-        warnArr.push('해시 태그를 입력해주세요.\n');
         setHashtagsCheck(false);
       }
       if (selectedInterestsSubmit.length === 0) {
-        warnArr.push('관심 분야를 선택해주세요.\n');
         setInterestsCheck(false);
       }
       if (selectedSkillstacksSubmit.length === 0) {
-        warnArr.push('기술 태그를 선택해주세요.\n');
         setSkillstacksCheck(false);
       }
-      alert(warnArr.join(''));
+      alert('모두 입력해주세요!');
     }
   };
 
