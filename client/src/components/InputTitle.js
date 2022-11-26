@@ -57,7 +57,6 @@ const InputTitle = ({ placeholder, value, onChange }) => {
   const onblur = () => {
     if (inputTitle === '') {
       setInputTitleCheck(false);
-      console.log('붙통!');
     } else {
       setInputTitleCheck(true);
     }

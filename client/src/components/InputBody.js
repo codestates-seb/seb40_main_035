@@ -29,7 +29,6 @@ const InputBody = () => {
   const onblur = () => {
     if (inputBody === '') {
       setInputBodyCheck(false);
-      console.log('붙통!2');
     } else {
       setInputBodyCheck(true);
     }
