@@ -42,6 +42,9 @@ public class MemberService {
         verifyExistingName(member.getName());
         checkPassword(member.getPassword(), member.getPasswordCheck());
 
+        if (member.getGithub() == null) member.setGithub("");
+        else verifyExistingGithub(member.getGithub());
+
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
         String encryptedPasswordCheck = passwordEncoder.encode(member.getPasswordCheck());

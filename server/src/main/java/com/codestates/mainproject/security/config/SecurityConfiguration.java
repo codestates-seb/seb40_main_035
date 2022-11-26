@@ -4,6 +4,7 @@ import com.codestates.mainproject.security.auth.handler.MemberAuthenticationEntr
 import com.codestates.mainproject.security.auth.jwt.MemberDetailsService;
 import com.codestates.mainproject.security.auth.filter.JwtAuthenticationFilter;
 import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
+import com.codestates.mainproject.security.oauth2.OAuth2MemberSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,11 +54,12 @@ public class SecurityConfiguration {
                 .httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/members/login", "/members/signup", "/members/signup/**", "/members/find-password", "/docs/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/articles/**", "/articles", "/answers/**", "/comments/**", "/members/{member-id}").permitAll()
+                .antMatchers("/oauth2/authorization/github", "/members/login", "/members/signup", "/members/signup/**", "/members/find-password", "/docs/*", "/h2/**", "/h2").permitAll()
+                .antMatchers(HttpMethod.GET, "/login/oauth2/code/github", "/articles/**", "/articles", "/answers/**", "/comments/**", "/members/{member-id}").permitAll()
                 .anyRequest().authenticated()
                 .and()
 
+                .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, memberDetailsService)))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer, memberDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

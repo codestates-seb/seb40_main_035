@@ -24,6 +24,7 @@ public interface MemberMapper {
         member.setPassword(memberPostDto.getPassword());
         member.setPasswordCheck(memberPostDto.getPasswordCheck());
         member.setLevel(memberPostDto.getLevel());
+        member.setGithub(memberPostDto.getGithub());
 
         List<MemberInterest> memberInterests = memberPostDto.getMemberInterests().stream()
                 .map(memberInterestDto -> {

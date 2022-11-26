@@ -49,7 +49,7 @@ public class Member extends Auditable {
     private String level;
 
     @Column(nullable = false, length = 50)
-    private String github = "";
+    private String github;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Article> articles = new ArrayList<>();

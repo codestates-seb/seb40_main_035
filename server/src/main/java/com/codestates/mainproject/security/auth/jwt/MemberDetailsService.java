@@ -2,6 +2,8 @@ package com.codestates.mainproject.security.auth.jwt;
 
 import com.codestates.mainproject.domain.member.entity.Member;
 import com.codestates.mainproject.domain.member.repository.MemberRepository;
+import com.codestates.mainproject.exception.BusinessLogicException;
+import com.codestates.mainproject.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,4 +31,8 @@ public class MemberDetailsService implements UserDetailsService {
         return new MemberDetails(findMember);
     }
 
+    public Member findByGithub(String github) {
+        Optional<Member> optionalMember = memberRepository.findByGithub(github);
+        return optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
 }

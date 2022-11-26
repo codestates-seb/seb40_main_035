@@ -132,12 +132,12 @@ public class MemberController {
         TokenResponse tokenResponseDto = jwtTokenizer.reissueAcToken(member);
 
         Map<String, Object> claims = jwtTokenizer.getClaims(tokenResponseDto.getAcToken()).getBody();
-        long memberId = Long.parseLong(claims.get("memberId").toString());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + tokenResponseDto.getAcToken());
+        headers.add("memberId", claims.get("memberId").toString());
 
-        return new ResponseEntity<>(new SingleResponseDto<>(memberId), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>("엑세스 토큰이 재발급되었습니다."), headers, HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -149,13 +149,13 @@ public class MemberController {
         TokenResponse tokenResponse = jwtTokenizer.createTokensByLogin(authorizedMember);
 
         Map<String, Object> claims = jwtTokenizer.getClaims(tokenResponse.getAcToken()).getBody();
-        long memberId = Long.parseLong(claims.get("memberId").toString());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + tokenResponse.getAcToken());
         headers.add("Refresh", tokenResponse.getRfToken());
+        headers.add("memberId", claims.get("memberId").toString());
 
-        return new ResponseEntity<>(new SingleResponseDto<>(memberId), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>("로그인에 성공하였습니다."), headers, HttpStatus.OK);
     }
 
     @GetMapping("/logout")

@@ -18,6 +18,13 @@ spring:
   sql:
     init:
       mode: always
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: bf444f58a49adbc4e3ad
+            client-secret: ${GITHUB_PASSWORD}
 logging:
   level:
     org:

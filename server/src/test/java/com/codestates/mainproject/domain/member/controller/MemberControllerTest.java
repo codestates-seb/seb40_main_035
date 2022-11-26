@@ -11,11 +11,16 @@ import com.codestates.mainproject.domain.skill.dto.SkillResponseDto;
 import com.codestates.mainproject.domain.skill.entity.Skill;
 import com.codestates.mainproject.email.service.EmailService;
 import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
+import com.codestates.mainproject.security.config.SecurityConfiguration;
+import com.codestates.mainproject.security.oauth2.OAuth2MemberSuccessHandler;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +30,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -42,10 +50,9 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = MemberController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@WebMvcTest(value = MemberController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class, OAuth2ClientAutoConfiguration.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-@ActiveProfiles
 class MemberControllerTest {
     @MockBean
     private MemberService memberService;
@@ -69,7 +76,7 @@ class MemberControllerTest {
     void postMember() throws Exception{
         //given
         MemberPostDto postDto = new MemberPostDto(
-                "hgd@gmail.com", "홍길동", "hgd1234!","hgd1234!", "학생",
+                "hgd@gmail.com", "홍길동", "hgd1234!","hgd1234!", "학생", "github.com/honggildong",
                 List.of(new MemberInterestDto("교육")),List.of(new MemberSkillDto("JAVA")));
 
         String content = gson.toJson(postDto);
@@ -123,6 +130,7 @@ class MemberControllerTest {
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호"),
                                         fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("비밀번호 재확인"),
                                         fieldWithPath("level").type(JsonFieldType.STRING).description("회원 숙련도"),
+                                        fieldWithPath("github").type(JsonFieldType.STRING).description("회원 깃허브").optional(),
 
                                         fieldWithPath("memberInterests").type(JsonFieldType.ARRAY).description("회원 관심분야"),
                                         fieldWithPath("memberInterests[].interestName").type(JsonFieldType.STRING).description("회원 관심분야 이름"),
@@ -138,7 +146,7 @@ class MemberControllerTest {
                                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("회원 이메일"),
                                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("회원 이름"),
                                         fieldWithPath("data.description").type(JsonFieldType.STRING).description("회원 소개"),
-                                        fieldWithPath("data.level").type(JsonFieldType.STRING).description("회원 티어"),
+                                        fieldWithPath("data.level").type(JsonFieldType.STRING).description("회원 숙련 "),
                                         fieldWithPath("data.github").type(JsonFieldType.STRING).description("회원 깃허브"),
 
                                         fieldWithPath("data.interests").type(JsonFieldType.ARRAY).description("회원 관심분야 정보"),
