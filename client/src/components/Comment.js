@@ -1,8 +1,14 @@
+// enter 기능
+// 수정 완료 후 새로고침 안되게 수정
+// 포커싱
+
 /* eslint-disable no-unused-vars */
 import styled from 'styled-components';
 import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
 import Recomment from './Recomment';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CommentBox = styled.form`
   font-size: 14px;
@@ -57,6 +63,9 @@ const CommentBox = styled.form`
     padding: 10px;
     margin-left: 25px;
   }
+  .edit-input {
+    border: solid 1px black;
+  }
   .answer-form {
     margin-top: 15px;
     /* margin-bottom: 15px; */
@@ -80,11 +89,54 @@ const Comment = ({
   answerInput,
   onChangeAnswer,
 }) => {
-  const [edited, setEdited] = useState(false);
-  const onClickEditButton = () => {
+  const [editIng, setEditIng] = useState(false);
+  const [editSelectedIdx, setEditSelectedIdx] = useState();
+  const [editInput, setEditInput] = useState('');
+  const navigate = useNavigate();
+
+  const onEditBtn = (e) => {
     // 클릭시 edited 값을 true로 바꿈
-    setEdited(true);
+    e.preventDefault();
+    setEditIng(true);
+    setEditSelectedIdx(e.target.value);
+    setEditInput(answers[e.target.value].body);
   };
+
+  const onEditCompleteBtn = (e) => {
+    // e.preventDefault();
+    setEditIng(false);
+    setEditSelectedIdx(e.target.value);
+    updateCommentSubmit(e.target.value);
+  };
+
+  const onChangeEdit = (e) => {
+    e.preventDefault();
+    setEditInput(e.currentTarget.value);
+  };
+
+  // 댓글 수정 이벤트 핸들러
+  const updateCommentSubmit = (idx) => {
+    axios.patch(
+      `/answers/${answers[idx].answerId}`,
+      {
+        answerId: answers[idx].answerId,
+        body: editInput,
+      },
+      {
+        headers: {
+          // 로그인 기능 완료시 수정 예정
+          Authorization:
+            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
+        },
+      },
+    );
+  };
+
+  const onProfileClick = (answerId) => {
+    // navigate(`/members/${answerId}`);
+    console.log(answerId);
+  };
+
   return (
     <CommentBox>
       {answers.map((comment, idx) => (
@@ -94,19 +146,43 @@ const Comment = ({
             <div className="user">
               <div className="user-info">
                 <img src={avatar} alt="" />
-                <span className="user-name">{comment.memberName}</span>
+                <button
+                  onClick={onProfileClick(comment.answerId)}
+                  className="user-name"
+                >
+                  {comment.memberName}
+                </button>
                 <span className="comment-created">
                   {new Date(comment.createdAt).toLocaleString()}
                 </span>
               </div>
               <span className="comment-btn">
-                <button>수정하기</button>
+                {console.log(idx)}
+                {editSelectedIdx == idx && editIng ? (
+                  <button value={idx} onClick={onEditCompleteBtn}>
+                    수정완료
+                  </button>
+                ) : (
+                  <button value={idx} onClick={onEditBtn}>
+                    수정하기
+                  </button>
+                )}
                 <button value={comment.answerId} onClick={onDeleteComment}>
                   삭제하기
                 </button>
               </span>
             </div>
-            <span className="comment">{comment.body}</span>
+            {editSelectedIdx == idx && editIng ? (
+              <input
+                type="text"
+                // ref={(el) => (inputFocus.current[idx] = el)}
+                className="edit-input"
+                value={editInput}
+                onChange={onChangeEdit}
+              ></input>
+            ) : (
+              <span className="comment">{comment.body}</span>
+            )}
           </div>
           {/* 대댓글 컴포넌트  */}
           {comment.comments.length >= 1 ? (
