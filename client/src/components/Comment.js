@@ -124,30 +124,26 @@ const Comment = ({
       },
       {
         headers: {
-          // 로그인 기능 완료시 수정 예정
-          Authorization:
-            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
+          // 로그인 토큰 자리
+          Authorization: '',
         },
       },
     );
   };
 
-  const onProfileClick = (answerId) => {
-    // navigate(`/members/${answerId}`);
-    console.log(answerId);
-  };
-
   return (
     <CommentBox>
       {answers.map((comment, idx) => (
-        <>
+        <div key={idx}>
           {/* 댓글 컴포넌트 */}
-          <div key={comment.createdAt} className="answer-form">
+          <div className="answer-form">
             <div className="user">
               <div className="user-info">
                 <img src={avatar} alt="" />
                 <button
-                  onClick={onProfileClick(comment.answerId)}
+                  onClick={() => {
+                    navigate(`/profile/${comment.memberId}`);
+                  }}
                   className="user-name"
                 >
                   {comment.memberName}
@@ -157,7 +153,6 @@ const Comment = ({
                 </span>
               </div>
               <span className="comment-btn">
-                {console.log(idx)}
                 {editSelectedIdx == idx && editIng ? (
                   <button value={idx} onClick={onEditCompleteBtn}>
                     수정완료
@@ -193,7 +188,7 @@ const Comment = ({
               onDeleteComment={onDeleteComment}
             />
           ) : null}
-        </>
+        </div>
       ))}
     </CommentBox>
   );
