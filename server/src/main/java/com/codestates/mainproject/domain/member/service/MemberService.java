@@ -206,4 +206,11 @@ public class MemberService {
 
         memberRepository.save(member);
     }
+
+    public void deleteGithub(long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        member.setGithub("");
+        memberRepository.save(member);
+    }
 }

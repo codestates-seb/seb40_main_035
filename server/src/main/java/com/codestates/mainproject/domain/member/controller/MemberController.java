@@ -76,14 +76,6 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/signup/verify-github")
-    public ResponseEntity verifyGithub(@RequestBody VerifyGithubDto verifyGithubDto) {
-
-        memberService.verifyExistingGithub(verifyGithubDto.getGithub());
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId,
                                       @Valid @RequestBody MemberPatchDto patchDto) {
@@ -95,6 +87,13 @@ public class MemberController {
         MemberDetailResponseDto responseDto = mapper.memberToMemberDetailResponseDto(updatedMember);
 
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/{member-id}}/delete-github")
+    public ResponseEntity deleteGithub(@PathVariable("member-id") @Positive long memberId) {
+        memberService.deleteGithub(memberId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{member-id}")
