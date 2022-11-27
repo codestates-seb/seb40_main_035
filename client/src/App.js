@@ -34,7 +34,7 @@ function App() {
             <Route path="/articles/:id" element={<ArticleDetail />} />
             <Route path="/mypage/:id" element={<MyPage />} />
             <Route path="/mypage/edit/:id" element={<MyPageEdit />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:id" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
         </ContentContainer>
