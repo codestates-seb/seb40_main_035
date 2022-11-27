@@ -1,7 +1,3 @@
-// 모집중 토글 버튼 작동
-// 좋아요 버튼 작동
-// 9. 프로필 클릭시 유저의 프로필상세보기 페이지로 이동
-
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -12,12 +8,12 @@ import SkillStackView from '../components/SkillStackView';
 import avatar from '../assets/image/userAvatar.png';
 import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
 import { FiShare } from 'react-icons/fi';
-import InterestView from '../components/InterestView';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { interestViewState, skillStackViewState } from '../atom/atom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import Comment from '../components/Comment';
+import InterestView from '../components/InterestView';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -83,8 +79,6 @@ const TopContainer = styled.div`
     }
   }
   .content-detail {
-    /* display: flex; */
-    /* align-items: center; */
     width: 100%;
     color: var(--grey-dark);
     font-size: 13px;
@@ -92,14 +86,14 @@ const TopContainer = styled.div`
     padding: 10px;
     border-bottom: 1px solid var(--purple-medium);
     margin-bottom: 10px;
-    /* border-bottom: 1px solid var(--pruple-medium); */
     > span {
       align-items: center;
       margin-right: 10px;
     }
   }
   .conetent-heart-icons {
-    font-size: 11px;
+    font-size: 10px;
+    margin-right: 4px;
   }
 `;
 const LeftRightWholeConatiner = styled.div`
@@ -178,7 +172,6 @@ const RightViewContainer = styled.div`
     font-size: 15px;
   }
 `;
-// 하단 댓글 컨테이너
 const BottomCommentConatiner = styled.div`
   display: flex;
   flex-direction: column;
@@ -196,9 +189,10 @@ const BottomCommentConatiner = styled.div`
     font-size: 13px;
   }
   input {
-    width: 95%;
-    height: 50px;
+    width: 90%;
+    height: 45px;
   }
+
   input,
   button {
     border: none;
@@ -210,12 +204,11 @@ const BottomCommentConatiner = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-weight: 500;
     color: var(--black);
   }
 `;
-
 const CommentWriteBox = styled.form`
   width: 75%;
   height: 70px;
@@ -223,18 +216,18 @@ const CommentWriteBox = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 35px;
-  margin-top: 20px;
+  padding: 20px;
+  margin-top: 10px;
   border-radius: 8px;
-  button {
-    /* width: 25px;
-    height: 25px; */
-    /* margin: 10px 25px 10px 25px; */
+  &:hover,
+  &:focus,
+  &:active {
+    border: 2px solid var(--purple-medium);
+  }
 
-    .upload-btn {
-      color: var(--purple-medium);
-      font-size: 30px;
-    }
+  .upload-btn {
+    color: var(--purple-medium);
+    font-size: 30px;
   }
 `;
 
@@ -244,34 +237,105 @@ const ArticleDetail = () => {
   const [answers, setAnswers] = useState([]);
   const setInterestView = useSetRecoilState(interestViewState);
   const [newComment, setNewComment] = useState(false);
-  // const [skillStackView, setSkillStackView] =
-  //   useRecoilState(skillStackViewState);
+  const [skillStackView, setSkillStackView] =
+    useRecoilState(skillStackViewState);
   const [liked, setLiked] = useState(null);
   const [answerInput, setAnswerInput] = useState('');
   const navigate = useNavigate();
   let { id } = useParams();
   const createdAtArticle = new Date(articles.createdAt);
 
-  // 모집중 토글 이벤트 핸들러
-  const onToggle = () => {
-    axios
-      .patch(
-        `/articles/${id}`,
-        {
-          isCompleted: !isCheck,
-        },
-        {
-          headers: {
-            // 로그인 기능 완료시 수정 예정
-            Authorization:
-              'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTU0MjQxNCwiZXhwIjoxNjY5NTU2ODE0fQ.ud6q_LaGz0VWmcq_rkkqPLI2wy4z-nAdbyMDPOdczE8JTPPdwFMNHbAF4XIo5_wj',
+  // 기술스택 상태 set 함수
+  const onSkills = (skills) => {
+    for (let el of skills) {
+      if (el.skillSort === '프론트엔드') {
+        setSkillStackView([
+          {
+            tabTitle: '프론트엔드',
+            tabCont: [
+              ...skillStackView[0].tabCont,
+              {
+                skillId: skillStackView[0].tabCont.length + 1,
+                name: el.name,
+              },
+            ],
           },
-        },
-      )
-      .then((response) => {
-        setIsCheck(response.data.isCompleted);
-      });
+          {
+            tabTitle: '백엔드',
+            tabCont: [...skillStackView[1].tabCont],
+          },
+          {
+            tabTitle: '기타',
+            tabCont: [...skillStackView[2].tabCont],
+          },
+        ]);
+      }
+      if (el.skillSort === '백엔드') {
+        setSkillStackView([
+          {
+            tabTitle: '프론트엔드',
+            tabCont: [...skillStackView[0].tabCont],
+          },
+          {
+            tabTitle: '백엔드',
+            tabCont: [
+              ...skillStackView[1].tabCont,
+              {
+                skillId: skillStackView[1].tabCont.length + 1,
+                name: el.name,
+              },
+            ],
+          },
+          {
+            tabTitle: '기타',
+            tabCont: [...skillStackView[2].tabCont],
+          },
+        ]);
+      }
+      if (el.skillSort !== '백엔드' && el.skillSort !== '프론트엔드') {
+        setSkillStackView([
+          {
+            tabTitle: '프론트엔드',
+            tabCont: [...skillStackView[0].tabCont],
+          },
+          {
+            tabTitle: '백엔드',
+            tabCont: [...skillStackView[1].tabCont],
+          },
+          {
+            tabTitle: '기타',
+            tabCont: [
+              ...skillStackView[2].tabCont,
+              {
+                skillId: skillStackView[2].tabCont.length + 1,
+                name: el.name,
+              },
+            ],
+          },
+        ]);
+      }
+    }
   };
+
+  // 모집중 토글 이벤트 핸들러
+  // const onToggle = () => {
+  //   axios
+  //     .patch(
+  //       `/articles/${id}`,
+  //       {
+  //         isCompleted: !isCheck,
+  //       },
+  //       {
+  //         headers: {
+  //           // 로그인 토큰 자리
+  //           Authorization: '',
+  //         },
+  //       },
+  //     )
+  //     .then((response) => {
+  //       setIsCheck(response.data.isCompleted);
+  //     });
+  // };
 
   // 좋아요 이벤트 핸들러
   // const onHeart = () => {
@@ -281,15 +345,15 @@ const ArticleDetail = () => {
   //       {
   //         hearts: [
   //           {
+  //             // 로그인 토큰에 따른 추후 수정
   //             memberId: 14,
   //           },
   //         ],
   //       },
   //       {
   //         headers: {
-  //           // 로그인 기능 완료시 수정 예정
-  //           Authorization:
-  //             'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTU0MjQxNCwiZXhwIjoxNjY5NTU2ODE0fQ.ud6q_LaGz0VWmcq_rkkqPLI2wy4z-nAdbyMDPOdczE8JTPPdwFMNHbAF4XIo5_wj',
+  //           // 로그인 토큰 자리
+  //           Authorization: '',
   //         },
   //       },
   //     )
@@ -297,6 +361,23 @@ const ArticleDetail = () => {
   //       setLiked(response.data.isLiked);
   //     });
   // };
+
+  // 게시글 조회 http 요청
+  useEffect(() => {
+    axios.get(`/articles/${id}`).then((response) => {
+      // articles 전체 데이터 상태
+      setArticles(response.data.data);
+      // 좋아요 상태 set
+      setLiked(response.data.data.heartCount);
+      // 관심분야 상태 set
+      setInterestView(response.data.data.interests);
+      // 기술스택 상태 set
+      onSkills(response.data.data.skills);
+      // 댓글 상태 set
+      setAnswers(response.data.data.answers);
+      // setIsCheck(response.data.data.isCompleted);
+    });
+  }, [newComment]);
 
   // 게시글 삭제 이벤트 핸들러
   const onDeleteArticle = (e) => {
@@ -307,22 +388,28 @@ const ArticleDetail = () => {
   const deleteArticleSubmit = () => {
     axios.delete(`/articles/${id}`, {
       headers: {
-        // 로그인 기능 완료시 수정 예정
+        // 로그인 토큰 자리
         Authorization: '',
       },
     });
   };
 
-  const onChangeAnswer = (e) => {
-    setAnswerInput(e.currentTarget.value);
-  };
-
   // 댓글 등록 이벤트 핸들러
   const onAnswerHandler = (e, articleId) => {
     e.preventDefault();
-    let answerValue = e.currentTarget.value;
+    let answerValue = e.target.value;
     setAnswerInput(answerValue);
     answerSubmit(articleId);
+  };
+  // 댓글 Enter submit 이벤트 함수
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onAnswerHandler(e, articles.articleId);
+    }
+  };
+
+  const onChangeAnswer = (e) => {
+    setAnswerInput(e.target.value);
   };
   const answerSubmit = (articleId) => {
     axios
@@ -335,9 +422,8 @@ const ArticleDetail = () => {
         },
         {
           headers: {
-            // 로그인 기능 완료시 수정 예정
-            Authorization:
-              'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
+            // 로그인 토큰 자리
+            Authorization: '',
           },
         },
       )
@@ -347,30 +433,6 @@ const ArticleDetail = () => {
       })
       .catch(console.error);
   };
-  // 댓글 수정 이벤트 핸들러
-  const onUpdateComment = (e) => {
-    e.preventDefault();
-    let answerValue = e.currentTarget.value;
-    setAnswerInput(answerValue);
-    updateCommentSubmit();
-  };
-  const updateCommentSubmit = (answerId) => {
-    axios.patch(
-      `/answers/${answerId}`,
-      {
-        answerId,
-        body: '답변2',
-      },
-      {
-        headers: {
-          // 로그인 기능 완료시 수정 예정
-          Authorization:
-            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
-        },
-      },
-    );
-  };
-
   // 댓글 삭제 이벤트 핸들러
   const onDeleteComment = (e) => {
     e.preventDefault();
@@ -381,9 +443,9 @@ const ArticleDetail = () => {
     axios
       .delete(`/answers/${answerId}`, {
         headers: {
-          // 로그인 기능 완료시 수정 예정
+          // 로그인 토큰 자리
           Authorization:
-            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
+            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTU2OTQ4OSwiZXhwIjoxNjY5NTgzODg5fQ.LjptTliqLrFcgamPyK0p6ebSPsgbqxgJRdZIfo5PFYzGvX0f9060fnEcFdivhTLP',
         },
       })
       .then((response) => {
@@ -392,37 +454,17 @@ const ArticleDetail = () => {
       });
   };
 
-  // 비동기 통신
-  useEffect(() => {
-    axios.get(`/articles/${id}`).then((response) => {
-      setArticles(response.data.data);
-      setLiked(response.data.heartCount);
-      setInterestView(response.data.data.interests);
-      setAnswers(response.data.data.answers);
-      // setIsCheck(response.data.data.isCompleted);
-      console.log(response.data.data);
-    });
-  }, [newComment]);
-
-  // useEffect(() => {
-  //   axios.get(`/articles/${id}`).then((response) => {
-  //     setAnswers(response.data.data.answers);
-  //     console.log(response.data.data);
-  //   });
-  // }, [newComment]);
-
   return (
     <WholeContainer>
+      {/* 게시글 헤더 */}
       <TopContainer>
         <div className="title-box">
           <div className="title-left-box">
             <Backbutton />
-            {/* 게시글 제목 */}
             <span>{articles.title} </span>
             <SwitchToggle
               right="모집 완료"
               setChecked={isCheck}
-              // onClick={onToggle}
               onClick={() => {
                 setIsCheck(!isCheck);
               }}
@@ -441,22 +483,24 @@ const ArticleDetail = () => {
                 <BsHeartFill />
               </span>
             </button>
+            {/* 게시글 수정 버튼 */}
             <MiniButton
               onClick={() => {
                 navigate('/article/edit/:id');
               }}
               text={'수정하기'}
             />
+            {/* 게시글 삭제 버튼 */}
             <MiniButton text={'삭제하기'} onClick={onDeleteArticle} />
           </form>
         </div>
-        {/* 타이틀 하단 info */}
+        {/* 게시글 상세 정보 */}
         <div className="content-detail">
           {/* 조회수 */}
           <span>{articles.views} view</span>
           {/* 좋아요 수 */}
           <span>
-            <BsHeartFill className="conetent-heart-icons" />{' '}
+            <BsHeartFill className="conetent-heart-icons" />
             {articles.heartCount}
           </span>
           {/* 작성 일 */}
@@ -468,7 +512,7 @@ const ArticleDetail = () => {
           <LeftViewTopBox>
             <span>이런 기술 스택을 사용하고 싶어요.</span>
             <SkillStackView size="12px" />
-            <InterestView content={'이런 산업군에 관심이 있어요'} size="15px" />
+            <InterestView size="15px"></InterestView>
           </LeftViewTopBox>
           <LeftViewBottomBox>
             <ul>
@@ -530,18 +574,17 @@ const ArticleDetail = () => {
           avatar={avatar}
           onAnswerHandler={onAnswerHandler}
           onChangeAnswer={onChangeAnswer}
-          onUpdateComment={onUpdateComment}
           answerInput={answerInput}
         />
-        <CommentWriteBox>
+        <CommentWriteBox onKeyPress={onKeyPress}>
           <input
             type="text"
             className="comment-input"
             placeholder="댓글을 입력하세요."
-            value={answerInput}
+            value={answerInput || ''} // 렌더 전 초기값이 undefined가 되지 않도록 빈문자열로 조건을 주었습니다.
             onChange={onChangeAnswer}
           ></input>
-          <button>
+          <button type="submit">
             <BsArrowUpCircleFill
               className="upload-btn"
               onClick={(e) => {
