@@ -3,7 +3,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 const Button = styled.button`
-  background-color: #ffffff;
+  background-color: transparent;
   border-radius: 50%;
   border: none;
 `;
