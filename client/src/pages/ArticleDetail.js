@@ -1,3 +1,7 @@
+// 모집중 토글 버튼 작동
+// 좋아요 버튼 작동
+// 9. 프로필 클릭시 유저의 프로필상세보기 페이지로 이동
+
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -13,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { interestViewState, skillStackViewState } from '../atom/atom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import Comment from '../components/Comment';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -92,6 +97,9 @@ const TopContainer = styled.div`
       align-items: center;
       margin-right: 10px;
     }
+  }
+  .conetent-heart-icons {
+    font-size: 11px;
   }
 `;
 const LeftRightWholeConatiner = styled.div`
@@ -202,56 +210,13 @@ const BottomCommentConatiner = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     font-weight: 500;
     color: var(--black);
   }
 `;
-const CommentBox = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 75%;
-  justify-content: center;
-  /* align-items: flex-start; */
-  padding-bottom: 20px;
 
-  .user {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .user-info {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-    }
-    .comment-created {
-      margin-left: 40px;
-    }
-
-    img {
-      width: 25px;
-      height: 25px;
-      margin-right: 10px;
-    }
-  }
-
-  .comment-btn {
-    display: flex;
-    button {
-      padding-left: 15px;
-      font-weight: 500;
-      font-size: 13px;
-      color: var(--grey-dark);
-    }
-  }
-
-  .comment {
-    padding: 10px;
-    margin-left: 25px;
-  }
-`;
-const CommnetWriteBox = styled.form`
+const CommentWriteBox = styled.form`
   width: 75%;
   height: 70px;
   background-color: var(--purple-light);
@@ -274,19 +239,11 @@ const CommnetWriteBox = styled.form`
 `;
 
 const ArticleDetail = () => {
-  // 1. 게시글(제목,내용,view,좋아요,작성일),기술스택 보기란,관심분야 보기란 => HTTP GET 요청 받아와 데이터 뿌려주기
-  // 2. 게시글 수정 버튼 => 클릭 시 edit 페이지로 이동 ( V구현완료 )
-  // 3. 게시글 삭제 (DELETE 요청) => ( V구현완료 )
-  // 2. 댓글 작성 (POST 요청) => 구현했으나 테스트 못함
-  // 3. 댓글 수정 (PUT 요청)
-  // 4. 댓글 삭제 (DELETE 요청) => 파라미터 어떻게 바꿔야하는지 찾아봐서 수정해야 함
-  // 5. 대댓글 GET,PUT,DELETE 기능 => 이중맵? 어떻게 구현해야하는지?
-  // 6. 모집중 토글 버튼 작동 => 401 axios Error
-  // 7. 좋아요 버튼 작동
   const [isCheck, setIsCheck] = useState(true);
   const [articles, setArticles] = useState([]);
   const [answers, setAnswers] = useState([]);
   const setInterestView = useSetRecoilState(interestViewState);
+  const [newComment, setNewComment] = useState(false);
   // const [skillStackView, setSkillStackView] =
   //   useRecoilState(skillStackViewState);
   const [liked, setLiked] = useState(null);
@@ -295,31 +252,51 @@ const ArticleDetail = () => {
   let { id } = useParams();
   const createdAtArticle = new Date(articles.createdAt);
 
-  // 토글 이벤트 핸들러
+  // 모집중 토글 이벤트 핸들러
   const onToggle = () => {
-    setIsCheck((isCheck) => !isCheck);
-    axios.put(`/articles/${id}`, {
-      isCompleted: isCheck,
-      headers: {
-        // 로그인 기능 완료시 수정 예정
-        Authorization:
-          'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTI3MTc2NSwiZXhwIjoxNjY5Mjg2MTY1fQ.upwb_w4zviAKlgsHAGlhceQH9Bea7DESD5aAZFJvgND9B8zbl5sZwbbrEq0gtDGs',
-      },
-    });
+    axios
+      .patch(
+        `/articles/${id}`,
+        {
+          isCompleted: !isCheck,
+        },
+        {
+          headers: {
+            // 로그인 기능 완료시 수정 예정
+            Authorization:
+              'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTU0MjQxNCwiZXhwIjoxNjY5NTU2ODE0fQ.ud6q_LaGz0VWmcq_rkkqPLI2wy4z-nAdbyMDPOdczE8JTPPdwFMNHbAF4XIo5_wj',
+          },
+        },
+      )
+      .then((response) => {
+        setIsCheck(response.data.isCompleted);
+      });
   };
 
   // 좋아요 이벤트 핸들러
-  const onHeart = () => {
-    setLiked((liked) => !liked);
-    axios.put(`/articles/${id}`, {
-      heartCount: liked,
-      headers: {
-        // 로그인 기능 완료시 수정 예정
-        Authorization:
-          'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTI3MTc2NSwiZXhwIjoxNjY5Mjg2MTY1fQ.upwb_w4zviAKlgsHAGlhceQH9Bea7DESD5aAZFJvgND9B8zbl5sZwbbrEq0gtDGs',
-      },
-    });
-  };
+  // const onHeart = () => {
+  //   axios
+  //     .patch(
+  //       `/articles/${id}`,
+  //       {
+  //         hearts: [
+  //           {
+  //             memberId: 14,
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         headers: {
+  //           // 로그인 기능 완료시 수정 예정
+  //           Authorization:
+  //             'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTU0MjQxNCwiZXhwIjoxNjY5NTU2ODE0fQ.ud6q_LaGz0VWmcq_rkkqPLI2wy4z-nAdbyMDPOdczE8JTPPdwFMNHbAF4XIo5_wj',
+  //         },
+  //       },
+  //     )
+  //     .then((response) => {
+  //       setLiked(response.data.isLiked);
+  //     });
+  // };
 
   // 게시글 삭제 이벤트 핸들러
   const onDeleteArticle = (e) => {
@@ -331,37 +308,88 @@ const ArticleDetail = () => {
     axios.delete(`/articles/${id}`, {
       headers: {
         // 로그인 기능 완료시 수정 예정
-        Authorization:
-          'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTI3MTc2NSwiZXhwIjoxNjY5Mjg2MTY1fQ.upwb_w4zviAKlgsHAGlhceQH9Bea7DESD5aAZFJvgND9B8zbl5sZwbbrEq0gtDGs',
+        Authorization: '',
       },
     });
   };
 
+  const onChangeAnswer = (e) => {
+    setAnswerInput(e.currentTarget.value);
+  };
+
   // 댓글 등록 이벤트 핸들러
-  const onAnswerHandler = (e) => {
+  const onAnswerHandler = (e, articleId) => {
     e.preventDefault();
     let answerValue = e.currentTarget.value;
     setAnswerInput(answerValue);
-    answerSubmit();
+    answerSubmit(articleId);
   };
-  const answerSubmit = () => {
+  const answerSubmit = (articleId) => {
     axios
-      .post(`/articles/${id}`, {
-        body: answerInput,
-      })
+      .post(
+        `/answers`,
+        {
+          articleId,
+          memberId: 14,
+          body: answerInput,
+        },
+        {
+          headers: {
+            // 로그인 기능 완료시 수정 예정
+            Authorization:
+              'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
+          },
+        },
+      )
       .then((response) => {
+        setNewComment(!newComment);
         console.log(response.data.answer);
       })
       .catch(console.error);
+  };
+  // 댓글 수정 이벤트 핸들러
+  const onUpdateComment = (e) => {
+    e.preventDefault();
+    let answerValue = e.currentTarget.value;
+    setAnswerInput(answerValue);
+    updateCommentSubmit();
+  };
+  const updateCommentSubmit = (answerId) => {
+    axios.patch(
+      `/answers/${answerId}`,
+      {
+        answerId,
+        body: '답변2',
+      },
+      {
+        headers: {
+          // 로그인 기능 완료시 수정 예정
+          Authorization:
+            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
+        },
+      },
+    );
   };
 
   // 댓글 삭제 이벤트 핸들러
   const onDeleteComment = (e) => {
     e.preventDefault();
-    deleteCommentSubmit();
+    deleteCommentSubmit(e.target.value);
   };
-  const deleteCommentSubmit = () => {
-    // axios.delete(`/articles/${id}`);
+
+  const deleteCommentSubmit = (answerId) => {
+    axios
+      .delete(`/answers/${answerId}`, {
+        headers: {
+          // 로그인 기능 완료시 수정 예정
+          Authorization:
+            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTUzMDQ2NiwiZXhwIjoxNjY5NTQ0ODY2fQ.nKYUcLrM7g-DkEUa7PVtuoSEXncD5_H74E09QtrPEKFYmDisiHDQK0HpLu6OK_-4',
+        },
+      })
+      .then((response) => {
+        setNewComment(!newComment);
+        console.log(response);
+      });
   };
 
   // 비동기 통신
@@ -371,10 +399,17 @@ const ArticleDetail = () => {
       setLiked(response.data.heartCount);
       setInterestView(response.data.data.interests);
       setAnswers(response.data.data.answers);
-      setIsCheck(response.data.data.isCompleted);
+      // setIsCheck(response.data.data.isCompleted);
       console.log(response.data.data);
     });
-  }, []);
+  }, [newComment]);
+
+  // useEffect(() => {
+  //   axios.get(`/articles/${id}`).then((response) => {
+  //     setAnswers(response.data.data.answers);
+  //     console.log(response.data.data);
+  //   });
+  // }, [newComment]);
 
   return (
     <WholeContainer>
@@ -387,22 +422,22 @@ const ArticleDetail = () => {
             <SwitchToggle
               right="모집 완료"
               setChecked={isCheck}
-              onClick={onToggle}
-              // onClick={() => {
-              //   setIsCheck(!isCheck);
-              // }}
+              // onClick={onToggle}
+              onClick={() => {
+                setIsCheck(!isCheck);
+              }}
             />
           </div>
           <form className="title-right-box">
             {/* 공유 버튼 */}
             <button className="title-btn">
-              <span className="title-icons">
+              <span className="title-icons title-share-icons">
                 <FiShare />
               </span>
             </button>
             {/* 좋아요 버튼 */}
             <button className="title-btn" onClick={() => {}}>
-              <span className="title-icons">
+              <span className="title-icons title-heart-icons">
                 <BsHeartFill />
               </span>
             </button>
@@ -421,7 +456,8 @@ const ArticleDetail = () => {
           <span>{articles.views} view</span>
           {/* 좋아요 수 */}
           <span>
-            <BsHeartFill /> {articles.heartCount}
+            <BsHeartFill className="conetent-heart-icons" />{' '}
+            {articles.heartCount}
           </span>
           {/* 작성 일 */}
           <span>작성일 {createdAtArticle.toLocaleString()}</span>
@@ -432,10 +468,17 @@ const ArticleDetail = () => {
           <LeftViewTopBox>
             <span>이런 기술 스택을 사용하고 싶어요.</span>
             <SkillStackView size="12px" />
-            {/* <h4>이런 산업군에 관심이 있어요.</h4> */}
-            <InterestView />
+            <InterestView content={'이런 산업군에 관심이 있어요'} size="15px" />
           </LeftViewTopBox>
           <LeftViewBottomBox>
+            <ul>
+              저의 숙련도는 아래와 같아요.
+              <li>
+                <span className="left-bottom-content">
+                  {articles.memberLevel}
+                </span>
+              </li>
+            </ul>
             <ul>
               프로젝트 예정기간
               <div>
@@ -468,67 +511,45 @@ const ArticleDetail = () => {
                 </li>
               </div>
             </ul>
-            <ul>
-              저의 숙련도는 아래와 같아요.
-              <li>
-                <span className="left-bottom-content">
-                  {articles.memberLevel}
-                </span>
-              </li>
-            </ul>
           </LeftViewBottomBox>
         </LeftViewContainer>
         <RightViewContainer>
           <span className="content-plan">프로젝트 계획을 설명해 주세요!</span>
-          {/* 게시글 본문 내용 */}
           <span>{articles.body}</span>
         </RightViewContainer>
       </LeftRightWholeConatiner>
+      {/* 댓글 컴포넌트 */}
       <BottomCommentConatiner>
         <div className="comment-count">
-          <span>{answers.length}개의 댓글이 있습니다.</span>
+          <span>{articles.answerCount}개의 댓글이 있습니다.</span>
         </div>
-        <CommentBox>
-          {answers.map((comment, idx) => {
-            return (
-              <div key={idx}>
-                <div className="user">
-                  <div className="user-info">
-                    <img src={avatar} alt="" />
-                    <span className="user-name">{comment.memberName}</span>
-                    <span className="comment-created">
-                      {new Date(comment.createdAt).toLocaleString()}
-                    </span>
-                  </div>
-                  <span className="comment-btn">
-                    <button>수정하기</button>
-                    <button onClick={onDeleteComment}>삭제하기</button>
-                  </span>
-                </div>
-
-                <span className="comment">{comment.body}</span>
-                {/* <span className="comment">{comment.comments[idx].body}</span> */}
-                {/* <span className="comment">{comment.comments[idx].body}</span> */}
-              </div>
-            );
-          })}
-        </CommentBox>
-
-        <CommnetWriteBox>
+        <Comment
+          articles={articles}
+          answers={answers}
+          onDeleteComment={onDeleteComment}
+          avatar={avatar}
+          onAnswerHandler={onAnswerHandler}
+          onChangeAnswer={onChangeAnswer}
+          onUpdateComment={onUpdateComment}
+          answerInput={answerInput}
+        />
+        <CommentWriteBox>
           <input
             type="text"
             className="comment-input"
             placeholder="댓글을 입력하세요."
-            value={answerInput || ''}
-            onChange={(e) => setAnswerInput(e.target.value)}
+            value={answerInput}
+            onChange={onChangeAnswer}
           ></input>
           <button>
             <BsArrowUpCircleFill
               className="upload-btn"
-              onClick={onAnswerHandler}
+              onClick={(e) => {
+                onAnswerHandler(e, articles.articleId);
+              }}
             />
           </button>
-        </CommnetWriteBox>
+        </CommentWriteBox>
       </BottomCommentConatiner>
     </WholeContainer>
   );
