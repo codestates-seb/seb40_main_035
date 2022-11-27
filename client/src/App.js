@@ -10,26 +10,35 @@ import Profile from './pages/Profile';
 import SignUp from './pages/SignUp';
 import styled from 'styled-components';
 
-const HeaderContainer = styled.div`
-  height: 62px;
+const Container = styled.div`
+  background-color: var(--purple-light);
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 170px;
 `;
 
 function App() {
   return (
     <>
-      <HeaderContainer>
+      <Container>
         <Header />
-      </HeaderContainer>
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/write" element={<ArticleWrite />} />
-        <Route path="/articles/edit/:id" element={<ArticleEdit />} />
-        <Route path="/articles/:id" element={<ArticleDetail />} />
-        <Route path="/mypage/:id" element={<MyPage />} />
-        <Route path="/mypage/edit/:id" element={<MyPageEdit />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+        <ContentContainer>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/write" element={<ArticleWrite />} />
+            <Route path="/article/edit/:id" element={<ArticleEdit />} />
+            <Route path="/article/:id" element={<ArticleDetail />} />
+            <Route path="/mypage/:id" element={<MyPage />} />
+            <Route path="/mypage/edit/:id" element={<MyPageEdit />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </ContentContainer>
+      </Container>
     </>
   );
 }

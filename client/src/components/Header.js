@@ -4,12 +4,22 @@ import { BiMoon } from 'react-icons/bi';
 import { useState } from 'react';
 
 const HeaderContainer = styled.header`
+  z-index: 1;
   width: 100%;
   height: 62px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  z-index: 2;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
 
   .header-container {
     width: 100%;
@@ -36,6 +46,7 @@ const HeaderContainer = styled.header`
     padding-right: 132px;
   }
   .logo {
+    white-space: nowrap;
     padding-right: 50px;
     padding-left: 170px;
     font-size: 25px;
@@ -47,6 +58,7 @@ const HeaderContainer = styled.header`
     font-size: 15px;
 
     li {
+      white-space: nowrap;
       list-style: none;
       margin-right: 31px;
       width: auto;

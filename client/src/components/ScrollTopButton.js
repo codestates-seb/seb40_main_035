@@ -3,9 +3,26 @@ import { IoIosArrowUp } from 'react-icons/io';
 import styled from 'styled-components';
 
 const Button = styled.button`
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+  width: 57px;
+  height: 57px;
   background-color: #ffffff;
   border-radius: 50%;
   border: none;
+  animation: fadein 1s alternate;
+
+  @keyframes fadein {
+    from {
+      opacity: 0;
+      transform: translate(0, 100px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
 `;
 
 const ScrollTopButton = () => {
