@@ -1,12 +1,6 @@
-// enter 기능
-// 수정 완료 후 새로고침 안되게 수정
-// 포커싱
-
-/* eslint-disable no-unused-vars */
 import styled from 'styled-components';
-import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
 import Recomment from './Recomment';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -64,11 +58,19 @@ const CommentBox = styled.form`
     margin-left: 25px;
   }
   .edit-input {
-    border: solid 1px black;
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: var(--purple-light);
+    border-radius: 8px;
+    &:hover,
+    &:focus,
+    &:active {
+      border: 2px solid var(--purple-medium);
+    }
   }
   .answer-form {
     margin-top: 15px;
-    /* margin-bottom: 15px; */
   }
 
   .recomment-form {
@@ -80,30 +82,22 @@ const CommentBox = styled.form`
     margin-left: 12px;
   }
 `;
-const Comment = ({
-  avatar,
-  articles,
-  answers,
-  onDeleteComment,
-  onAnswerHandler,
-  answerInput,
-  onChangeAnswer,
-}) => {
+const Comment = ({ avatar, answers, onDeleteComment }) => {
   const [editIng, setEditIng] = useState(false);
   const [editSelectedIdx, setEditSelectedIdx] = useState();
   const [editInput, setEditInput] = useState('');
   const navigate = useNavigate();
 
+  // 댓글 수정하기 이벤트 핸들러
   const onEditBtn = (e) => {
-    // 클릭시 edited 값을 true로 바꿈
     e.preventDefault();
     setEditIng(true);
     setEditSelectedIdx(e.target.value);
     setEditInput(answers[e.target.value].body);
   };
-
+  // 댓글 수정완료 이벤트 핸들러
   const onEditCompleteBtn = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     setEditIng(false);
     setEditSelectedIdx(e.target.value);
     updateCommentSubmit(e.target.value);
@@ -111,7 +105,7 @@ const Comment = ({
 
   const onChangeEdit = (e) => {
     e.preventDefault();
-    setEditInput(e.currentTarget.value);
+    setEditInput(e.target.value);
   };
 
   // 댓글 수정 이벤트 핸들러
@@ -167,6 +161,7 @@ const Comment = ({
                 </button>
               </span>
             </div>
+
             {editSelectedIdx == idx && editIng ? (
               <input
                 type="text"
