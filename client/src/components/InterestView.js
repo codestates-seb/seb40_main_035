@@ -22,7 +22,7 @@ const Container = styled.div`
     border-bottom: 1px solid var(--purple-medium);
     height: 50px; // 수정
     font-weight: 500;
-
+    font-size: ${(props) => props.size ?? '13px'};
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -49,7 +49,6 @@ const Container = styled.div`
   .interest-tag-img {
     width: 20px;
     height: 20px;
-
     margin-right: 6px;
     border-radius: 100%;
     border: 2px solid white;
@@ -64,12 +63,12 @@ const Container = styled.div`
 
     display: flex;
     align-items: center;
-    margin: 15px 7px 1px 0;
+    margin: 15px 8px -5px 0;
     padding: 7px 10px;
   }
 `;
 
-function InterestView() {
+function InterestView({ size }) {
   const interestView = useRecoilValue(interestViewState);
 
   const interestContArr = [
@@ -85,7 +84,7 @@ function InterestView() {
   ];
 
   return (
-    <Container>
+    <Container size={size}>
       <div className="title">관심 분야 (산업군)</div>
       <div className="content">
         {interestContArr.map((interestTag, idx) => {
