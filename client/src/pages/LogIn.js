@@ -67,8 +67,9 @@ const Container = styled.div`
     border: none;
     border-bottom: 1px solid var(--purple);
 
+    &:focus,
     &:active {
-      border-color: var(--purple);
+      outline: none;
     }
   }
 
@@ -120,12 +121,12 @@ const LogIn = ({ userMenu }) => {
         <form>
           <div className="form-container">
             <div className="form-title">이메일</div>
-            <input className="form-input"></input>
+            <input className="form-input" />
             <div className="form-alert">가입되지 않은 이메일 입니다.</div>
           </div>
           <div className="form-container">
             <div className="form-title">비밀번호</div>
-            <input className="form-input"></input>
+            <input className="form-input" />
             <div className="form-alert">비밀번호를 확인해 주세요.</div>
           </div>
         </form>
@@ -134,7 +135,7 @@ const LogIn = ({ userMenu }) => {
           <a href="" className="link">
             비밀번호 찾기
           </a>
-          <a href="" className="link">
+          <a href="/signup" className="link">
             회원가입 하기
           </a>
         </div>
