@@ -3,31 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiChevronDown } from 'react-icons/fi';
 
-const WholeContainer = styled.div`
-  width: 200px;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-direction: column;
-
-  .title {
-    font-size: 15px;
-    margin-left: 6px;
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-`;
-
 const DropdownContainer = styled.div`
-  display: flex;
-  justify-content: center;
   &:hover {
     cursor: pointer;
   }
-
+  color: var(--black);
   span {
-    font-size: 13px;
+    font-size: 16px;
   }
 `;
 
@@ -35,13 +17,18 @@ const DropdownBody = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 14px;
-  border: solid 1px var(--grey-light);
+  padding: 8px 14px;
+  border: solid 1px
+    ${(props) => (props.isActive ? 'var(--purple)' : 'var(--purple-medium)')};
   background-color: var(--purple-light);
-  width: 180px;
-  border-radius: 20px;
+  border-radius: 8px;
+  z-index: 1;
+
   #down-icon {
-    color: var(--purple);
+    color: ${(props) =>
+      props.isActive ? 'var(--purple)' : 'var(--purple-medium)'};
+    transform: ${(props) => (props.isActive ? 'rotateX(180deg)' : 'none')};
+    transition: 300ms ease-in-out;
   }
 `;
 
@@ -49,20 +36,21 @@ const DropdownMenu = styled.ul`
   justify-content: center;
   align-items: center;
   display: ${(props) => (props.isActive ? `block` : `none`)};
-  width: 180px;
   background-color: var(--purple-light);
-  position: absolute;
-  border: solid 1px var(--grey-light);
+  border: solid 1px var(--purple-medium);
+  border-top: none;
   border-radius: 8px;
+  color: var(--grey-dark);
 `;
 
 const DropdownItem = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 14px;
-  border-bottom: solid 1px var(--grey-light);
+  padding: 8px 14px;
+  border-bottom: solid 1px var(--purple-medium);
   border-top: none;
+
   &:hover {
     background-color: var(--purple);
     color: white;
@@ -123,13 +111,12 @@ const LevelSelect = () => {
   };
 
   return (
-    <WholeContainer>
-      <span className="title">숙련도</span>
+    <>
       <DropdownContainer ref={selectInput}>
-        <DropdownBody onClick={onActiveToggle}>
+        <DropdownBody onClick={onActiveToggle} isActive={isActive}>
           {selectedValue ? (
             <>
-              <span>{selectedValue} </span>
+              <span>{selectedValue}</span>
               <FiChevronDown id="down-icon" />
             </>
           ) : (
@@ -147,7 +134,7 @@ const LevelSelect = () => {
           ))}
         </DropdownMenu>
       </DropdownContainer>
-    </WholeContainer>
+    </>
   );
 };
 
