@@ -87,7 +87,7 @@ function NumberSelect() {
     }
 
     if (feNumber - 1 === 0) {
-      setBeNumberCheck(false);
+      setFeNumberCheck(false);
     }
   };
 
