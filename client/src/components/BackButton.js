@@ -3,9 +3,14 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 const Button = styled.button`
-  background-color: #ffffff;
+  background-color: var(--purple-light);
   border-radius: 50%;
   border: none;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Backbutton = () => {
