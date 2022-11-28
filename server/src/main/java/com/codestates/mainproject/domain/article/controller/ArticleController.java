@@ -35,8 +35,6 @@ import java.util.Locale;
 public class ArticleController {
     private final ArticleService articleService;
     private final ArticleMapper mapper;
-    private final SkillService skillService;
-    private final SkillMapper skillMapper;
 
     @PostMapping
     public ResponseEntity postArticle(@Valid @RequestBody ArticlePostDto postDto) {

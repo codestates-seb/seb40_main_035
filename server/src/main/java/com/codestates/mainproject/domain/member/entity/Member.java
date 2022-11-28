@@ -18,6 +18,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,12 +59,19 @@ public class Member extends Auditable {
         articles.add(article);
     }
 
+    public List<Article> getArticles() {
+        return articles.stream()
+                .sorted(Comparator.comparing(Article::getArticleId).reversed())
+                .collect(Collectors.toList());
+    }
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
     public List<Article> getHeartArticles() {
         return hearts.stream()
                 .map(heart -> heart.getArticle())
+                .sorted(Comparator.comparing(Article::getArticleId).reversed())
                 .collect(Collectors.toList());
     }
 

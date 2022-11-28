@@ -84,10 +84,7 @@ public class MemberService {
                 });
 
         Optional.ofNullable(member.getName())
-                .ifPresent(name -> {
-                    verifyExistingName(name);
-                    findMember.setName(name);
-                });
+                .ifPresent(name -> findMember.setName(name));
 
         Optional.ofNullable(member.getDescription())
                 .ifPresent(description -> findMember.setDescription(description));
@@ -96,10 +93,7 @@ public class MemberService {
                 .ifPresent(level -> findMember.setLevel(level));
 
         Optional.ofNullable(member.getGithub())
-                .ifPresent(github -> {
-                    verifyExistingGithub(github);
-                    findMember.setGithub(github);
-                });
+                .ifPresent(github -> findMember.setGithub(github));
 
         Optional.ofNullable(member.getMemberInterests())
                 .ifPresent(memberInterests -> {
