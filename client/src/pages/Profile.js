@@ -68,14 +68,6 @@ const Container = styled.div`
     cursor: pointer;
   }
 
-  .active-menu {
-    color: var(--purple);
-
-    .menu-content-count {
-      color: var(--black);
-    }
-  }
-
   .menu-content-count {
     margin-top: 5px;
     font-size: 15px;
@@ -193,10 +185,6 @@ const Profile = () => {
     });
   }, []);
 
-  const tabContArr = [
-    { tabTitle: '모집한 프로젝트', tabCont: recruitedArticles },
-    { tabTitle: '좋아요한 프로젝트', tabCont: likedArticles },
-  ];
 
   const onClickMenu = (idx) => {
     setActiveMenu(idx);
