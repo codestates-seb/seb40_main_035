@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import DefaultButton from '../components/DefaultButton';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useSetRecoilState } from 'recoil';
+import { modalOpenState } from '../atom/atom';
 
 const Container = styled.div`
   display: flex;
@@ -9,8 +11,7 @@ const Container = styled.div`
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: #b0b0b3;
-  opacity: 0.8;
+  background-color: rgba(176, 176, 179, 0.8);
   inset: 0px;
   z-index: 2;
 
@@ -32,6 +33,10 @@ const Container = styled.div`
     justify-content: flex-end;
     width: 100%;
     padding: 5px;
+  }
+
+  .close-button {
+    cursor: pointer;
   }
 
   .login-button {
@@ -94,12 +99,22 @@ const Authbutton = styled.a`
   }
 `;
 
-const LogIn = () => {
+const LogIn = ({ userMenu }) => {
+  const setModalOpen = useSetRecoilState(modalOpenState);
+
+  const closeLogIn = () => {
+    setModalOpen(false);
+  };
   return (
     <Container>
-      <div className="login-container">
+      <div className="login-container" ref={userMenu}>
         <div className="close-button-container">
-          <AiOutlineClose size="24px" />
+          <AiOutlineClose
+            className="close-button"
+            size="24px"
+            onClick={closeLogIn}
+            type="button"
+          />
         </div>
         <span className="login-title">로그인</span>
         <form>

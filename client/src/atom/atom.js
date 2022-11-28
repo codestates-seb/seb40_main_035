@@ -100,6 +100,12 @@ export const inputHashTagsState = atom({
   default: [],
 });
 
+// 게시글 목록
+export const articlesListState = atom({
+  key: 'articlesListState',
+  default: [],
+});
+
 // 사용자가 모집한 프로젝트 목록 상태
 export const recruitedArticlesState = atom({
   key: 'recruitedArticlesState',
@@ -110,4 +116,9 @@ export const recruitedArticlesState = atom({
 export const likedArticlesState = atom({
   key: 'likedArticlesState',
   default: [],
+});
+
+export const modalOpenState = atom({
+  key: 'modalOpenState',
+  default: false,
 });

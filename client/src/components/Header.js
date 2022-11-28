@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiMoon } from 'react-icons/bi';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import LogIn from '../pages/LogIn';
+import { useRecoilState } from 'recoil';
+import { modalOpenState } from '../atom/atom';
 
 const HeaderContainer = styled.header`
   z-index: 1;
@@ -10,6 +13,12 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  z-index: 2;
   position: sticky;
   top: 0;
   right: 0;
@@ -80,6 +89,7 @@ const NavBtn = styled.button`
 
 const Header = () => {
   const [menu, setMenu] = useState(0);
+  const [modalOpen, setModalOpen] = useRecoilState(modalOpenState);
   const navigate = useNavigate();
 
   const onMain = () => {
@@ -96,14 +106,27 @@ const Header = () => {
     navigate('/write');
     setMenu(2);
   };
-  const onLogin = () => {
-    navigate('/login');
-    setMenu(3);
-  };
   const onSignup = () => {
     navigate('/signup');
     setMenu(4);
   };
+
+  const openLogIn = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const userMenu = useRef();
+
+  const modalCloseHandler = ({ target }) => {
+    if (!userMenu.current.contains(target)) setModalOpen(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousedown', modalCloseHandler);
+    return () => {
+      window.removeEventListener('mousedown', modalCloseHandler);
+    };
+  });
 
   return (
     <HeaderContainer>
@@ -134,7 +157,7 @@ const Header = () => {
               </NavBtn>
             </li>
             <li>
-              <NavBtn $color={menu === 3} onClick={onLogin}>
+              <NavBtn $color={menu === 3} onClick={openLogIn}>
                 로그인
               </NavBtn>
             </li>
@@ -150,6 +173,7 @@ const Header = () => {
           </ul>
         </div>
       </div>
+      {modalOpen ? <LogIn userMenu={userMenu} /> : null}
     </HeaderContainer>
   );
 };
