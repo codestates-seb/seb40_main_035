@@ -18,7 +18,7 @@ import InterestView from '../components/InterestView';
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
   width: 100%;
-  height: auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -317,51 +317,6 @@ const ArticleDetail = () => {
     }
   };
 
-  // 모집중 토글 이벤트 핸들러
-  // const onToggle = () => {
-  //   axios
-  //     .patch(
-  //       `/articles/${id}`,
-  //       {
-  //         isCompleted: !isCheck,
-  //       },
-  //       {
-  //         headers: {
-  //           // 로그인 토큰 자리
-  //           Authorization: '',
-  //         },
-  //       },
-  //     )
-  //     .then((response) => {
-  //       setIsCheck(response.data.isCompleted);
-  //     });
-  // };
-
-  // 좋아요 이벤트 핸들러
-  // const onHeart = () => {
-  //   axios
-  //     .patch(
-  //       `/articles/${id}`,
-  //       {
-  //         hearts: [
-  //           {
-  //             // 로그인 토큰에 따른 추후 수정
-  //             memberId: 14,
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         headers: {
-  //           // 로그인 토큰 자리
-  //           Authorization: '',
-  //         },
-  //       },
-  //     )
-  //     .then((response) => {
-  //       setLiked(response.data.isLiked);
-  //     });
-  // };
-
   // 게시글 조회 http 요청
   useEffect(() => {
     axios.get(`/articles/${id}`).then((response) => {
@@ -375,7 +330,8 @@ const ArticleDetail = () => {
       onSkills(response.data.data.skills);
       // 댓글 상태 set
       setAnswers(response.data.data.answers);
-      // setIsCheck(response.data.data.isCompleted);
+      // 모집 여부 상태 set
+      setIsCheck(response.data.data.isCompleted);
     });
   }, [newComment]);
 
@@ -393,6 +349,55 @@ const ArticleDetail = () => {
       },
     });
   };
+  const onToggleChange = () => {
+    setIsCheck((isCheck) => !isCheck);
+  };
+  // 모집중 토글 이벤트 핸들러
+  const onToggle = () => {
+    axios
+      .patch(
+        `/articles/${id}`,
+        {
+          isCompleted: !isCheck,
+        },
+        {
+          headers: {
+            // 로그인 토큰 자리
+            Authorization:
+              'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTYxNDEzNCwiZXhwIjoxNjY5NjI4NTM0fQ.lNABbLSSk6hsmiG3uYQZXekuCCPVMGY--uuGcRWCKkvFl4jkmjLn61-rj4HJN88x',
+          },
+        },
+      )
+      .then((response) => {
+        onToggleChange(isCheck);
+      });
+  };
+
+  // 좋아요 이벤트 핸들러
+  // const onHeartHandler = (memeberId) => {};
+  // const onHeartSubmit = () => {
+  //   axios
+  //     .patch(
+  //       `/articles/${id}`,
+  //       {
+  //         hearts: [
+  //           {
+  //             // 로그인 토큰에 따른 추후 수정
+  //             // memberId: ,
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         headers: {
+  //           // 로그인 토큰 자리
+  //           Authorization: '',
+  //         },
+  //       },
+  //     )
+  //     .then((response) => {
+  //       setLiked(response.data.isLiked);
+  //     });
+  // };
 
   // 댓글 등록 이벤트 핸들러
   const onAnswerHandler = (e, articleId) => {
@@ -429,7 +434,6 @@ const ArticleDetail = () => {
       )
       .then((response) => {
         setNewComment(!newComment);
-        console.log(response.data.answer);
       })
       .catch(console.error);
   };
@@ -444,13 +448,11 @@ const ArticleDetail = () => {
       .delete(`/answers/${answerId}`, {
         headers: {
           // 로그인 토큰 자리
-          Authorization:
-            'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTU2OTQ4OSwiZXhwIjoxNjY5NTgzODg5fQ.LjptTliqLrFcgamPyK0p6ebSPsgbqxgJRdZIfo5PFYzGvX0f9060fnEcFdivhTLP',
+          Authorization: '',
         },
       })
       .then((response) => {
         setNewComment(!newComment);
-        console.log(response);
       });
   };
 
@@ -465,9 +467,7 @@ const ArticleDetail = () => {
             <SwitchToggle
               right="모집 완료"
               setChecked={isCheck}
-              onClick={() => {
-                setIsCheck(!isCheck);
-              }}
+              onClick={onToggle}
             />
           </div>
           <form className="title-right-box">
