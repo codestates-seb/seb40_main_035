@@ -106,13 +106,13 @@ const Header = () => {
     navigate('/write');
     setMenu(2);
   };
+  const onLogIn = () => {
+    setModalOpen(!modalOpen);
+    setMenu(3);
+  };
   const onSignup = () => {
     navigate('/signup');
     setMenu(4);
-  };
-
-  const openLogIn = () => {
-    setModalOpen(!modalOpen);
   };
 
   const userMenu = useRef();
@@ -157,7 +157,7 @@ const Header = () => {
               </NavBtn>
             </li>
             <li>
-              <NavBtn $color={menu === 3} onClick={openLogIn}>
+              <NavBtn $color={menu === 3} onClick={onLogIn}>
                 로그인
               </NavBtn>
             </li>
