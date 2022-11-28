@@ -92,9 +92,7 @@ function NumberSelect() {
   };
 
   const onFePlusClick = () => {
-    if (feNumber >= 0) {
-      setFeNumber(feNumber + 1);
-    }
+    setFeNumber(feNumber + 1);
 
     if (feNumber + 1 > 0) {
       setFeNumberCheck(true);
@@ -112,9 +110,7 @@ function NumberSelect() {
   };
 
   const onBePlusClick = () => {
-    if (beNumber >= 0) {
-      setBeNumber(beNumber + 1);
-    }
+    setBeNumber(beNumber + 1);
 
     if (beNumber + 1 > 0) {
       setBeNumberCheck(true);

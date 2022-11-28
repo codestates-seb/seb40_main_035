@@ -8,6 +8,7 @@ import NumberSelect from '../components/NumberSelect';
 import InputHashTag from '../components/InputHashTag';
 import InputBody from '../components/InputBody';
 import MiniButton from '../components/MiniButton';
+import getFormatDate from '../utils/getFormatDate';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import {
   beNumberState,
@@ -181,29 +182,15 @@ const ArticleWrite = () => {
   let selectedSkillstacksSubmit,
     selectedInterestsSubmit = [];
 
-  // 객체로 저장된 날짜형식을 yyyymmdd의 포멧으로 변경
-  const getFormatDate = (date) => {
-    date = String(date);
-    date = new Date(date);
-    let year = date.getFullYear(); //yyyy
-    let month = 1 + date.getMonth(); //M
-    month = month >= 10 ? month : '0' + month; //month 두자리로 저장
-    let day = date.getDate(); //d
-    day = day >= 10 ? day : '0' + day; //day 두자리로 저장
-    return `${year + '' + month + '' + day}`; //yyyymmdd
-  };
-
   const onWriteSubmit = () => {
     // 선택된 기술 스택 목록을 POST 데이터 형식으로 변경
     selectedSkillstacksSubmit = selectedSkillstacks.map((el) => {
-      let obj = { skillName: el.name };
-      return obj;
+      return { skillName: el.name };
     });
 
     // 선택된 관심 분야 목록을 POST 데이터 형식으로 변경
     selectedInterestsSubmit = selectedInterests.map((el) => {
-      let obj = { interestName: el };
-      return obj;
+      return { interestName: el };
     });
 
     // 전부 다 작성되어야 axios POST
