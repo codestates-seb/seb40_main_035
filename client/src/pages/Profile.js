@@ -67,14 +67,6 @@ const Container = styled.div`
     cursor: pointer;
   }
 
-  .active-menu {
-    color: var(--purple);
-
-    .menu-content-count {
-      color: var(--black);
-    }
-  }
-
   .menu-content-count {
     margin-top: 5px;
     font-size: 15px;
