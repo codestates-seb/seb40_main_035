@@ -9,6 +9,7 @@ import InterestSelect from '../components/InterestSelect';
 import LevelSelect from '../components/LevelSelect';
 import MiniButton from '../components/MiniButton';
 import SkillStackSelect from '../components/SkillStackSelect';
+import Message from '../components/Message';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -115,19 +116,6 @@ const FormInputContainer = styled.div`
   }
 `;
 
-const Span = styled.span`
-  font-size: 13px;
-  color: var(--purple);
-
-  &.error {
-    color: red;
-  }
-`;
-
-const Description = ({ isError, text }) => {
-  return <Span className={isError ? 'error' : ''}>{text}</Span>;
-};
-
 const FormInput = ({
   id,
   label,
@@ -153,7 +141,7 @@ const FormInput = ({
           disabled={disabled}
         />
       </div>
-      <Description
+      <Message
         isError={isError}
         text={isError === null ? description : isError ? errorMsg : ' '}
       />
@@ -460,9 +448,7 @@ const SignUp = () => {
           />
           <label htmlFor="level">숙련도</label>
           <LevelSelect id="level" />
-          {levelErr && (
-            <Description isError={levelErr} text="필수 입력입니다." />
-          )}
+          {levelErr && <Message isError={levelErr} text="필수 입력입니다." />}
         </div>
         <div className="rightside">
           <div className="select-section">
@@ -470,14 +456,14 @@ const SignUp = () => {
               사용해본 기술 스택을 선택해주세요
             </label>
             {!skillstacksCheck && (
-              <Description isError={true} text="1개 이상 선택해주세요." />
+              <Message isError={true} text="1개 이상 선택해주세요." />
             )}
             <SkillStackSelect id="skill-stack" />
           </div>
           <div className="select-section">
             <label htmlFor="interest">관심 분야를 선택해주세요</label>
             {!interestsCheck && (
-              <Description isError={true} text="1개 이상 선택해주세요." />
+              <Message isError={true} text="1개 이상 선택해주세요." />
             )}
             <InterestSelect id="interest" />
           </div>
