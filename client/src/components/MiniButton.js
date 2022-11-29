@@ -13,6 +13,7 @@ const Button = styled.button`
   line-height: 18px;
   white-space: nowrap;
   transition: 300ms ease-in-out;
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 
   &:hover {
     background-color: var(--purple-medium);
@@ -25,8 +26,12 @@ const Button = styled.button`
   }
 `;
 
-const MiniButton = ({ text, onClick }) => {
-  return <Button onClick={onClick}>{text}</Button>;
+const MiniButton = ({ text, disabled, onClick }) => {
+  return (
+    <Button disabled={disabled} onClick={onClick}>
+      {text}
+    </Button>
+  );
 };
 
 export default MiniButton;
