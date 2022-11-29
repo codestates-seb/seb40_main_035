@@ -117,3 +117,8 @@ export const likedArticlesState = atom({
   key: 'likedArticlesState',
   default: [],
 });
+
+export const selectedValueState = atom({
+  key: 'selectedValueState',
+  default: null,
+});
