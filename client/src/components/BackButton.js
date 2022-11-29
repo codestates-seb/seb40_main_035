@@ -13,7 +13,7 @@ const Button = styled.button`
   align-items: center;
 `;
 
-const Backbutton = () => {
+const BackButton = () => {
   const navigate = useNavigate();
   return (
     <Button
@@ -26,4 +26,4 @@ const Backbutton = () => {
   );
 };
 
-export default Backbutton;
+export default BackButton;

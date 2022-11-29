@@ -112,6 +112,12 @@ export const likedArticlesState = atom({
   default: [],
 });
 
+// 모달 오픈 상태
+export const modalOpenState = atom({
+  key: 'modalOpenState',
+  default: false,
+});
+
 // 게시글 작성 시 제목 value 상태
 export const inputTitleState = atom({
   key: 'inputTitleState',
