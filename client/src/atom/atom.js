@@ -196,7 +196,7 @@ export const isCompletedState = atom({
   default: false,
 });
 
-export const selectedValueState = atom({
-  key: 'selectedValueState',
+export const selectedLevelState = atom({
+  key: 'selectedLevelState',
   default: null,
 });
