@@ -17,7 +17,6 @@ import {
   modalOpenState,
 } from '../atom/atom';
 
-
 const HeaderContainer = styled.header`
   z-index: 1;
   width: 100%;
