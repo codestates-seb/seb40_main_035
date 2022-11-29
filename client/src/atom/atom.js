@@ -195,3 +195,9 @@ export const isCompletedState = atom({
   key: 'isCompletedState',
   default: false,
 });
+
+// 비밀번호 찾기위한 이메일 입력 값 상태
+export const searchPwEmailState = atom({
+  key: 'searchPwEmailState',
+  default: '',
+});
