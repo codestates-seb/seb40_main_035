@@ -1,3 +1,4 @@
+// 메인페이지 날짜 포맷
 const yearMonthDate = (date) => {
   const y = parseInt(date.substr(0, 4));
   const m = parseInt(date.substr(4, 2));
