@@ -97,10 +97,11 @@ const SwitchToggle = ({ right, setChecked, onClick }) => {
         <CheckBox
           left="모집 중"
           right={right}
-          // value=""
+          //value=""
           type="checkbox"
           checked={setChecked}
           onClick={onClick}
+          checked={setChecked}
         ></CheckBox>
       </CheckBoxContainer>
     </ToggleContainer>

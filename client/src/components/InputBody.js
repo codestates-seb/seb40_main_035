@@ -1,9 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { inputBodyState, inputBodyCheckState } from '../atom/atom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { inputBodyState, inputBodyCheckState, nextState } from '../atom/atom';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -21,6 +21,7 @@ const InputBody = () => {
   const [inputBody, setInputBody] = useRecoilState(inputBodyState);
   const setInputBodyCheck = useSetRecoilState(inputBodyCheckState);
   const editorRef = useRef();
+  const next = useRecoilValue(nextState);
 
   const onChange = () => {
     setInputBody(editorRef.current.getInstance().getMarkdown());
@@ -34,13 +35,17 @@ const InputBody = () => {
     }
   };
 
+  useEffect(() => {
+    editorRef.current?.getInstance().setMarkdown(inputBody);
+  }, [next]);
+
   return (
     <Container>
       <Editor
         placeholder="본문을 입력해주세요"
-        previewStyle="vertical"
+        previewStyle="tab"
         height="600px"
-        initialEditType="wysiwyg"
+        initialEditType="markdown"
         useCommandShortcut={false}
         toolbarItems={[
           ['heading', 'bold', 'italic', 'strike'],
