@@ -9,6 +9,15 @@ import InterestSelect from '../components/InterestSelect';
 import LevelSelect from '../components/LevelSelect';
 import MiniButton from '../components/MiniButton';
 import SkillStackSelect from '../components/SkillStackSelect';
+import { AiOutlineCheck } from 'react-icons/ai';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  selectedLevelState,
+  selectedSkillstacksState,
+  selectedInterestsState,
+  skillstacksCheckState,
+  interestsCheckState,
+} from '../atom/atom';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -22,11 +31,10 @@ const Container = styled.div`
   .form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-rows: auto;
     gap: 100px;
 
-    .leftside,
     .rightside {
-      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -57,6 +65,15 @@ const Container = styled.div`
 
     .input-wrapper {
       display: flex;
+
+      button,
+      .confirmed-icon {
+        margin-left: 25px;
+      }
+
+      .confirmed-icon {
+        padding-top: 5px;
+      }
     }
   }
 
@@ -69,6 +86,17 @@ const Container = styled.div`
 const FormInputContainer = styled.div`
   width: 100%;
   margin-bottom: 30px;
+
+  &.disabled {
+    label,
+    span {
+      color: grey;
+    }
+
+    input {
+      border-color: grey;
+    }
+  }
 
   input {
     width: 100%;
@@ -85,27 +113,20 @@ const FormInputContainer = styled.div`
       border-color: red;
     }
   }
+`;
 
-  span {
-    font-size: 13px;
-    color: var(--purple);
+const Span = styled.span`
+  font-size: 13px;
+  color: var(--purple);
 
-    &.error {
-      color: red;
-    }
-  }
-
-  &.disabled {
-    label,
-    span {
-      color: grey;
-    }
-
-    input {
-      border-color: grey;
-    }
+  &.error {
+    color: red;
   }
 `;
+
+const Description = ({ isError, text }) => {
+  return <Span className={isError ? 'error' : ''}>{text}</Span>;
+};
 
 const FormInput = ({
   id,
@@ -132,59 +153,26 @@ const FormInput = ({
           disabled={disabled}
         />
       </div>
-      <span className={isError ? 'error' : ''}>
-        {isError === null ? description : isError ? errorMsg : ' '}
-      </span>
+      <Description
+        isError={isError}
+        text={isError === null ? description : isError ? errorMsg : ' '}
+      />
     </FormInputContainer>
-  );
-};
-
-const Button = styled.button`
-  margin-left: 25px;
-
-  height: 36px;
-  background-color: var(--purple-light);
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: none;
-  color: var(--purple);
-  border: 1px solid var(--purple);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 18px;
-  white-space: nowrap;
-  transition: 300ms ease-in-out;
-  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
-
-  &:hover {
-    background-color: var(--purple-medium);
-    color: var(--purple);
-  }
-
-  &:active {
-    background-color: var(--purple);
-    color: var(--purple-light);
-  }
-`;
-
-const CheckButton = ({ text, disabled, onClick }) => {
-  return (
-    <Button onClick={onClick} disabled={disabled}>
-      {text}
-    </Button>
   );
 };
 
 const SignUp = () => {
   const [userId, setUserId] = useState('');
-  const [userIdErr, setUserIdErr] = useState(null); // id 에러(유효성)
-  const [idIsChecked, setIdChecked] = useState(false); // id 중복검사+코드전송
+  const [userIdErr, setUserIdErr] = useState(null); // id 에러(유효성 검사 미통과)
+  const [idIsChecked, setIdChecked] = useState(false); // id 중복검사 + 코드전송 성공
 
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationCodeErr, setVerificationCodeErr] = useState(null);
+  const [codeIsChecked, setCodeChecked] = useState(false); // 코드 인증 성공
 
   const [nickName, setNickName] = useState('');
   const [nickNameErr, setNickNameErr] = useState(null);
+  const [nameIsChecked, setNameChecked] = useState(false); // 닉네임 중복 검사 성공
 
   const [password, setPassword] = useState('');
   const [passwordErr, setPasswordErr] = useState(null);
@@ -192,47 +180,93 @@ const SignUp = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckErr, setPasswordCheckErr] = useState(null);
 
-  // 아이디(이메일) 유효성 검사
+  const selectedLevel = useRecoilValue(selectedLevelState);
+  const [levelErr, setLevelErr] = useState(false);
+
+  const selectedSkillStacks = useRecoilValue(selectedSkillstacksState);
+  const [skillstacksCheck, setSkillstacksCheck] = useRecoilState(
+    skillstacksCheckState,
+  );
+
+  const selectedInterest = useRecoilValue(selectedInterestsState);
+  const [interestsCheck, setInterestsCheck] =
+    useRecoilState(interestsCheckState);
+
+  // 내용 수정
+  // 아이디
+  const onIdChange = (id) => {
+    setUserId(id);
+    if (idIsChecked) {
+      onIdValidation();
+      setIdChecked(false);
+      setVerificationCode('');
+      setCodeChecked(false);
+    }
+  };
+  // 닉네임
+  const onNameChange = (name) => {
+    setNickName(name);
+    if (nameIsChecked) {
+      onNickNameValidation();
+      setNameChecked(false);
+    }
+  };
+  // 비밀번호
+  const onPasswordChange = (pw) => {
+    setPassword(pw);
+    if (pw.length >= 8) onPasswordValidation();
+  };
+
+  // 유효성 검사
+  // 아이디
   const onIdValidation = () => {
     const email = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     setUserIdErr(!email.test(userId));
   };
-  // 인증코드 확인 -> ?
+  // 인증코드
   const onVerificationValidation = () => {
-    console.log('Validation Check');
+    setVerificationCodeErr(!verificationCode.length);
   };
-  // 닉네임 유효성(영문 숫자만) 검사
+  // 닉네임
   const onNickNameValidation = () => {
-    setNickNameErr(!(nickName.length > 1));
+    setNickNameErr(!(nickName.length >= 1));
   };
-
+  // 비밀번호
   const onPasswordValidation = () => {
     const regex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     setPasswordErr(!regex.test(password));
   };
-
+  // 비밀번호 확인
   const onPasswordCheckValidation = () => {
-    console.log(password, passwordCheck);
-    setPasswordCheckErr(password !== passwordCheck);
+    setPasswordCheckErr(passwordErr && password !== passwordCheck);
   };
 
-  // 아이디 중복확인, 이메일 전송
+  // 인증/확인 버튼
+  // 아이디 인증하기
   const onCheckIdBtn = () => {
+    onIdValidation();
     if (!userIdErr) {
       axios
         .post(`/members/signup/email-send`, {
           email: userId,
         })
         .then((res) => {
-          console.log(res.data.data);
+          window.alert(res.data.data);
           setIdChecked(true);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          if (err.response.data.status === 409) {
+            window.alert(err.response.data.message);
+          } else {
+            console.log(err);
+          }
+        });
+    } else {
+      window.alert('이메일 주소를 다시 확인해주세요');
     }
   };
-
-  // 인증코드 확인
+  // 인증코드 인증확인
   const onCheckVerificationBtn = () => {
     axios
       .post(`/members/signup/email-auth`, {
@@ -240,32 +274,95 @@ const SignUp = () => {
         code: verificationCode,
       })
       .then((res) => {
-        console.log(res.data.data);
+        window.alert(res.data.data);
         setVerificationCodeErr(false);
+        setCodeChecked(true);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
+        window.alert('인증코드가 유효하지 않습니다.');
         setVerificationCodeErr(true);
+        setCodeChecked(false);
       });
   };
-
-  // 닉네임 중복 확인
+  // 닉네임 중복확인
   const onCheckNickNameBtn = () => {
     axios
       .post(`/members/signup/verify-name`, {
         name: nickName,
       })
       .then((res) => {
-        console.log('사용 가능한 닉네임 입니다');
-        setNickNameErr(false);
+        window.alert('사용 가능한 닉네임 입니다');
+        setNameChecked(true);
       })
       .catch((err) => {
-        console.warn(err.response.data.message);
-        setNickNameErr(true);
+        window.alert(err.response.data.message);
       });
   };
+  // 깃허브 연동하기
+  const onConnectGithub = () => {
+    // axios.get(`/oauth2/authorization/github`).then((res) => console.log(res));
+  };
 
-  // 밸류 값, 유효성 통과 여부
+  // 내용 확인
+  const CheckAll = () => {
+    onIdValidation();
+    onNickNameValidation();
+    onPasswordValidation();
+    onPasswordCheckValidation();
+
+    setSkillstacksCheck(selectedSkillStacks.length >= 1);
+    setInterestsCheck(selectedInterest.length >= 1);
+    setLevelErr(selectedLevel == null);
+  };
+
+  const onSignUp = () => {
+    CheckAll();
+
+    if (
+      idIsChecked &&
+      codeIsChecked &&
+      nameIsChecked &&
+      !passwordErr &&
+      !passwordCheckErr &&
+      !levelErr &&
+      skillstacksCheck &&
+      interestsCheck
+    ) {
+      const memberSkills = selectedSkillStacks.map((el) => {
+        return { skillName: el.name };
+      });
+
+      const memberInterests = selectedInterest.map((el) => {
+        return { interestName: el };
+      });
+
+      const signUpInfo = {
+        email: userId,
+        name: nickName,
+        password,
+        passwordCheck,
+        level: selectedLevel,
+        memberInterests,
+        memberSkills,
+      };
+
+      axios
+        .post('/members/signup', signUpInfo)
+        .then(() => {
+          // + 입력되어 있던 데이터로 로그인 요청
+          window.alert('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
+          window.location = '/';
+        })
+        .catch((err) => {
+          if (err.response.data.status === 409) {
+            window.alert(err.response.data.message);
+          }
+          console.error(err);
+        });
+    } else {
+      window.alert('입력 사항을 확인해주세요!');
+    }
+  };
 
   return (
     <Container>
@@ -276,14 +373,20 @@ const SignUp = () => {
           <div className="input-wrapper">
             <FormInput
               id="user-id"
-              description="아이디로 사용될 이메일을 입력해주세요"
-              errorMsg="이메일 주소를 다시 확인해주세요"
+              description="아이디로 사용될 이메일을 입력해주세요."
+              errorMsg="이메일 주소를 다시 확인해주세요."
               value={userId}
-              onChange={setUserId}
+              onChange={onIdChange}
               onBlur={onIdValidation}
               isError={userIdErr}
             />
-            <CheckButton text="인증하기" onClick={onCheckIdBtn} />
+            {!idIsChecked ? (
+              <MiniButton text="인증하기" onClick={onCheckIdBtn} />
+            ) : (
+              <div className="confirmed-icon">
+                <AiOutlineCheck fill="var(--purple)" />
+              </div>
+            )}
           </div>
           <label htmlFor="verification-code">인증코드</label>
           <div className="input-wrapper">
@@ -291,42 +394,54 @@ const SignUp = () => {
               id="verification-code"
               description={
                 idIsChecked
-                  ? '이메일로 전송된 코드를 입력해주세요'
-                  : '이메일 인증을 진행해주세요'
+                  ? '이메일로 전송된 코드를 입력해주세요.'
+                  : '이메일 인증을 먼저 진행해주세요.'
               }
               value={verificationCode}
               onChange={setVerificationCode}
-              errorMsg="인증 코드가 일치하지 않습니다"
+              errorMsg="인증 코드가 일치하지 않습니다."
               isError={verificationCodeErr}
               onBlur={onVerificationValidation}
               disabled={!idIsChecked}
             />
-            <CheckButton
-              text="인증확인"
-              onClick={onCheckVerificationBtn}
-              disabled={!idIsChecked}
-            />
+            {!codeIsChecked ? (
+              <MiniButton
+                text="인증확인"
+                onClick={onCheckVerificationBtn}
+                disabled={!idIsChecked}
+              />
+            ) : (
+              <div className="confirmed-icon">
+                <AiOutlineCheck fill="var(--purple)" />
+              </div>
+            )}
           </div>
           <label htmlFor="nickname">닉네임</label>
           <div className="input-wrapper">
             <FormInput
               id="nickname"
-              description="이름을 입력해주세요"
+              description="이름을 입력해주세요."
               value={nickName}
-              onChange={setNickName}
-              errorMsg="1자 이상 입력해주세요"
+              onChange={onNameChange}
+              errorMsg="1자 이상 입력해주세요."
               isError={nickNameErr}
               onBlur={onNickNameValidation}
             />
-            <CheckButton text="중복확인" onClick={onCheckNickNameBtn} />
+            {!nameIsChecked ? (
+              <MiniButton text="중복확인" onClick={onCheckNickNameBtn} />
+            ) : (
+              <div className="confirmed-icon">
+                <AiOutlineCheck fill="var(--purple)" />
+              </div>
+            )}
           </div>
           <label htmlFor="password">비밀번호</label>
           <FormInput
             id="password"
-            description="8글자 이상의 영문, 숫자, 특수문자 조합이어야 합니다"
+            description="8글자 이상의 영문, 숫자, 특수문자 조합이어야 합니다."
             value={password}
-            onChange={setPassword}
-            errorMsg="영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요"
+            onChange={onPasswordChange}
+            errorMsg="영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요."
             isError={passwordErr}
             onBlur={onPasswordValidation}
             type="password"
@@ -334,37 +449,51 @@ const SignUp = () => {
           <label htmlFor="password-check">비밀번호 확인</label>
           <FormInput
             id="password-check"
-            description="비밀번호를 다시 한 번 입력해주세요"
+            description="비밀번호를 다시 한 번 입력해주세요."
+            errorMsg="비밀번호가 일치하지 않습니다."
             value={passwordCheck}
             onChange={setPasswordCheck}
-            errorMsg="비밀번호가 일치하지 않습니다"
             isError={passwordCheckErr}
             onBlur={onPasswordCheckValidation}
             type="password"
+            disabled={password.length <= 8 || passwordErr}
           />
           <label htmlFor="level">숙련도</label>
           <LevelSelect id="level" />
+          {levelErr && (
+            <Description isError={levelErr} text="필수 입력입니다." />
+          )}
         </div>
         <div className="rightside">
           <div className="select-section">
             <label htmlFor="skill-stack">
-              사용해보신 기술 스택을 선택해주세요
+              사용해본 기술 스택을 선택해주세요
             </label>
+            {!skillstacksCheck && (
+              <Description isError={true} text="1개 이상 선택해주세요." />
+            )}
             <SkillStackSelect id="skill-stack" />
           </div>
           <div className="select-section">
             <label htmlFor="interest">관심 분야를 선택해주세요</label>
+            {!interestsCheck && (
+              <Description isError={true} text="1개 이상 선택해주세요." />
+            )}
             <InterestSelect id="interest" />
           </div>
           <div className="select-section github-link">
             <label htmlFor="github">
               깃허브<span>(선택)</span>
             </label>
-            <MiniButton text="연동하기" />
+            <MiniButton text="연동하기" onClick={onConnectGithub} />
           </div>
         </div>
       </div>
-      <DefaultButton text="가입하기" className="submit-btn" />
+      <DefaultButton
+        text="가입하기"
+        className="submit-btn"
+        onClick={onSignUp}
+      />
     </Container>
   );
 };
