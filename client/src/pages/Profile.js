@@ -5,13 +5,12 @@ import InterestView from '../components/InterestView';
 import ArticleCard from '../components/ArticleCard';
 import {
   recruitedArticlesState,
-  likedArticlesState,
   skillStackViewState,
   interestViewState,
   userProfileState,
 } from '../atom/atom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -68,6 +67,14 @@ const Container = styled.div`
     cursor: pointer;
   }
 
+  .active-menu {
+    color: var(--purple);
+
+    .menu-content-count {
+      color: var(--black);
+    }
+  }
+
   .menu-content-count {
     margin-top: 5px;
     font-size: 15px;
@@ -85,7 +92,6 @@ const Container = styled.div`
 `;
 
 const Profile = () => {
-  const [activeMenu, setActiveMenu] = useState(0);
   const [skillStackView, setSkillStackView] =
     useRecoilState(skillStackViewState);
   const setProfileData = useSetRecoilState(userProfileState);
@@ -93,7 +99,6 @@ const Profile = () => {
   const [recruitedArticles, setRecruitedArticles] = useRecoilState(
     recruitedArticlesState,
   );
-  const [likedArticles, setLikedArticles] = useRecoilState(likedArticlesState);
   const { id } = useParams();
 
   useEffect(() => {
@@ -180,15 +185,8 @@ const Profile = () => {
       setInterestView(res.data.data.interests);
 
       setRecruitedArticles(res.data.data.articles);
-
-      setLikedArticles(res.data.data.heartArticles);
     });
   }, []);
-
-
-  const onClickMenu = (idx) => {
-    setActiveMenu(idx);
-  };
 
   return (
     <Container>
@@ -203,23 +201,14 @@ const Profile = () => {
       </div>
       <div className="article-area">
         <ul className="article-menu">
-          {tabContArr.map((menu, idx) => {
-            return (
-              <div
-                role="presentation"
-                key={idx}
-                className={activeMenu === idx ? 'menu active-menu' : 'menu'}
-                onClick={() => onClickMenu(idx)}
-              >
-                {menu.tabTitle}
-                <div className="menu-content-count">{`총 ${menu.tabCont.length}개 프로젝트`}</div>
-              </div>
-            );
-          })}
+          <div role="presentation" className="menu">
+            모집한 프로젝트
+            <div className="menu-content-count">{`총 ${recruitedArticles.length}개 프로젝트`}</div>
+          </div>
         </ul>
 
         <ul className="article-list">
-          {tabContArr[activeMenu].tabCont.map((article, idx) => {
+          {recruitedArticles.map((article, idx) => {
             return (
               <ArticleCard
                 key={idx}
