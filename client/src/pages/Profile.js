@@ -53,11 +53,6 @@ const Container = styled.div`
     display: flex;
   }
 
-  .menu:first-child {
-    border-right: 1px solid var(--purple-medium);
-    margin-right: 20px;
-  }
-
   .menu {
     background-color: transparent;
     padding: 0 20px 0 0;
