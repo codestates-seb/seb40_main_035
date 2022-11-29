@@ -11,6 +11,7 @@ import MiniButton from '../components/MiniButton';
 import SkillStackSelect from '../components/SkillStackSelect';
 import Message from '../components/Message';
 import Label from '../components/Label';
+import LineInput from '../components/LineInput';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -75,71 +76,6 @@ const Container = styled.div`
     float: right;
   }
 `;
-
-const FormInputContainer = styled.div`
-  width: 100%;
-  margin-bottom: 30px;
-
-  &.disabled {
-    label,
-    span {
-      color: grey;
-    }
-
-    input {
-      border-color: grey;
-    }
-  }
-
-  input {
-    width: 100%;
-    height: 36px;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid var(--purple);
-
-    &:focus {
-      outline: none;
-    }
-
-    &.error {
-      border-color: red;
-    }
-  }
-`;
-
-const FormInput = ({
-  id,
-  label,
-  description,
-  value,
-  onChange,
-  errorMsg,
-  isError,
-  onBlur,
-  type,
-  disabled,
-}) => {
-  return (
-    <FormInputContainer className={disabled ? 'disabled' : ''}>
-      <div className="input-section">
-        <input
-          id={id}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onBlur={onBlur}
-          type={type === 'password' ? 'password' : 'text'}
-          className={isError ? 'error' : ''}
-          disabled={disabled}
-        />
-      </div>
-      <Message
-        isError={isError}
-        text={isError === null ? description : isError ? errorMsg : ' '}
-      />
-    </FormInputContainer>
-  );
-};
 
 const SignUp = () => {
   const [userId, setUserId] = useState('');
@@ -351,10 +287,13 @@ const SignUp = () => {
         <div className="leftside">
           <Label htmlFor="user-id">아이디</Label>
           <div className="input-wrapper">
-            <FormInput
+            <LineInput
               id="user-id"
-              description="아이디로 사용될 이메일을 입력해주세요."
-              errorMsg="이메일 주소를 다시 확인해주세요."
+              message={
+                idIsChecked
+                  ? '이메일 주소를 다시 확인해주세요.'
+                  : '아이디로 사용될 이메일을 입력해주세요.'
+              }
               value={userId}
               onChange={onIdChange}
               onBlur={onIdValidation}
@@ -370,18 +309,17 @@ const SignUp = () => {
           </div>
           <Label htmlFor="verification-code">인증코드</Label>
           <div className="input-wrapper">
-            <FormInput
+            <LineInput
               id="verification-code"
-              description={
+              message={
                 idIsChecked
                   ? '이메일로 전송된 코드를 입력해주세요.'
                   : '이메일 인증을 먼저 진행해주세요.'
               }
               value={verificationCode}
               onChange={setVerificationCode}
-              errorMsg="인증 코드가 일치하지 않습니다."
-              isError={verificationCodeErr}
               onBlur={onVerificationValidation}
+              isError={verificationCodeErr}
               disabled={!idIsChecked}
             />
             {!codeIsChecked ? (
@@ -398,14 +336,15 @@ const SignUp = () => {
           </div>
           <Label htmlFor="nickname">닉네임</Label>
           <div className="input-wrapper">
-            <FormInput
+            <LineInput
               id="nickname"
-              description="이름을 입력해주세요."
+              message={
+                nickNameErr ? '1자 이상 입력해주세요.' : '이름을 입력해주세요.'
+              }
               value={nickName}
               onChange={onNameChange}
-              errorMsg="1자 이상 입력해주세요."
-              isError={nickNameErr}
               onBlur={onNickNameValidation}
+              isError={nickNameErr}
             />
             {!nameIsChecked ? (
               <MiniButton text="중복확인" onClick={onCheckNickNameBtn} />
@@ -416,27 +355,33 @@ const SignUp = () => {
             )}
           </div>
           <Label htmlFor="password">비밀번호</Label>
-          <FormInput
+          <LineInput
             id="password"
-            description="8글자 이상의 영문, 숫자, 특수문자 조합이어야 합니다."
+            message={
+              passwordErr
+                ? '영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요.'
+                : '8글자 이상의 영문, 숫자, 특수문자 조합이어야 합니다.'
+            }
             value={password}
             onChange={onPasswordChange}
-            errorMsg="영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요."
-            isError={passwordErr}
             onBlur={onPasswordValidation}
+            isError={passwordErr}
             type="password"
           />
           <Label htmlFor="password-check">비밀번호 확인</Label>
-          <FormInput
+          <LineInput
             id="password-check"
-            description="비밀번호를 다시 한 번 입력해주세요."
-            errorMsg="비밀번호가 일치하지 않습니다."
+            message={
+              passwordCheckErr
+                ? '비밀번호가 일치하지 않습니다.'
+                : '비밀번호를 다시 한 번 입력해주세요.'
+            }
             value={passwordCheck}
             onChange={setPasswordCheck}
-            isError={passwordCheckErr}
             onBlur={onPasswordCheckValidation}
-            type="password"
+            isError={passwordCheckErr}
             disabled={password.length <= 8 || passwordErr}
+            type="password"
           />
           <Label htmlFor="level">숙련도</Label>
           <LevelSelect id="level" />
