@@ -14,6 +14,7 @@ import {
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import getSkills from '../utils/getSkills';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
@@ -97,8 +98,9 @@ const MyPage = () => {
 
   const currentUser = useRecoilValue(currentUserState); //로그인 후, 응답으로 받아 오는 멤버아이디
   const [profileData, setProfileData] = useRecoilState(userProfileState); //프로필카드
-  const [skillStackView, setSkillStackView] =
-    useRecoilState(skillStackViewState); //기술스택
+  // const [skillStackView, setSkillStackView] =
+  //   useRecoilState(skillStackViewState); //기술스택
+  const setSkillStackView = useSetRecoilState(skillStackViewState); //기술스택
   const setInterestView = useSetRecoilState(interestViewState); //관심분야
   const [recruitedArticles, setRecruitedArticles] = useRecoilState(
     recruitedArticlesState,
@@ -106,97 +108,40 @@ const MyPage = () => {
   const [likedArticles, setLikedArticles] = useRecoilState(likedArticlesState); //좋아요 프로젝트
 
   useEffect(() => {
-    axios.get(`/members/${currentUser.memberId}`).then((res) => {
-      // 프로필카드 상태 set
-      const userProfile = {
-        memberId: res.data.data.memberId,
-        email: res.data.data.email,
-        name: res.data.data.name,
-        description: res.data.data.description,
-        level: res.data.data.level,
-        github: res.data.data.github,
-      };
-      setProfileData(userProfile);
+    // let token =
+    //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTYyOTQ0MCwiZXhwIjoxNjY5NjMxMjQwfQ.pAn-zeHetvAz6EkJc9NWtBSHg9F7MrkmOGtQpQNkr8qkjhwafCMvbQtPzbhSVIan';
+    axios
+      .get(
+        `/members/${currentUser.memberId}`,
+        // {
+        //   headers: { Authorization: token },
+        // }
+      )
+      .then((res) => {
+        console.log(res.data.data.skills);
 
-      // 기술스택 상태 set
-      for (let el of res.data.data.skills) {
-        if (el.skillSort === '프론트엔드') {
-          setSkillStackView([
-            {
-              tabTitle: '프론트엔드',
-              tabCont: [
-                ...skillStackView[0].tabCont,
-                {
-                  skillId: skillStackView[0].tabCont.length + 1,
-                  name: el.name,
-                },
-              ],
-            },
-            {
-              tabTitle: '백엔드',
-              tabCont: [...skillStackView[1].tabCont],
-            },
-            {
-              tabTitle: '기타',
-              tabCont: [...skillStackView[2].tabCont],
-            },
-          ]);
-        }
-        if (el.skillSort === '백엔드') {
-          setSkillStackView([
-            {
-              tabTitle: '프론트엔드',
-              tabCont: [...skillStackView[0].tabCont],
-            },
-            {
-              tabTitle: '백엔드',
-              tabCont: [
-                ...skillStackView[1].tabCont,
-                {
-                  skillId: skillStackView[1].tabCont.length + 1,
-                  name: el.name,
-                },
-              ],
-            },
-            {
-              tabTitle: '기타',
-              tabCont: [...skillStackView[2].tabCont],
-            },
-          ]);
-        }
-        if (el.skillSort !== '백엔드' && el.skillSort !== '프론트엔드') {
-          setSkillStackView([
-            {
-              tabTitle: '프론트엔드',
-              tabCont: [...skillStackView[0].tabCont],
-            },
-            {
-              tabTitle: '백엔드',
-              tabCont: [...skillStackView[1].tabCont],
-            },
-            {
-              tabTitle: '기타',
-              tabCont: [
-                ...skillStackView[2].tabCont,
-                {
-                  skillId: skillStackView[2].tabCont.length + 1,
-                  name: el.name,
-                },
-              ],
-            },
-          ]);
-        }
-      }
+        // 프로필카드 상태 set
+        const userProfile = {
+          memberId: res.data.data.memberId,
+          email: res.data.data.email,
+          name: res.data.data.name,
+          description: res.data.data.description,
+          level: res.data.data.level,
+          github: res.data.data.github,
+        };
+        setProfileData(userProfile);
 
-      //관심분야 상태 set
-      setInterestView(res.data.data.interests);
+        setSkillStackView(getSkills(res.data.data.skills));
 
-      //모집프로젝트 목록 상태 set
-      setRecruitedArticles(res.data.data.articles);
+        //관심분야 상태 set
+        setInterestView(res.data.data.interests);
 
-      //좋아요프로젝트 목록 상태 set
-      setLikedArticles(res.data.data.heartArticles);
-    });
+        //모집프로젝트 목록 상태 set
+        setRecruitedArticles(res.data.data.articles);
+
+        //좋아요프로젝트 목록 상태 set
+        setLikedArticles(res.data.data.heartArticles);
+      });
   }, []);
 
   const tabContArr = [

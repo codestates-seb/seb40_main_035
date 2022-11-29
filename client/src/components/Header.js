@@ -1,11 +1,27 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiMoon } from 'react-icons/bi';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import LogIn from '../pages/LogIn';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  inputTitleCheckState,
+  interestsCheckState,
+  skillstacksCheckState,
+  startDateCheckState,
+  endDateCheckState,
+  feNumberCheckState,
+  beNumberCheckState,
+  inputBodyCheckState,
+  hashtagsCheckState,
+  modalOpenState,
+} from '../atom/atom';
+
 
 const HeaderContainer = styled.header`
   z-index: 1;
   width: 100%;
+  min-width: fit-content;
   height: 62px;
   display: flex;
   align-items: center;
@@ -14,12 +30,7 @@ const HeaderContainer = styled.header`
   top: 0;
   right: 0;
   left: 0;
-
-  z-index: 2;
-  position: sticky;
-  top: 0;
-  right: 0;
-  left: 0;
+  z-index: 25;
 
   .header-container {
     width: 100%;
@@ -86,7 +97,17 @@ const NavBtn = styled.button`
 
 const Header = () => {
   const [menu, setMenu] = useState(0);
+  const [modalOpen, setModalOpen] = useRecoilState(modalOpenState);
   const navigate = useNavigate();
+  const setInputTitleCheck = useSetRecoilState(inputTitleCheckState);
+  const setInterestsCheck = useSetRecoilState(interestsCheckState);
+  const setSkillstacksCheck = useSetRecoilState(skillstacksCheckState);
+  const setStartDateCheck = useSetRecoilState(startDateCheckState);
+  const setEndDateCheck = useSetRecoilState(endDateCheckState);
+  const setFeNumberCheck = useSetRecoilState(feNumberCheckState);
+  const setBeNumberCheck = useSetRecoilState(beNumberCheckState);
+  const setInputBodyCheck = useSetRecoilState(inputBodyCheckState);
+  const setHashtagsCheck = useSetRecoilState(hashtagsCheckState);
 
   const onMain = () => {
     navigate('/');
@@ -101,15 +122,37 @@ const Header = () => {
   const onWrite = () => {
     navigate('/write');
     setMenu(2);
+    setInputTitleCheck(true);
+    setInterestsCheck(true);
+    setSkillstacksCheck(true);
+    setStartDateCheck(true);
+    setEndDateCheck(true);
+    setFeNumberCheck(true);
+    setBeNumberCheck(true);
+    setInputBodyCheck(true);
+    setHashtagsCheck(true);
   };
-  const onLogin = () => {
-    navigate('/login');
+  const onLogIn = () => {
+    setModalOpen(!modalOpen);
     setMenu(3);
   };
   const onSignup = () => {
     navigate('/signup');
     setMenu(4);
   };
+
+  const userMenu = useRef();
+
+  const modalCloseHandler = ({ target }) => {
+    if (!userMenu.current.contains(target)) setModalOpen(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousedown', modalCloseHandler);
+    return () => {
+      window.removeEventListener('mousedown', modalCloseHandler);
+    };
+  });
 
   return (
     <HeaderContainer>
@@ -140,7 +183,7 @@ const Header = () => {
               </NavBtn>
             </li>
             <li>
-              <NavBtn $color={menu === 3} onClick={onLogin}>
+              <NavBtn $color={menu === 3} onClick={onLogIn}>
                 로그인
               </NavBtn>
             </li>
@@ -156,6 +199,7 @@ const Header = () => {
           </ul>
         </div>
       </div>
+      {modalOpen ? <LogIn userMenu={userMenu} /> : null}
     </HeaderContainer>
   );
 };
