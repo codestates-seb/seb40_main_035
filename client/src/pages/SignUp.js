@@ -218,9 +218,8 @@ const SignUp = () => {
   const onConnectGithub = () => {
     // axios.get(`/oauth2/authorization/github`).then((res) => console.log(res));
   };
-
-  // 내용 확인
-  const CheckAll = () => {
+  // 전체 내용 확인
+  const onCheckAll = () => {
     onIdValidation();
     onNickNameValidation();
     onPasswordValidation();
@@ -230,9 +229,9 @@ const SignUp = () => {
     setInterestsCheck(selectedInterest.length >= 1);
     setLevelErr(selectedLevel == null);
   };
-
+  // 회원 가입
   const onSignUp = () => {
-    CheckAll();
+    onCheckAll();
 
     if (
       idIsChecked &&
