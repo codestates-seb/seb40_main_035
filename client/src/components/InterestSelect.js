@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { selectedInterestsState } from '../atom/atom';
+import { selectedInterestsState, interestsCheckState } from '../atom/atom';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 import {
   FcCurrencyExchange,
@@ -100,6 +99,10 @@ const TagBtn = styled.button`
   }
 `;
 
+const Placeholder = styled.div`
+  color: lightgray;
+`;
+
 const Tag = ({ tag, onClick, isSelected, onDelete, icon }) => {
   return (
     <li>
@@ -118,31 +121,44 @@ const InterestSelect = () => {
   const [selectedInterests, setSelectedInterest] = useRecoilState(
     selectedInterestsState,
   );
+  const setInterestsCheck = useSetRecoilState(interestsCheckState);
 
   const onDeleteClick = (selectedTag) => {
     setSelectedInterest([
       ...selectedInterests.filter((tag) => tag !== selectedTag),
     ]);
+
+    if (selectedInterests.length - 1 === 0) {
+      setInterestsCheck(false);
+    }
   };
 
   const onTagClick = (selectedTag) => {
     if (!selectedInterests.includes(selectedTag)) {
       setSelectedInterest([...selectedInterests, selectedTag]);
     }
+
+    if (selectedInterests.length + 1 > 0) {
+      setInterestsCheck(true);
+    }
   };
 
   return (
     <InterestSelectWrapper>
       <TagList className="selected-tag-list">
-        {selectedInterests.map((item, idx) => (
-          <Tag
-            icon={<RiDeleteBack2Fill className="delete-btn" />}
-            key={idx}
-            tag={item}
-            onDelete={onDeleteClick}
-            isSelected={true}
-          ></Tag>
-        ))}
+        {selectedInterests.length !== 0 ? (
+          selectedInterests.map((item, idx) => (
+            <Tag
+              icon={<RiDeleteBack2Fill className="delete-btn" />}
+              key={idx}
+              tag={item}
+              onDelete={onDeleteClick}
+              isSelected={true}
+            ></Tag>
+          ))
+        ) : (
+          <Placeholder>1개 이상의 태그를 선택해주세요</Placeholder>
+        )}
       </TagList>
       <TagList className="tag-list">
         {interestContArr.map((item, idx) => (

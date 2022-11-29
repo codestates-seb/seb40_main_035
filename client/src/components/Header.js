@@ -2,10 +2,23 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiMoon } from 'react-icons/bi';
 import { useState } from 'react';
+import {
+  inputTitleCheckState,
+  interestsCheckState,
+  skillstacksCheckState,
+  startDateCheckState,
+  endDateCheckState,
+  feNumberCheckState,
+  beNumberCheckState,
+  inputBodyCheckState,
+  hashtagsCheckState,
+} from '../atom/atom';
+import { useSetRecoilState } from 'recoil';
 
 const HeaderContainer = styled.header`
   z-index: 1;
   width: 100%;
+  min-width: fit-content;
   height: 62px;
   display: flex;
   align-items: center;
@@ -15,7 +28,7 @@ const HeaderContainer = styled.header`
   right: 0;
   left: 0;
 
-  z-index: 2;
+  z-index: 25;
   position: sticky;
   top: 0;
   right: 0;
@@ -87,6 +100,15 @@ const NavBtn = styled.button`
 const Header = () => {
   const [menu, setMenu] = useState(0);
   const navigate = useNavigate();
+  const setInputTitleCheck = useSetRecoilState(inputTitleCheckState);
+  const setInterestsCheck = useSetRecoilState(interestsCheckState);
+  const setSkillstacksCheck = useSetRecoilState(skillstacksCheckState);
+  const setStartDateCheck = useSetRecoilState(startDateCheckState);
+  const setEndDateCheck = useSetRecoilState(endDateCheckState);
+  const setFeNumberCheck = useSetRecoilState(feNumberCheckState);
+  const setBeNumberCheck = useSetRecoilState(beNumberCheckState);
+  const setInputBodyCheck = useSetRecoilState(inputBodyCheckState);
+  const setHashtagsCheck = useSetRecoilState(hashtagsCheckState);
 
   const onMain = () => {
     navigate('/');
@@ -101,6 +123,15 @@ const Header = () => {
   const onWrite = () => {
     navigate('/write');
     setMenu(2);
+    setInputTitleCheck(true);
+    setInterestsCheck(true);
+    setSkillstacksCheck(true);
+    setStartDateCheck(true);
+    setEndDateCheck(true);
+    setFeNumberCheck(true);
+    setBeNumberCheck(true);
+    setInputBodyCheck(true);
+    setHashtagsCheck(true);
   };
   const onLogin = () => {
     navigate('/login');
