@@ -91,14 +91,15 @@ const CheckBox = styled.input`
 
 const SwitchToggle = ({ right, setChecked, onClick }) => {
   return (
-    <ToggleContainer checked={!setChecked} width="100px">
+    <ToggleContainer checked={setChecked} width="100px">
       <CheckBoxContainer>
         <CheckBox
           left="모집 중"
           right={right}
-          value=""
+          //value=""
           type="checkbox"
           onClick={onClick}
+          checked={setChecked}
         ></CheckBox>
       </CheckBoxContainer>
     </ToggleContainer>
