@@ -10,6 +10,7 @@ import LevelSelect from '../components/LevelSelect';
 import MiniButton from '../components/MiniButton';
 import SkillStackSelect from '../components/SkillStackSelect';
 import Message from '../components/Message';
+import Label from '../components/Label';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -53,15 +54,6 @@ const Container = styled.div`
         font-size: 13px;
         font-weight: 400;
       }
-    }
-
-    label {
-      display: inline-block;
-      width: 100%;
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--black);
-      margin-bottom: 5px;
     }
 
     .input-wrapper {
@@ -357,7 +349,7 @@ const SignUp = () => {
       <h1>회원가입</h1>
       <div className="form-grid">
         <div className="leftside">
-          <label htmlFor="user-id">아이디</label>
+          <Label htmlFor="user-id">아이디</Label>
           <div className="input-wrapper">
             <FormInput
               id="user-id"
@@ -376,7 +368,7 @@ const SignUp = () => {
               </div>
             )}
           </div>
-          <label htmlFor="verification-code">인증코드</label>
+          <Label htmlFor="verification-code">인증코드</Label>
           <div className="input-wrapper">
             <FormInput
               id="verification-code"
@@ -404,7 +396,7 @@ const SignUp = () => {
               </div>
             )}
           </div>
-          <label htmlFor="nickname">닉네임</label>
+          <Label htmlFor="nickname">닉네임</Label>
           <div className="input-wrapper">
             <FormInput
               id="nickname"
@@ -423,7 +415,7 @@ const SignUp = () => {
               </div>
             )}
           </div>
-          <label htmlFor="password">비밀번호</label>
+          <Label htmlFor="password">비밀번호</Label>
           <FormInput
             id="password"
             description="8글자 이상의 영문, 숫자, 특수문자 조합이어야 합니다."
@@ -434,7 +426,7 @@ const SignUp = () => {
             onBlur={onPasswordValidation}
             type="password"
           />
-          <label htmlFor="password-check">비밀번호 확인</label>
+          <Label htmlFor="password-check">비밀번호 확인</Label>
           <FormInput
             id="password-check"
             description="비밀번호를 다시 한 번 입력해주세요."
@@ -446,31 +438,31 @@ const SignUp = () => {
             type="password"
             disabled={password.length <= 8 || passwordErr}
           />
-          <label htmlFor="level">숙련도</label>
+          <Label htmlFor="level">숙련도</Label>
           <LevelSelect id="level" />
           {levelErr && <Message isError={levelErr} text="필수 입력입니다." />}
         </div>
         <div className="rightside">
           <div className="select-section">
-            <label htmlFor="skill-stack">
+            <Label htmlFor="skill-stack">
               사용해본 기술 스택을 선택해주세요
-            </label>
+            </Label>
             {!skillstacksCheck && (
               <Message isError={true} text="1개 이상 선택해주세요." />
             )}
             <SkillStackSelect id="skill-stack" />
           </div>
           <div className="select-section">
-            <label htmlFor="interest">관심 분야를 선택해주세요</label>
+            <Label htmlFor="interest">관심 분야를 선택해주세요</Label>
             {!interestsCheck && (
               <Message isError={true} text="1개 이상 선택해주세요." />
             )}
             <InterestSelect id="interest" />
           </div>
           <div className="select-section github-link">
-            <label htmlFor="github">
+            <Label htmlFor="github">
               깃허브<span>(선택)</span>
-            </label>
+            </Label>
             <MiniButton text="연동하기" onClick={onConnectGithub} />
           </div>
         </div>
