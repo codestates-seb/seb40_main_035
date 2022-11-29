@@ -30,11 +30,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/write" element={<ArticleWrite />} />
-            <Route path="/article/edit/:id" element={<ArticleEdit />} />
-            <Route path="/article/:id" element={<ArticleDetail />} />
+            <Route path="/articles/edit/:id" element={<ArticleEdit />} />
+            <Route path="/articles/:id" element={<ArticleDetail />} />
             <Route path="/mypage/:id" element={<MyPage />} />
             <Route path="/mypage/edit/:id" element={<MyPageEdit />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:id" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
         </ContentContainer>
