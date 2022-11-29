@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiChevronDown } from 'react-icons/fi';
+import { useRecoilState } from 'recoil';
+import { selectedValueState } from '../atom/atom';
 
 const DropdownContainer = styled.div`
   &:hover {
@@ -71,7 +73,7 @@ const LevelSelect = () => {
   // 드롭다운 상태 저장 => active ? 펼쳐집니다 : 닫힙니다
   const [isActive, setIsActive] = useState(false);
   // 선택된 데이터 저장
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedValue, setSelectedValue] = useRecoilState(selectedValueState);
   const selectInput = useRef();
 
   // 드롭다운 토글 기능
