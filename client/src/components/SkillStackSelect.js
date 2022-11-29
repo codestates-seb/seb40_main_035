@@ -1,6 +1,10 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { activeIdxState, selectedSkillstacksState } from '../atom/atom';
+import {
+  activeIdxState,
+  selectedSkillstacksState,
+  skillstacksCheckState,
+} from '../atom/atom';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 import {
   SiJavascript,
@@ -130,6 +134,10 @@ const TagBtn = styled.button`
     align-items: center;
     order: 2;
   }
+`;
+
+const Placeholder = styled.div`
+  color: lightgray;
 `;
 
 const tabContArr = [
@@ -298,6 +306,7 @@ const SkillStackSelect = () => {
   const [selectedSkillstacks, setSelectedSkillstacks] = useRecoilState(
     selectedSkillstacksState,
   );
+  const setSkillstacksCheck = useSetRecoilState(skillstacksCheckState);
 
   const onTabClick = (index) => {
     setActiveIdx(index); // 클릭한 탭으로 활성화 탭 변경
@@ -307,6 +316,10 @@ const SkillStackSelect = () => {
     setSelectedSkillstacks([
       ...selectedSkillstacks.filter((tag) => tag.name !== selectedTag),
     ]);
+
+    if (selectedSkillstacks.length - 1 === 0) {
+      setSkillstacksCheck(false);
+    }
   };
 
   const onTagClick = (selectedTag, icon) => {
@@ -316,6 +329,10 @@ const SkillStackSelect = () => {
         img: icon,
       };
       setSelectedSkillstacks([...selectedSkillstacks, selected]);
+    }
+
+    if (selectedSkillstacks.length + 1 > 0) {
+      setSkillstacksCheck(true);
     }
   };
 
@@ -327,16 +344,20 @@ const SkillStackSelect = () => {
   return (
     <InterestSelectWrapper>
       <TagList className="selected-tag-list">
-        {selectedSkillstacks.map((item, idx) => (
-          <Tag
-            icon={item.img}
-            iconDelete={<RiDeleteBack2Fill className="delete-btn" />}
-            key={idx}
-            tag={item.name}
-            onDelete={onDeleteClick}
-            isSelected={true}
-          ></Tag>
-        ))}
+        {selectedSkillstacks.length !== 0 ? (
+          selectedSkillstacks.map((item, idx) => (
+            <Tag
+              icon={item.img}
+              iconDelete={<RiDeleteBack2Fill className="delete-btn" />}
+              key={idx}
+              tag={item.name}
+              onDelete={onDeleteClick}
+              isSelected={true}
+            ></Tag>
+          ))
+        ) : (
+          <Placeholder>1개 이상의 태그를 선택해주세요</Placeholder>
+        )}
       </TagList>
       <ul className="tab-menu">
         {tabContArr.map((section, idx) => {

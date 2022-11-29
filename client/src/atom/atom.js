@@ -84,14 +84,8 @@ export const userProfileState = atom({
 export const currentUserState = atom({
   key: 'isLoginState',
   default: {
-    memberId: 2,
+    memberId: 15,
   },
-});
-
-// input body의 value를 담은 상태
-export const inputBodyState = atom({
-  key: 'inputBodyState',
-  default: '',
 });
 
 // 입력된 해시태그 목록 상태
@@ -118,7 +112,74 @@ export const likedArticlesState = atom({
   default: [],
 });
 
+// 모달 오픈 상태
 export const modalOpenState = atom({
   key: 'modalOpenState',
   default: false,
+});
+
+// 게시글 작성 시 제목 value 상태
+export const inputTitleState = atom({
+  key: 'inputTitleState',
+  default: '',
+});
+
+// 게시글 작성 시 본문 value 상태
+export const inputBodyState = atom({
+  key: 'inputBodyState',
+  default: '',
+});
+
+// inputTitle 유효성검사 상태
+export const inputTitleCheckState = atom({
+  key: 'inputTitleCheckState',
+  default: true,
+});
+
+// inputBody 유효성검사 상태
+export const inputBodyCheckState = atom({
+  key: 'inputBodyCheckState',
+  default: true,
+});
+
+// startDate 유효성검사 상태
+export const startDateCheckState = atom({
+  key: 'startDateCheckState',
+  default: true,
+});
+
+// endDate 유효성검사 상태
+export const endDateCheckState = atom({
+  key: 'endDateCheckState',
+  default: true,
+});
+
+// beNumber 유효성검사 상태
+export const beNumberCheckState = atom({
+  key: 'beNumberCheckState',
+  default: true,
+});
+
+// feNumber 유효성검사 상태
+export const feNumberCheckState = atom({
+  key: 'feNumberCheckState',
+  default: true,
+});
+
+// selectedInterests 유효성검사 상태
+export const interestsCheckState = atom({
+  key: 'interestsCheckState',
+  default: true,
+});
+
+// selectedSkillstacks 유효성검사 상태
+export const skillstacksCheckState = atom({
+  key: 'skillstacksCheckState',
+  default: true,
+});
+
+// hasghtag 유효성검사 상태
+export const hashtagsCheckState = atom({
+  key: 'hashtagsCheckState',
+  default: true,
 });
