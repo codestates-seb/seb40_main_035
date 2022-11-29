@@ -177,3 +177,15 @@ export const hashtagsCheckState = atom({
   key: 'hashtagsCheckState',
   default: true,
 });
+
+// 실행순서
+export const nextState = atom({
+  key: 'nextState',
+  default: 1,
+});
+
+// 모집 중/ 완료 상태
+export const isCompletedState = atom({
+  key: 'isCompletedState',
+  default: false,
+});
