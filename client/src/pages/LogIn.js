@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 import DefaultButton from '../components/DefaultButton';
-import { useSetRecoilState } from 'recoil';
-import { modalOpenState } from '../atom/atom';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { modalOpenState, searchPwEmailState } from '../atom/atom';
 import CloseButton from '../components/CloseButton';
+import { useState } from 'react';
+import DefaultInput from '../components/DefaultInput';
+import MiniButton from '../components/MiniButton';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -85,6 +89,33 @@ const Container = styled.div`
   .link {
     color: #55acee;
   }
+
+  .PW-button {
+    color: #55acee;
+    border: none;
+    outline: none;
+    background-color: white;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .search-pw-container {
+    width: 413px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .search-input-container {
+    width: 85%;
+  }
+
+  .search-btn {
+    button {
+      height: 100%;
+    }
+  }
 `;
 
 const Authbutton = styled.a`
@@ -98,10 +129,58 @@ const Authbutton = styled.a`
 
 const LogIn = ({ userMenu }) => {
   const setModalOpen = useSetRecoilState(modalOpenState);
+  const [isSearchPw, setIsSearchPw] = useState(false);
+  const [searchPwEmail, setSearchPwEmail] = useRecoilState(searchPwEmailState);
+  const [noticeText, setNoticeText] = useState('');
+  const [isNotice, setIsNotice] = useState(false);
 
   const closeLogIn = () => {
     setModalOpen(false);
   };
+
+  const onSearchPwClick = () => {
+    setIsSearchPw(!isSearchPw);
+    setIsNotice(false);
+    setNoticeText('');
+    setSearchPwEmail('');
+  };
+
+  const onCheckEmail = () => {
+    let emailCheck =
+      /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
+    if (emailCheck.test(searchPwEmail) === false) {
+      setIsNotice(true);
+      setNoticeText('올바른 이메일 형식이 아닙니다.');
+      return false;
+    } else {
+      setIsNotice(false);
+      return true;
+    }
+  };
+
+  const onResetPw = () => {
+    if (onCheckEmail(searchPwEmail)) {
+      axios
+        .post(`/members/find-password`, { email: searchPwEmail })
+        .then(
+          // 요청 후 서버에 이메일이 존재하면 실행
+          (res) => {
+            setIsNotice(true);
+            setNoticeText(res.data.data);
+          },
+        )
+        .catch((ex) => {
+          // 요청 후 서버에 이메일 존재하지 않아 404에러 발생시 실행
+          if (ex.response && ex.response.status === 404) {
+            setIsNotice(true);
+            setNoticeText(ex.response.data.message);
+          }
+        });
+    } else {
+      alert('올바른 이메일 형식이 아닙니다.\n다시 입력해주세요.');
+    }
+  };
+
   return (
     <Container>
       <div className="login-container" ref={userMenu}>
@@ -123,24 +202,60 @@ const LogIn = ({ userMenu }) => {
         </form>
         <DefaultButton className="login-button" text="로그인" />
         <div className="link-container">
-          <a href="" className="link">
-            비밀번호 찾기
-          </a>
+          {isSearchPw ? (
+            <button className="link PW-button" onClick={onSearchPwClick}>
+              소셜로그인
+            </button>
+          ) : (
+            <button className="link PW-button" onClick={onSearchPwClick}>
+              비밀번호 찾기
+            </button>
+          )}
           <a href="/signup" className="link">
             회원가입 하기
           </a>
         </div>
-        <div className="image-container">
-          <Authbutton href="">
-            <img src={require('../images/google login.png')} alt=""></img>
-          </Authbutton>
-          <Authbutton href="">
-            <img src={require('../images/github login.png')} alt=""></img>
-          </Authbutton>
-          <Authbutton href="">
-            <img src={require('../images/kakao login.png')} alt=""></img>
-          </Authbutton>
-        </div>
+        {isSearchPw ? (
+          <>
+            <div className="search-pw-container">
+              <div className="search-input-container">
+                <div className="search-input">
+                  <DefaultInput
+                    placeholder={'이메일을 입력해주세요'}
+                    value={searchPwEmail}
+                    onChange={setSearchPwEmail}
+                    onblur={onCheckEmail}
+                  />
+                </div>
+              </div>
+              <div className="search-btn">
+                <MiniButton text="찾기" onClick={onResetPw} />
+              </div>
+            </div>
+            {isNotice ? <div className="form-alert">{noticeText}</div> : ''}
+          </>
+        ) : (
+          <div className="image-container">
+            <Authbutton href="">
+              <img
+                src={require('../images/google login.png')}
+                alt="구글로그인"
+              ></img>
+            </Authbutton>
+            <Authbutton href="">
+              <img
+                src={require('../images/github login.png')}
+                alt="깃허브로그인"
+              ></img>
+            </Authbutton>
+            <Authbutton href="">
+              <img
+                src={require('../images/kakao login.png')}
+                alt="카카오톡로그인"
+              ></img>
+            </Authbutton>
+          </div>
+        )}
       </div>
     </Container>
   );
