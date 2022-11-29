@@ -36,8 +36,7 @@ const InputBody = () => {
   };
 
   useEffect(() => {
-    const htmlString = inputBody;
-    editorRef.current?.getInstance().setMarkdown(htmlString);
+    editorRef.current?.getInstance().setMarkdown(inputBody);
   }, [next]);
 
   return (
