@@ -5,13 +5,12 @@ import InterestView from '../components/InterestView';
 import ArticleCard from '../components/ArticleCard';
 import {
   recruitedArticlesState,
-  likedArticlesState,
   skillStackViewState,
   interestViewState,
   userProfileState,
 } from '../atom/atom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -54,11 +53,6 @@ const Container = styled.div`
     display: flex;
   }
 
-  .menu:first-child {
-    border-right: 1px solid var(--purple-medium);
-    margin-right: 20px;
-  }
-
   .menu {
     background-color: transparent;
     padding: 0 20px 0 0;
@@ -66,14 +60,6 @@ const Container = styled.div`
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-  }
-
-  .active-menu {
-    color: var(--purple);
-
-    .menu-content-count {
-      color: var(--black);
-    }
   }
 
   .menu-content-count {
@@ -93,7 +79,6 @@ const Container = styled.div`
 `;
 
 const Profile = () => {
-  const [activeMenu, setActiveMenu] = useState(0);
   const [skillStackView, setSkillStackView] =
     useRecoilState(skillStackViewState);
   const setProfileData = useSetRecoilState(userProfileState);
@@ -101,7 +86,6 @@ const Profile = () => {
   const [recruitedArticles, setRecruitedArticles] = useRecoilState(
     recruitedArticlesState,
   );
-  const [likedArticles, setLikedArticles] = useRecoilState(likedArticlesState);
   const { id } = useParams();
 
   useEffect(() => {
@@ -188,19 +172,8 @@ const Profile = () => {
       setInterestView(res.data.data.interests);
 
       setRecruitedArticles(res.data.data.articles);
-
-      setLikedArticles(res.data.data.heartArticles);
     });
   }, []);
-
-  const tabContArr = [
-    { tabTitle: '모집한 프로젝트', tabCont: recruitedArticles },
-    { tabTitle: '좋아요한 프로젝트', tabCont: likedArticles },
-  ];
-
-  const onClickMenu = (idx) => {
-    setActiveMenu(idx);
-  };
 
   return (
     <Container>
@@ -215,23 +188,14 @@ const Profile = () => {
       </div>
       <div className="article-area">
         <ul className="article-menu">
-          {tabContArr.map((menu, idx) => {
-            return (
-              <div
-                role="presentation"
-                key={idx}
-                className={activeMenu === idx ? 'menu active-menu' : 'menu'}
-                onClick={() => onClickMenu(idx)}
-              >
-                {menu.tabTitle}
-                <div className="menu-content-count">{`총 ${menu.tabCont.length}개 프로젝트`}</div>
-              </div>
-            );
-          })}
+          <div role="presentation" className="menu">
+            모집한 프로젝트
+            <div className="menu-content-count">{`총 ${recruitedArticles.length}개 프로젝트`}</div>
+          </div>
         </ul>
 
         <ul className="article-list">
-          {tabContArr[activeMenu].tabCont.map((article, idx) => {
+          {recruitedArticles.map((article, idx) => {
             return (
               <ArticleCard
                 key={idx}

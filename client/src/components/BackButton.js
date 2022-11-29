@@ -8,7 +8,7 @@ const Button = styled.button`
   border: none;
 `;
 
-const Backbutton = () => {
+const BackButton = () => {
   const navigate = useNavigate();
   return (
     <Button
@@ -21,4 +21,4 @@ const Backbutton = () => {
   );
 };
 
-export default Backbutton;
+export default BackButton;
