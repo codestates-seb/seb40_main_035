@@ -8,7 +8,7 @@ import NumberSelect from '../components/NumberSelect';
 import InputHashTag from '../components/InputHashTag';
 import InputBody from '../components/InputBody';
 import MiniButton from '../components/MiniButton';
-import getFormatDate from '../utils/getFormatDate';
+import submitFormatDate from '../utils/submitFormatDate';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import {
   beNumberState,
@@ -30,8 +30,10 @@ import {
   startDateCheckState,
   endDateCheckState,
   hashtagsCheckState,
+  nextState,
 } from '../atom/atom';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   background-color: var(--purple-light);
@@ -155,14 +157,18 @@ const ArticleWrite = () => {
   const currentUser = useRecoilValue(currentUserState);
 
   const [inputTitle, setInputTitle] = useRecoilState(inputTitleState);
-  const selectedSkillstacks = useRecoilValue(selectedSkillstacksState);
-  const selectedInterests = useRecoilValue(selectedInterestsState);
-  const startDate = useRecoilValue(startDateState);
-  const endDate = useRecoilValue(endDateState);
-  const feNumber = useRecoilValue(feNumberState);
-  const beNumber = useRecoilValue(beNumberState);
-  const inputBody = useRecoilValue(inputBodyState);
-  const inputHashTags = useRecoilValue(inputHashTagsState);
+  const [selectedSkillstacks, setSelectedSkillstacks] = useRecoilState(
+    selectedSkillstacksState,
+  );
+  const [selectedInterests, setSelectedInterests] = useRecoilState(
+    selectedInterestsState,
+  );
+  const [startDate, setStartDate] = useRecoilState(startDateState);
+  const [endDate, setEndDate] = useRecoilState(endDateState);
+  const [feNumber, setFeNumber] = useRecoilState(feNumberState);
+  const [beNumber, setBeNumber] = useRecoilState(beNumberState);
+  const [inputBody, setInputBody] = useRecoilState(inputBodyState);
+  const [inputHashTags, setInputHashTags] = useRecoilState(inputHashTagsState);
 
   const setInputTitleCheck = useSetRecoilState(inputTitleCheckState);
   const [interestsCheck, setInterestsCheck] =
@@ -178,9 +184,23 @@ const ArticleWrite = () => {
   const [inputBodyCheck, setInputBodyCheck] =
     useRecoilState(inputBodyCheckState);
   const [hashtagsCheck, setHashtagsCheck] = useRecoilState(hashtagsCheckState);
+  const [next, setNext] = useRecoilState(nextState);
 
   let selectedSkillstacksSubmit,
     selectedInterestsSubmit = [];
+
+  useEffect(() => {
+    setInputTitle('');
+    setSelectedSkillstacks([]);
+    setSelectedInterests([]);
+    setStartDate(null);
+    setEndDate(null);
+    setFeNumber(0);
+    setBeNumber(0);
+    setInputBody('');
+    setNext(next + 1);
+    setInputHashTags([]);
+  }, []);
 
   const onWriteSubmit = () => {
     // 선택된 기술 스택 목록을 POST 데이터 형식으로 변경
@@ -199,8 +219,8 @@ const ArticleWrite = () => {
         memberId: currentUser.memberId,
         title: inputTitle,
         body: inputBody,
-        startDay: getFormatDate(startDate),
-        endDay: getFormatDate(endDate),
+        startDay: submitFormatDate(startDate),
+        endDay: submitFormatDate(endDate),
         backend: beNumber,
         frontend: feNumber,
         articleHashtags: inputHashTags,
@@ -225,8 +245,8 @@ const ArticleWrite = () => {
     if (
       inputTitle !== '' &&
       inputBody !== '' &&
-      getFormatDate(startDate).length === 8 &&
-      getFormatDate(endDate).length === 8 &&
+      submitFormatDate(startDate).length === 8 &&
+      submitFormatDate(endDate).length === 8 &&
       beNumber > 0 &&
       feNumber > 0 &&
       inputHashTags.length > 0 &&
@@ -241,10 +261,10 @@ const ArticleWrite = () => {
       if (inputBody === '') {
         setInputBodyCheck(false);
       }
-      if (getFormatDate(startDate).length !== 8) {
+      if (submitFormatDate(startDate).length !== 8) {
         setStartDateCheck(false);
       }
-      if (getFormatDate(endDate).length !== 8) {
+      if (submitFormatDate(endDate).length !== 8) {
         setEndDateCheck(false);
       }
       if (beNumber === 0) {
