@@ -486,7 +486,7 @@ const ArticleDetail = () => {
             {/* 게시글 수정 버튼 */}
             <MiniButton
               onClick={() => {
-                navigate('/article/edit/:id');
+                navigate('/articles/edit/:id');
               }}
               text={'수정하기'}
             />
