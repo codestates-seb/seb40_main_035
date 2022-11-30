@@ -72,8 +72,7 @@ const InterestSelectWrapper = styled.div`
 
   .tab-title {
     cursor: pointer;
-    font-size: 15px;
-
+    font-size: 13px;
     width: 100% auto;
     height: 100%;
     margin-right: 15px;
@@ -98,7 +97,7 @@ const TagBtn = styled.button`
   border: 1px solid var(--purple-medium);
   border-radius: 25px;
   background-color: white;
-  font-size: 15px;
+  font-size: 13px;
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.5s;
@@ -106,7 +105,7 @@ const TagBtn = styled.button`
   align-items: center;
   margin-right: 10px;
   margin-bottom: 10px;
-  padding: 7px 10px;
+  padding: 6px 8px;
 
   &:hover {
     border: 1px solid var(--purple);
@@ -138,6 +137,7 @@ const TagBtn = styled.button`
 
 const Placeholder = styled.div`
   color: lightgray;
+  font-size: 14px;
 `;
 
 const tabContArr = [
