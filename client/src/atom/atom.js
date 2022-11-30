@@ -195,3 +195,21 @@ export const isCompletedState = atom({
   key: 'isCompletedState',
   default: false,
 });
+
+// 숙련도 선택 상태
+export const selectedLevelState = atom({
+  key: 'selectedLevelState',
+  default: '',
+});
+
+// 숙련도 드롭다운 Active 상태
+export const activeDropDownState = atom({
+  key: 'activeDropDownState',
+  default: false,
+});
+
+// 숙련도 옵션 상태
+export const levelOptionsState = atom({
+  key: 'levelOptionsState',
+  default: [],
+});
