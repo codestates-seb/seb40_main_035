@@ -2,32 +2,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiChevronDown } from 'react-icons/fi';
-
-const WholeContainer = styled.div`
-  width: 200px;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-direction: column;
-
-  .title {
-    font-size: 15px;
-    margin-left: 6px;
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-`;
+import { useRecoilState } from 'recoil';
+import { selectedLevelState } from '../atom/atom';
 
 const DropdownContainer = styled.div`
-  display: flex;
-  justify-content: center;
   &:hover {
     cursor: pointer;
   }
-
+  color: var(--black);
   span {
-    font-size: 13px;
+    font-size: 16px;
   }
 `;
 
@@ -35,13 +19,18 @@ const DropdownBody = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 14px;
-  border: solid 1px var(--grey-light);
+  padding: 8px 14px;
+  border: solid 1px
+    ${(props) => (props.isActive ? 'var(--purple)' : 'var(--purple-medium)')};
   background-color: var(--purple-light);
-  width: 180px;
-  border-radius: 20px;
+  border-radius: 8px;
+  z-index: 1;
+
   #down-icon {
-    color: var(--purple);
+    color: ${(props) =>
+      props.isActive ? 'var(--purple)' : 'var(--purple-medium)'};
+    transform: ${(props) => (props.isActive ? 'rotateX(180deg)' : 'none')};
+    transition: 300ms ease-in-out;
   }
 `;
 
@@ -49,20 +38,21 @@ const DropdownMenu = styled.ul`
   justify-content: center;
   align-items: center;
   display: ${(props) => (props.isActive ? `block` : `none`)};
-  width: 180px;
   background-color: var(--purple-light);
-  position: absolute;
-  border: solid 1px var(--grey-light);
+  border: solid 1px var(--purple-medium);
+  border-top: none;
   border-radius: 8px;
+  color: var(--grey-dark);
 `;
 
 const DropdownItem = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 14px;
-  border-bottom: solid 1px var(--grey-light);
+  padding: 8px 14px;
+  border-bottom: solid 1px var(--purple-medium);
   border-top: none;
+
   &:hover {
     background-color: var(--purple);
     color: white;
@@ -83,7 +73,7 @@ const LevelSelect = () => {
   // 드롭다운 상태 저장 => active ? 펼쳐집니다 : 닫힙니다
   const [isActive, setIsActive] = useState(false);
   // 선택된 데이터 저장
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useRecoilState(selectedLevelState);
   const selectInput = useRef();
 
   // 드롭다운 토글 기능
@@ -95,9 +85,9 @@ const LevelSelect = () => {
     const targetId = e.target.id;
 
     if (targetId === 'item_name') {
-      setSelectedValue(e.target.parentElement.innerText);
+      setSelectedLevel(e.target.parentElement.innerText);
     } else if (targetId === 'item') {
-      setSelectedValue(e.target.innerText);
+      setSelectedLevel(e.target.innerText);
     }
     setIsActive((prev) => !prev);
   }, []);
@@ -119,17 +109,16 @@ const LevelSelect = () => {
   const onCloseBox = () => {
     setIsActive(false);
     selectInput.current.focus();
-    setSelectedValue(null);
+    setSelectedLevel(null);
   };
 
   return (
-    <WholeContainer>
-      <span className="title">숙련도</span>
+    <>
       <DropdownContainer ref={selectInput}>
-        <DropdownBody onClick={onActiveToggle}>
-          {selectedValue ? (
+        <DropdownBody onClick={onActiveToggle} isActive={isActive}>
+          {selectedLevel ? (
             <>
-              <span>{selectedValue} </span>
+              <span>{selectedLevel}</span>
               <FiChevronDown id="down-icon" />
             </>
           ) : (
@@ -147,7 +136,7 @@ const LevelSelect = () => {
           ))}
         </DropdownMenu>
       </DropdownContainer>
-    </WholeContainer>
+    </>
   );
 };
 
