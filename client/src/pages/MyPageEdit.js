@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {
   currentUserState,
   selectedInterestsState,
+  selectedLevelState,
   selectedSkillstacksState,
   userProfileState,
 } from '../atom/atom';
@@ -52,6 +53,7 @@ const MyInfoContainer = styled.div`
     font-size: 15px;
     width: 345px;
   }
+
   label {
     display: flex;
     justify-content: space-between;
@@ -66,11 +68,7 @@ const MyInfoContainer = styled.div`
       height: 130px;
     }
   }
-  .level-select-view {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+
   input {
     width: 250px;
     font-size: 13px;
@@ -135,6 +133,7 @@ const MyPageEdit = () => {
   const [profileBody, setProfileBody] = useState({});
   const { id } = useParams();
   const navaigate = useNavigate();
+  const [selectedLevel, setSelectedLevel] = useRecoilState(selectedLevelState);
 
   useEffect(() => {
     // 마이페이지 프로필 정보 불러오기
@@ -148,6 +147,7 @@ const MyPageEdit = () => {
         profileInterests.push(el.name);
       }
       setSelectedInterests(profileInterests);
+      setSelectedLevel(res.data.data.level);
       // 유저 프로필 정보 상태
       setProfileBody({
         memberId: res.data.data.memberId,
@@ -203,7 +203,7 @@ const MyPageEdit = () => {
         {
           memberId: profileBody.memberId,
           name: profileBody.name,
-          level: profileBody.level,
+          level: selectedLevel,
           description: profileBody.description,
           github: profileBody.github,
           memberInterests: selectedInterests,
@@ -245,11 +245,12 @@ const MyPageEdit = () => {
                 onChange={onChangeDescription}
               ></input>
             </label>
-            <label htmlFor="level-select-view">
-              <span>숙련도</span>
-              <LevelSelect />
-            </label>
-
+            <div className="level">
+              <label htmlFor="level-select-view">
+                <span>숙련도</span>
+                <LevelSelect />
+              </label>
+            </div>
             <label htmlFor="github-url">
               <span>깃허브</span>
               <input
