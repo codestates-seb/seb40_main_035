@@ -23,12 +23,22 @@ const Input = styled.input`
   }
 `;
 
-const DefaultInput = ({ placeholder, value, onChange, width, height }) => {
+const DefaultInput = ({
+  placeholder,
+  value,
+  onChange,
+  onblur,
+  width,
+  height,
+}) => {
   return (
     <Input
       placeholder={placeholder}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => {
+        onChange(e.target.value);
+      }}
+      onBlur={(e) => onblur(e.target.value)}
       width={width}
       height={height}
     />
