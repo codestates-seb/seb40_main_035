@@ -216,6 +216,7 @@ const SignUp = () => {
   };
   // 깃허브 연동하기
   const onConnectGithub = () => {
+    alert('준비중인 기능입니다!');
     // axios.get(`/oauth2/authorization/github`).then((res) => console.log(res));
   };
   // 전체 내용 확인
