@@ -16,7 +16,6 @@ const getSkills = (res) => {
   ];
 
   for (let el of res) {
-    console.log(el);
     if (el.skillSort === '프론트엔드') {
       arrSkills[0].tabCont.push({
         skillId: arrSkills[0].tabCont + 1,

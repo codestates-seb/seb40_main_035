@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ArticlesGrid from '../components/ArticlesGrid';
+import getSkills from '../utils/getSkills';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
@@ -80,8 +81,7 @@ const Container = styled.div`
 `;
 
 const Profile = () => {
-  const [skillStackView, setSkillStackView] =
-    useRecoilState(skillStackViewState);
+  const setSkillStackView = useSetRecoilState(skillStackViewState);
   const setProfileData = useSetRecoilState(userProfileState);
   const setInterestView = useSetRecoilState(interestViewState);
   const [recruitedArticles, setRecruitedArticles] = useRecoilState(
@@ -101,74 +101,7 @@ const Profile = () => {
       };
       setProfileData(userProfile);
 
-      for (let el of res.data.data.skills) {
-        if (el.skillSort === '프론트엔드') {
-          setSkillStackView([
-            {
-              tabTitle: '프론트엔드',
-              tabCont: [
-                ...skillStackView[0].tabCont,
-                {
-                  skillId: skillStackView[0].tabCont.length + 1,
-                  name: el.name,
-                },
-              ],
-            },
-            {
-              tabTitle: '백엔드',
-              tabCont: [...skillStackView[1].tabCont],
-            },
-            {
-              tabTitle: '기타',
-              tabCont: [...skillStackView[2].tabCont],
-            },
-          ]);
-        }
-        if (el.skillSort === '백엔드') {
-          setSkillStackView([
-            {
-              tabTitle: '프론트엔드',
-              tabCont: [...skillStackView[0].tabCont],
-            },
-            {
-              tabTitle: '백엔드',
-              tabCont: [
-                ...skillStackView[1].tabCont,
-                {
-                  skillId: skillStackView[1].tabCont.length + 1,
-                  name: el.name,
-                },
-              ],
-            },
-            {
-              tabTitle: '기타',
-              tabCont: [...skillStackView[2].tabCont],
-            },
-          ]);
-        }
-        if (el.skillSort !== '백엔드' && el.skillSort !== '프론트엔드') {
-          setSkillStackView([
-            {
-              tabTitle: '프론트엔드',
-              tabCont: [...skillStackView[0].tabCont],
-            },
-            {
-              tabTitle: '백엔드',
-              tabCont: [...skillStackView[1].tabCont],
-            },
-            {
-              tabTitle: '기타',
-              tabCont: [
-                ...skillStackView[2].tabCont,
-                {
-                  skillId: skillStackView[2].tabCont.length + 1,
-                  name: el.name,
-                },
-              ],
-            },
-          ]);
-        }
-      }
+      setSkillStackView(getSkills(res.data.data.skills));
 
       setInterestView(res.data.data.interests);
 

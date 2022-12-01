@@ -82,7 +82,7 @@ export const userProfileState = atom({
 
 // 로그인된 유저의 정보 (유저 아이디)
 export const currentUserState = atom({
-  key: 'isLoginState',
+  key: 'currentUserState',
   default: {
     memberId: 15,
   },
