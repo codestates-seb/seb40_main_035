@@ -10,10 +10,15 @@ import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
 import { FiShare } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { interestViewState, skillStackViewState } from '../atom/atom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  currentUserState,
+  interestViewState,
+  skillStackViewState,
+} from '../atom/atom';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Comment from '../components/Comment';
 import InterestView from '../components/InterestView';
+import getSkills from '../utils/getSkills';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -244,78 +249,7 @@ const ArticleDetail = () => {
   const navigate = useNavigate();
   let { id } = useParams();
   const createdAtArticle = new Date(articles.createdAt);
-
-  // 기술스택 상태 set 함수
-  const onSkills = (skills) => {
-    for (let el of skills) {
-      if (el.skillSort === '프론트엔드') {
-        setSkillStackView([
-          {
-            tabTitle: '프론트엔드',
-            tabCont: [
-              ...skillStackView[0].tabCont,
-              {
-                skillId: skillStackView[0].tabCont.length + 1,
-                name: el.name,
-              },
-            ],
-          },
-          {
-            tabTitle: '백엔드',
-            tabCont: [...skillStackView[1].tabCont],
-          },
-          {
-            tabTitle: '기타',
-            tabCont: [...skillStackView[2].tabCont],
-          },
-        ]);
-      }
-      if (el.skillSort === '백엔드') {
-        setSkillStackView([
-          {
-            tabTitle: '프론트엔드',
-            tabCont: [...skillStackView[0].tabCont],
-          },
-          {
-            tabTitle: '백엔드',
-            tabCont: [
-              ...skillStackView[1].tabCont,
-              {
-                skillId: skillStackView[1].tabCont.length + 1,
-                name: el.name,
-              },
-            ],
-          },
-          {
-            tabTitle: '기타',
-            tabCont: [...skillStackView[2].tabCont],
-          },
-        ]);
-      }
-      if (el.skillSort !== '백엔드' && el.skillSort !== '프론트엔드') {
-        setSkillStackView([
-          {
-            tabTitle: '프론트엔드',
-            tabCont: [...skillStackView[0].tabCont],
-          },
-          {
-            tabTitle: '백엔드',
-            tabCont: [...skillStackView[1].tabCont],
-          },
-          {
-            tabTitle: '기타',
-            tabCont: [
-              ...skillStackView[2].tabCont,
-              {
-                skillId: skillStackView[2].tabCont.length + 1,
-                name: el.name,
-              },
-            ],
-          },
-        ]);
-      }
-    }
-  };
+  const currentUser = useRecoilValue(currentUserState);
 
   // 게시글 조회 http 요청
   useEffect(() => {
@@ -327,7 +261,7 @@ const ArticleDetail = () => {
       // 관심분야 상태 set
       setInterestView(response.data.data.interests);
       // 기술스택 상태 set
-      onSkills(response.data.data.skills);
+      setSkillStackView(getSkills(response.data.data.skills));
       // 댓글 상태 set
       setAnswers(response.data.data.answers);
       // 모집 여부 상태 set
@@ -354,23 +288,27 @@ const ArticleDetail = () => {
   };
   // 모집중 토글 이벤트 핸들러
   const onToggle = () => {
-    axios
-      .patch(
-        `/articles/${id}`,
-        {
-          isCompleted: !isCheck,
-        },
-        {
-          headers: {
-            // 로그인 토큰 자리
-            Authorization:
-              'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi6rmA7L2U65SpIiwibWVtYmVySWQiOjE0LCJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTY2OTYxNDEzNCwiZXhwIjoxNjY5NjI4NTM0fQ.lNABbLSSk6hsmiG3uYQZXekuCCPVMGY--uuGcRWCKkvFl4jkmjLn61-rj4HJN88x',
+    if (currentUser.memberId === articles.memberId) {
+      axios
+        .patch(
+          `/articles/${id}`,
+          {
+            isCompleted: !isCheck,
           },
-        },
-      )
-      .then((response) => {
-        onToggleChange(isCheck);
-      });
+          {
+            headers: {
+              // 로그인 토큰 자리
+              Authorization:
+                'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTgxNDAwNCwiZXhwIjoxNjY5ODE1ODAzfQ.cdcc7CxX2SMnYIbipvj0_HrZKzTVwrBMITIFZP0g39bk9erlcaEkrRZ7ihkHhECh',
+            },
+          },
+        )
+        .then((response) => {
+          onToggleChange(isCheck);
+        });
+    } else {
+      alert('수정 권한이 없습니다.');
+    }
   };
 
   // 좋아요 이벤트 핸들러
@@ -457,7 +395,7 @@ const ArticleDetail = () => {
   };
 
   return (
-    <WholeContainer>
+    <WholeContainer className="a">
       {/* 게시글 헤더 */}
       <TopContainer>
         <div className="title-box">
@@ -484,14 +422,21 @@ const ArticleDetail = () => {
               </span>
             </button>
             {/* 게시글 수정 버튼 */}
-            <MiniButton
-              onClick={() => {
-                navigate('/articles/edit/:id');
-              }}
-              text={'수정하기'}
-            />
-            {/* 게시글 삭제 버튼 */}
-            <MiniButton text={'삭제하기'} onClick={onDeleteArticle} />
+
+            {currentUser.memberId === articles.memberId ? (
+              <>
+                <MiniButton
+                  onClick={() => {
+                    navigate(`/articles/edit/${id}`);
+                  }}
+                  text={'수정하기'}
+                />
+                {/* 게시글 삭제 버튼 */}
+                <MiniButton text={'삭제하기'} onClick={onDeleteArticle} />
+              </>
+            ) : (
+              ''
+            )}
           </form>
         </div>
         {/* 게시글 상세 정보 */}

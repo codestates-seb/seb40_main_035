@@ -22,12 +22,13 @@ const WholeContainer = styled.div`
 const DropdownContainer = styled.div`
   display: flex;
   /* justify-content: center; */
+
   &:hover {
     cursor: pointer;
   }
-
+  color: var(--black);
   span {
-    font-size: 13px;
+    font-size: 16px;
   }
 `;
 
@@ -35,14 +36,19 @@ const DropdownBody = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 14px;
-  border: solid 1px var(--grey-light);
+  padding: 8px 14px;
+  border: solid 1px
+    ${(props) => (props.isActive ? 'var(--purple)' : 'var(--purple-medium)')};
   background-color: var(--purple-light);
   width: 250px;
   border: 1px solid var(--purple-medium);
   border-radius: 8px;
+
   #down-icon {
-    color: var(--purple);
+    color: ${(props) =>
+      props.isActive ? 'var(--purple)' : 'var(--purple-medium)'};
+    transform: ${(props) => (props.isActive ? 'rotateX(180deg)' : 'none')};
+    transition: 300ms ease-in-out;
   }
   &:hover,
   &:focus,
@@ -60,20 +66,23 @@ const DropdownMenu = styled.ul`
   justify-content: center;
   align-items: center;
   display: ${(props) => (props.isActive ? `block` : `none`)};
+
   width: 250px;
   background-color: var(--purple-light);
   position: absolute;
   border: 0.5px solid var(--purple-medium);
+
   border-radius: 8px;
+  color: var(--grey-dark);
 `;
 
 const DropdownItem = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 5px 14px;
   border: 0.5px solid var(--purple-medium);
-
   &:first-child {
     border-top: 1px solid var(--purple-medium);
     border-radius: 8px 8px 0 0;
@@ -106,7 +115,6 @@ const LevelSelect = () => {
   // const [isActive, setIsActive] = useState(false);
   // 선택된 데이터 저장
   const [selectedLevel, setSelectedLevel] = useRecoilState(selectedLevelState);
-  // const [selectedLevel, setSelectedLevel] = useState('112');
   const selectInput = useRef();
 
   // 드롭다운 토글 기능
@@ -114,8 +122,10 @@ const LevelSelect = () => {
     setIsActive((prev) => !prev);
   };
   // 드롭다운 기능
+
   const onSelect = (e) => {
     setSelectedLevel(e.target.innerText);
+
     setIsActive((prev) => !prev);
   };
 
@@ -140,6 +150,7 @@ const LevelSelect = () => {
           {selectedLevel ? (
             <>
               <span>{selectedLevel} </span>
+
               <FiChevronDown id="down-icon" />
             </>
           ) : (

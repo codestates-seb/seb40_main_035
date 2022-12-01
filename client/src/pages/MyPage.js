@@ -15,6 +15,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import getSkills from '../utils/getSkills';
+import ArticlesGrid from '../components/ArticlesGrid';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
@@ -207,8 +208,7 @@ const MyPage = () => {
             );
           })}
         </ul>
-
-        <ul className="article-list">
+        <ArticlesGrid>
           {tabContArr[activeMenu].tabCont.map((article, idx) => {
             return (
               <ArticleCard
@@ -228,7 +228,7 @@ const MyPage = () => {
               />
             );
           })}
-        </ul>
+        </ArticlesGrid>
       </div>
     </Container>
   );
