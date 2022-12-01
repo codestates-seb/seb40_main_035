@@ -7,6 +7,7 @@ import { useState } from 'react';
 import DefaultInput from '../components/DefaultInput';
 import MiniButton from '../components/MiniButton';
 import axios from 'axios';
+import { notiError } from '../assets/toast';
 
 const Container = styled.div`
   display: flex;
@@ -177,7 +178,7 @@ const LogIn = ({ userMenu }) => {
           }
         });
     } else {
-      alert('올바른 이메일 형식이 아닙니다.\n다시 입력해주세요.');
+      notiError('올바른 이메일 형식이 아닙니다.\n다시 입력해주세요.');
     }
   };
 
