@@ -21,6 +21,7 @@ import Comment from '../components/Comment';
 import InterestView from '../components/InterestView';
 import getSkills from '../utils/getSkills';
 import ContentViewer from '../components/ContentViewer';
+import { notiError } from '../assets/toast';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -130,7 +131,6 @@ const LeftViewTopBox = styled.div`
 const LeftViewBottomBox = styled.div`
   border: 1px solid var(--purple-medium);
   flex-direction: column;
-  margin-bottom: 10px;
   border-radius: 9px;
   padding: 25px;
   > ul {
@@ -312,7 +312,7 @@ const ArticleDetail = () => {
           onToggleChange(isCheck);
         });
     } else {
-      alert('수정 권한이 없습니다.');
+      notiError('수정 권한이 없습니다.');
     }
   };
 

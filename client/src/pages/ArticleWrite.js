@@ -34,6 +34,7 @@ import {
 } from '../atom/atom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { notiError } from '../assets/toast';
 
 const Container = styled.div`
   background-color: var(--purple-light);
@@ -282,7 +283,7 @@ const ArticleWrite = () => {
       if (selectedSkillstacksSubmit.length === 0) {
         setSkillstacksCheck(false);
       }
-      alert('모두 입력해주세요!');
+      notiError('모두 입력해주세요!');
     }
   };
 

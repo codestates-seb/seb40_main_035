@@ -21,6 +21,7 @@ import {
   skillstacksCheckState,
   interestsCheckState,
 } from '../atom/atom';
+import { notiError, notiInfo, notiSuccess } from '../assets/toast';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -168,18 +169,18 @@ const SignUp = () => {
           email: userId,
         })
         .then((res) => {
-          window.alert(res.data.data);
+          notiSuccess(res.data.data);
           setIdChecked(true);
         })
         .catch((err) => {
           if (err.response.data.status === 409) {
-            window.alert(err.response.data.message);
+            notiError(err.response.data.message);
           } else {
             console.log(err);
           }
         });
     } else {
-      window.alert('이메일 주소를 다시 확인해주세요');
+      notiError('이메일 주소를 다시 확인해주세요');
     }
   };
   // 인증코드 인증확인
@@ -190,12 +191,12 @@ const SignUp = () => {
         code: verificationCode,
       })
       .then((res) => {
-        window.alert(res.data.data);
+        notiSuccess(res.data.data);
         setVerificationCodeErr(false);
         setCodeChecked(true);
       })
       .catch(() => {
-        window.alert('인증코드가 유효하지 않습니다.');
+        notiError('인증코드가 유효하지 않습니다.');
         setVerificationCodeErr(true);
         setCodeChecked(false);
       });
@@ -207,16 +208,16 @@ const SignUp = () => {
         name: nickName,
       })
       .then((res) => {
-        window.alert('사용 가능한 닉네임 입니다');
+        notiSuccess('사용 가능한 닉네임 입니다');
         setNameChecked(true);
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        notiError(err.response.data.message);
       });
   };
   // 깃허브 연동하기
   const onConnectGithub = () => {
-    alert('준비중인 기능입니다!');
+    notiInfo('준비중인 기능입니다!');
     // axios.get(`/oauth2/authorization/github`).then((res) => console.log(res));
   };
   // 전체 내용 확인
@@ -266,17 +267,17 @@ const SignUp = () => {
         .post('/members/signup', signUpInfo)
         .then(() => {
           // + 입력되어 있던 데이터로 로그인 요청
-          window.alert('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
+          notiSuccess('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
           window.location = '/';
         })
         .catch((err) => {
           if (err.response.data.status === 409) {
-            window.alert(err.response.data.message);
+            notiError(err.response.data.message);
           }
           console.error(err);
         });
     } else {
-      window.alert('입력 사항을 확인해주세요!');
+      notiError('입력 사항을 확인해주세요!');
     }
   };
 
