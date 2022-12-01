@@ -13,6 +13,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ArticlesGrid from '../components/ArticlesGrid';
 import getSkills from '../utils/getSkills';
 
 const Container = styled.div`
@@ -127,7 +128,7 @@ const Profile = () => {
           </div>
         </ul>
 
-        <ul className="article-list">
+        <ArticlesGrid>
           {recruitedArticles.map((article, idx) => {
             return (
               <ArticleCard
@@ -147,7 +148,7 @@ const Profile = () => {
               />
             );
           })}
-        </ul>
+        </ArticlesGrid>
       </div>
     </Container>
   );
