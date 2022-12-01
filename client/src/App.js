@@ -8,6 +8,7 @@ import MyPage from './pages/MyPage';
 import MyPageEdit from './pages/MyPageEdit';
 import Profile from './pages/Profile';
 import SignUp from './pages/SignUp';
+import ReceiveGithub from './pages/ReceiveGithub';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -36,6 +37,7 @@ function App() {
             <Route path="/mypage/edit/:id" element={<MyPageEdit />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/receive-token.html" element={<ReceiveGithub />} />
           </Routes>
         </ContentContainer>
       </Container>
