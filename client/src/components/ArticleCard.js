@@ -6,7 +6,7 @@ import yearMonthDate from '../utils/dateFormat';
 
 const ArticleCardWrapper = styled(Link)`
   display: inline-block;
-  width: 323px;
+  width: 100%;
   height: 286px;
   border-radius: 25px;
   background-color: #ffffff;
@@ -108,6 +108,7 @@ const ArticleCardWrapper = styled(Link)`
     height: 26px;
 
     li {
+      height: 100%;
       padding: 4px 10px;
       border-radius: 13px;
       font-weight: 700;
