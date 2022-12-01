@@ -13,6 +13,8 @@ const Input = styled.input`
   border: none;
   border-bottom: 1px solid;
   border-color: ${(props) => (props.isError ? 'red' : 'var(--purple)')};
+  font-size: 14px;
+  color: var(--black);
 
   &:focus {
     outline: none;
