@@ -108,6 +108,8 @@ const SignUp = () => {
   const [interestsCheck, setInterestsCheck] =
     useRecoilState(interestsCheckState);
 
+  const [github, setGithub] = useState('');
+
   // 내용 수정
   // 아이디
   const onIdChange = (id) => {
@@ -216,9 +218,17 @@ const SignUp = () => {
   };
   // 깃허브 연동하기
   const onConnectGithub = () => {
-    alert('준비중인 기능입니다!');
-    // axios.get(`/oauth2/authorization/github`).then((res) => console.log(res));
+    const githubPopup = window.open(
+      'http://ec2-15-165-2-129.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/github',
+      '깃허브 인증창',
+      'width=600px,height=500px,scrollbars=yes',
+    );
+    githubPopup.addEventListener('unload', () => {
+      const githubURL = window.localStorage.getItem('githubURL');
+      setGithub(githubURL);
+    });
   };
+
   // 전체 내용 확인
   const onCheckAll = () => {
     onIdValidation();
@@ -261,11 +271,11 @@ const SignUp = () => {
         memberInterests,
         memberSkills,
       };
+      if (github.length > 1) signUpInfo.github = github;
 
       axios
         .post('/members/signup', signUpInfo)
         .then(() => {
-          // + 입력되어 있던 데이터로 로그인 요청
           window.alert('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
           window.location = '/';
         })
