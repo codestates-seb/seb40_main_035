@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineCheck } from 'react-icons/ai';
 import DefaultButton from '../components/DefaultButton';
@@ -13,7 +13,6 @@ const Container = styled.div`
   padding-top: 100px;
   text-align: center;
   background-color: var(--purple-light);
-  color: var(--purple);
 
   .check-icon {
     width: 60px;
@@ -24,29 +23,44 @@ const Container = styled.div`
     background-color: var(--purple);
   }
 
+  h1 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: var(--black);
+  }
+
   p {
     margin-bottom: 40px;
+    color: var(--purple);
   }
 `;
 
 const ReceiveGithub = () => {
+  const [time, setTime] = useState(3);
+
+  const url = new URL(window.location.href);
+  const githubURL = url.searchParams.get('github');
+
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const githubURL = url.searchParams.get('github');
+    if (time === 0) window.close();
     if (githubURL) {
       localStorage.setItem('githubURL', githubURL);
-      window.close();
-      return githubURL;
+      setInterval(() => {
+        setTime(time - 1);
+      }, 1000);
     }
-  }, []);
+  }, [time]);
 
   return (
     <Container>
       <AiOutlineCheck className="check-icon" fill="#fff" />
-      <p>
+      <h1>
         깃허브 인증이 완료되었습니다!
         <br />
         페이지로 돌아가주세요.
+      </h1>
+      <p>
+        <strong>{time}</strong>초 후 자동으로 돌아갑니다.
       </p>
       <DefaultButton text="돌아가기" onClick={() => window.close()} />
     </Container>
