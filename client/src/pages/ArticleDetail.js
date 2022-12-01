@@ -12,6 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   currentUserState,
+  inputBodyState,
   interestViewState,
   skillStackViewState,
 } from '../atom/atom';
@@ -19,6 +20,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Comment from '../components/Comment';
 import InterestView from '../components/InterestView';
 import getSkills from '../utils/getSkills';
+import GetInputBody from '../components/GetInputBody';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -250,6 +252,7 @@ const ArticleDetail = () => {
   let { id } = useParams();
   const createdAtArticle = new Date(articles.createdAt);
   const currentUser = useRecoilValue(currentUserState);
+  const [inputBody, setInputBody] = useRecoilState(inputBodyState);
 
   // 게시글 조회 http 요청
   useEffect(() => {
@@ -266,6 +269,8 @@ const ArticleDetail = () => {
       setAnswers(response.data.data.answers);
       // 모집 여부 상태 set
       setIsCheck(response.data.data.isCompleted);
+      // 게시글 viewer 상태 set
+      setInputBody(response.data.data.body);
     });
   }, [newComment]);
 
@@ -502,10 +507,8 @@ const ArticleDetail = () => {
             </ul>
           </LeftViewBottomBox>
         </LeftViewContainer>
-        <RightViewContainer>
-          <span className="content-plan">프로젝트 계획을 설명해 주세요!</span>
-          <span>{articles.body}</span>
-        </RightViewContainer>
+        {/* 게시글 Viewer */}
+        <GetInputBody />
       </LeftRightWholeConatiner>
       {/* 댓글 컴포넌트 */}
       <BottomCommentConatiner>
