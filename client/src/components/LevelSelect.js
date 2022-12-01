@@ -12,10 +12,9 @@ const WholeContainer = styled.div`
   flex-direction: column;
 
   .title {
-    font-size: 15px;
+    font-size: 13px;
     margin-left: 6px;
     margin-bottom: 5px;
-    font-weight: 500;
   }
 `;
 
@@ -28,7 +27,7 @@ const DropdownContainer = styled.div`
   }
   color: var(--black);
   span {
-    font-size: 16px;
+    font-size: 13px;
   }
 `;
 
@@ -36,7 +35,7 @@ const DropdownBody = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 14px;
+  padding: 5px 10px;
   border: solid 1px
     ${(props) => (props.isActive ? 'var(--purple)' : 'var(--purple-medium)')};
   background-color: var(--purple-light);
@@ -66,7 +65,7 @@ const DropdownMenu = styled.ul`
   justify-content: center;
   align-items: center;
   display: ${(props) => (props.isActive ? `block` : `none`)};
-
+  font-size: 13px;
   width: 250px;
   background-color: var(--purple-light);
   position: absolute;
@@ -81,7 +80,7 @@ const DropdownItem = styled.li`
   justify-content: space-between;
   align-items: center;
 
-  padding: 5px 14px;
+  padding: 5px 10px;
   border: 0.5px solid var(--purple-medium);
   &:first-child {
     border-top: 1px solid var(--purple-medium);
