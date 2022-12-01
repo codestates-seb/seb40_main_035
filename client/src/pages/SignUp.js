@@ -292,6 +292,7 @@ const SignUp = () => {
         .then(() => {
           window.alert('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
           window.location = '/';
+          window.localStorage.removeItem('githubURL');
         })
         .catch((err) => {
           if (err.response.data.status === 409) {
