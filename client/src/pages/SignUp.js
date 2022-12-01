@@ -43,20 +43,6 @@ const Container = styled.div`
       justify-content: space-between;
     }
 
-    .select-section {
-      margin-bottom: 30px;
-    }
-
-    .github-link {
-      display: flex;
-      align-items: center;
-
-      span {
-        font-size: 13px;
-        font-weight: 400;
-      }
-    }
-
     .input-wrapper {
       display: flex;
 
@@ -69,11 +55,29 @@ const Container = styled.div`
         padding-top: 5px;
       }
     }
+
+    .select-section {
+      margin-bottom: 30px;
+
+      .option-notice {
+        font-size: 13px;
+        font-weight: 400;
+      }
+    }
   }
 
   .submit-btn {
     margin-top: 60px;
     float: right;
+  }
+
+  .github-url {
+    width: 100%;
+    color: var(--black);
+    line-height: 10px;
+    padding-top: 12px;
+    border-bottom: 1px solid var(--purple);
+    font-size: 14px;
   }
 `;
 
@@ -109,6 +113,7 @@ const SignUp = () => {
     useRecoilState(interestsCheckState);
 
   const [github, setGithub] = useState('');
+  const [githubIsChecked, setGithubChecked] = useState(false);
 
   // 내용 수정
   // 아이디
@@ -219,16 +224,25 @@ const SignUp = () => {
   // 깃허브 연동하기
   const onConnectGithub = () => {
     const githubPopup = window.open(
-      'http://ec2-15-165-2-129.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/github',
+      process.env.REACT_APP_OAUTH_GITHUB_URL,
       '깃허브 인증창',
       'width=600px,height=500px,scrollbars=yes',
     );
     githubPopup.addEventListener('unload', () => {
       const githubURL = window.localStorage.getItem('githubURL');
-      setGithub(githubURL);
+      if (githubURL) {
+        window.alert('깃허브 계정이 연동되었습니다!');
+        setGithub(githubURL);
+        setGithubChecked(true);
+      }
     });
   };
-
+  // 깃허브 연동 해제
+  const onDisconnectGithub = () => {
+    window.localStorage.removeItem('githubURL');
+    setGithub('');
+    setGithubChecked(false);
+  };
   // 전체 내용 확인
   const onCheckAll = () => {
     onIdValidation();
@@ -414,11 +428,30 @@ const SignUp = () => {
             )}
             <InterestSelect id="interest" />
           </div>
-          <div className="select-section github-link">
+          <div className="select-section">
             <Label htmlFor="github">
-              깃허브<span>(선택)</span>
+              깃허브<span className="option-notice">(선택)</span>
             </Label>
-            <MiniButton text="연동하기" onClick={onConnectGithub} />
+            <div className="input-wrapper">
+              <p className="github-url" id="github">
+                {githubIsChecked ? github : '깃허브 계정을 연동해주세요!'}
+              </p>
+              {githubIsChecked ? (
+                <>
+                  <div className="confirmed-icon">
+                    <AiOutlineCheck fill="var(--purple)" />
+                  </div>
+                  <MiniButton
+                    text="해제하기"
+                    onClick={onDisconnectGithub}
+                    color="var(--purple-light)"
+                    bgColor="var(--purple)"
+                  />
+                </>
+              ) : (
+                <MiniButton text="연동하기" onClick={onConnectGithub} />
+              )}
+            </div>
           </div>
         </div>
       </div>
