@@ -20,7 +20,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Comment from '../components/Comment';
 import InterestView from '../components/InterestView';
 import getSkills from '../utils/getSkills';
-import GetInputBody from '../components/GetInputBody';
+import ContentViewer from '../components/ContentViewer';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -257,6 +257,8 @@ const ArticleDetail = () => {
   // 게시글 조회 http 요청
   useEffect(() => {
     axios.get(`/articles/${id}`).then((response) => {
+      // 게시글 viewer 상태 set
+      setInputBody(response.data.data.body);
       // articles 전체 데이터 상태
       setArticles(response.data.data);
       // 좋아요 상태 set
@@ -269,8 +271,6 @@ const ArticleDetail = () => {
       setAnswers(response.data.data.answers);
       // 모집 여부 상태 set
       setIsCheck(response.data.data.isCompleted);
-      // 게시글 viewer 상태 set
-      setInputBody(response.data.data.body);
     });
   }, [newComment]);
 
@@ -508,7 +508,7 @@ const ArticleDetail = () => {
           </LeftViewBottomBox>
         </LeftViewContainer>
         {/* 게시글 Viewer */}
-        <GetInputBody />
+        <ContentViewer content={inputBody} />
       </LeftRightWholeConatiner>
       {/* 댓글 컴포넌트 */}
       <BottomCommentConatiner>
