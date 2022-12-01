@@ -9,7 +9,7 @@ const Button = styled.button`
   color: var(--purple);
   border: 1px solid var(--purple);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 18px;
   white-space: nowrap;
   transition: 300ms ease-in-out;

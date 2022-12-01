@@ -422,6 +422,7 @@ const ArticleDetail = () => {
               </span>
             </button>
             {/* 게시글 수정 버튼 */}
+
             {currentUser.memberId === articles.memberId ? (
               <>
                 <MiniButton

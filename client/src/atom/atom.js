@@ -196,11 +196,24 @@ export const isCompletedState = atom({
   default: false,
 });
 
-// 숙련도 선택란 선택 상태
+
+// 숙련도 선택 상태
 export const selectedLevelState = atom({
   key: 'selectedLevelState',
-  default: null,
+  default: '',
 });
+
+// 숙련도 드롭다운 Active 상태
+export const activeDropDownState = atom({
+  key: 'activeDropDownState',
+  default: false,
+});
+
+// 숙련도 옵션 상태
+export const levelOptionsState = atom({
+  key: 'levelOptionsState',
+  default: [],
+  });
 
 // 비밀번호 찾기위한 이메일 입력 값 상태
 export const searchPwEmailState = atom({
