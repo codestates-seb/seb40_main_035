@@ -6,11 +6,12 @@ const Button = styled.button`
   position: fixed;
   bottom: 100px;
   right: 100px;
-  width: 57px;
-  height: 57px;
+  width: 60px;
+  height: 60px;
   background-color: #ffffff;
   border-radius: 50%;
   border: none;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   animation: fadein 1s alternate;
 
   @keyframes fadein {
