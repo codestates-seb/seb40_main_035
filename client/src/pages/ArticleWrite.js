@@ -34,6 +34,7 @@ import {
 } from '../atom/atom';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { notiError } from '../assets/toast';
 
 const Container = styled.div`
   background-color: var(--purple-light);
@@ -42,10 +43,13 @@ const Container = styled.div`
   width: 100%;
   display: flex;
 
+  .body-area {
+    background-color: var(--purple-light);
+  }
+
   .article-write-title {
     margin: 30px 0 30px 0;
     padding-bottom: 30px;
-    padding-right: 15px;
     border-bottom: 1px solid var(--purple-medium);
 
     display: flex;
@@ -53,23 +57,31 @@ const Container = styled.div`
 
   .article-write-body {
     width: 100%;
-    /* min-width: 930px; */
+    min-width: fit-content;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
     margin-bottom: 30px;
+
+    @media screen and (max-width: 1200px) {
+      flex-direction: column;
+    }
 
     .article-write-body-select {
       border-radius: 8px;
       background-color: white;
-      width: 47.5%;
+      width: 50%;
       min-width: 470px;
       height: 100%;
       padding: 15px;
-      margin-right: 5px;
+      margin-right: 20px;
 
       display: flex;
       flex-direction: column;
+
+      @media screen and (max-width: 1200px) {
+        width: 100%;
+        margin-bottom: 10px;
+      }
 
       .select-tag,
       .select-date-number {
@@ -134,10 +146,14 @@ const Container = styled.div`
     }
 
     .article-write-body-right {
-      width: 47.5%;
+      width: 50%;
       height: fit-content;
       min-width: 480px;
-      margin-left: 5px;
+
+      @media screen and (max-width: 1200px) {
+        width: 100%;
+        margin-left: 0px;
+      }
     }
   }
 
@@ -148,8 +164,7 @@ const Container = styled.div`
   }
 
   .btn {
-    /* margin-top: 30px; */
-    margin-right: 10px;
+    margin-left: -50px;
   }
 `;
 
@@ -228,11 +243,9 @@ const ArticleWrite = () => {
         articleSkills: selectedSkillstacksSubmit,
       };
 
-      let token = '';
-      // 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTQ5NDEwMywiZXhwIjoxNjY5NTA4NTAzfQ.subidPsgbabDGWdbimGCsQ1pALbtosMtqlAqAd8K9ttZ7LboPDnPMv4FqnLtKxy0';
       axios
         .post(`/articles`, writeBody, {
-          headers: { Authorization: token },
+          headers: { Authorization: localStorage.getItem('Authorization') },
         })
         .then(
           // 글 등록 후 해당 글 상세페이지로 이동
@@ -282,7 +295,7 @@ const ArticleWrite = () => {
       if (selectedSkillstacksSubmit.length === 0) {
         setSkillstacksCheck(false);
       }
-      alert('모두 입력해주세요!');
+      notiError('모두 입력해주세요!');
     }
   };
 

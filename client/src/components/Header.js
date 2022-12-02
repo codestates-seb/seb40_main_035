@@ -15,7 +15,9 @@ import {
   inputBodyCheckState,
   hashtagsCheckState,
   modalOpenState,
+  currentUserState,
 } from '../atom/atom';
+import { notiSuccess } from '../assets/toast';
 
 const HeaderContainer = styled.header`
   z-index: 1;
@@ -40,6 +42,10 @@ const HeaderContainer = styled.header`
     align-items: center;
     justify-content: space-between;
     background-color: var(--purple);
+
+    @media screen and (max-width: 1020px) {
+      justify-content: center;
+    }
   }
   a {
     text-decoration-line: none;
@@ -54,12 +60,19 @@ const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     padding-right: 132px;
+    @media screen and (max-width: 1020px) {
+      padding-right: 0px;
+    }
   }
   .logo {
     white-space: nowrap;
     padding-right: 50px;
     padding-left: 170px;
     font-size: 25px;
+
+    @media screen and (max-width: 1020px) {
+      padding-left: 0px;
+    }
   }
   .gnb {
     display: flex;
@@ -80,6 +93,15 @@ const HeaderContainer = styled.header`
       transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
       :hover {
         box-shadow: 0 0 40px 40px rgba(81, 56, 144, 0.8) inset;
+      }
+      @media screen and (max-width: 720px) {
+        margin-right: 10px;
+      }
+    }
+
+    button {
+      @media screen and (max-width: 720px) {
+        font-size: 0.8rem;
       }
     }
   }
@@ -107,6 +129,7 @@ const Header = () => {
   const setBeNumberCheck = useSetRecoilState(beNumberCheckState);
   const setInputBodyCheck = useSetRecoilState(inputBodyCheckState);
   const setHashtagsCheck = useSetRecoilState(hashtagsCheckState);
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
   const onMain = () => {
     navigate('/');
@@ -135,8 +158,23 @@ const Header = () => {
     setModalOpen(!modalOpen);
     setMenu(3);
   };
+
+  const onMyPage = () => {
+    navigate(`/mypage/${currentUser.memberId}`);
+    setMenu(3);
+  };
+
   const onSignup = () => {
     navigate('/signup');
+    setMenu(4);
+  };
+
+  const onLogOut = () => {
+    localStorage.removeItem('Authorization');
+    localStorage.removeItem('Refresh');
+    setCurrentUser({ memberId: null, isLogIn: false });
+    notiSuccess('로그아웃 되었습니다.');
+    navigate('/');
     setMenu(4);
   };
 
@@ -181,16 +219,33 @@ const Header = () => {
                 글쓰기
               </NavBtn>
             </li>
-            <li>
-              <NavBtn $color={menu === 3} onClick={onLogIn}>
-                로그인
-              </NavBtn>
-            </li>
-            <li>
-              <NavBtn $color={menu === 4} onClick={onSignup}>
-                회원가입
-              </NavBtn>
-            </li>
+            {currentUser.isLogIn ? (
+              <>
+                <li>
+                  <NavBtn $color={menu === 3} onClick={onMyPage}>
+                    마이페이지
+                  </NavBtn>
+                </li>
+                <li>
+                  <NavBtn $color={menu === 4} onClick={onLogOut}>
+                    로그아웃
+                  </NavBtn>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <NavBtn $color={menu === 3} onClick={onLogIn}>
+                    로그인
+                  </NavBtn>
+                </li>
+                <li>
+                  <NavBtn $color={menu === 4} onClick={onSignup}>
+                    회원가입
+                  </NavBtn>
+                </li>{' '}
+              </>
+            )}
             <li>
               {/* 다크모드 후순위 작업 */}
               <BiMoon className="moon-icon" />

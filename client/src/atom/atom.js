@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
-// import { recoilPersist } from 'recoil-persist';
-// const { persistAtom } = recoilPersist();
+import { recoilPersist } from 'recoil-persist';
+const { persistAtom } = recoilPersist();
 
 // 기술 스택 탭 메뉴 클릭 시, 활성화 탭 식별 위한 상태
 export const activeIdxState = atom({
@@ -77,15 +77,17 @@ export const skillStackViewState = atom({
 // 유저 프로필 기본 정보
 export const userProfileState = atom({
   key: 'userProfileState',
-  default: {},
+  default: { memberId: 15 },
 });
 
 // 로그인된 유저의 정보 (유저 아이디)
 export const currentUserState = atom({
   key: 'currentUserState',
   default: {
-    memberId: 15,
+    memberId: null,
+    isLogIn: false,
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 // 입력된 해시태그 목록 상태
@@ -211,5 +213,17 @@ export const levelOptionsState = atom({
 // 비밀번호 찾기위한 이메일 입력 값 상태
 export const searchPwEmailState = atom({
   key: 'searchPwEmailState',
+  default: '',
+});
+
+//로그인 이메일 입력 값
+export const emailState = atom({
+  key: 'emailState',
+  default: '',
+});
+
+//로그인 패스워드 입력 값
+export const passwordState = atom({
+  key: 'passwoedState',
   default: '',
 });

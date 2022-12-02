@@ -139,7 +139,7 @@ const Main = () => {
     setPageNumber(data.pageInfo.page + 1);
     setHasNextPage(data.pageInfo.totalPages !== data.pageInfo.page);
     setIsFetching(false);
-  }, [viewAllStatus, skillfilter, sortOption, pageNumber, viewPortWidth]);
+  }, [viewAllStatus, skillfilter, sortOption, pageNumber]);
 
   return (
     <Container>

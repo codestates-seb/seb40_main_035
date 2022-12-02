@@ -8,10 +8,11 @@ import SkillStackView from '../components/SkillStackView';
 import avatar from '../assets/image/userAvatar.png';
 import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
 import { FiShare } from 'react-icons/fi';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   currentUserState,
+  inputBodyState,
   interestViewState,
   skillStackViewState,
 } from '../atom/atom';
@@ -19,6 +20,8 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Comment from '../components/Comment';
 import InterestView from '../components/InterestView';
 import getSkills from '../utils/getSkills';
+import ContentViewer from '../components/ContentViewer';
+import { notiError } from '../assets/toast';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -29,19 +32,19 @@ const WholeContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   color: var(--black);
-  padding: 0 45px 60px 45px;
+  padding: 0 0 60px 0;
   h3 {
     margin-right: 20px;
   }
 `;
 
 const TopContainer = styled.div`
-  width: 80%;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 40px;
+  margin-top: 30px;
   align-items: center;
 
   .title-box {
@@ -61,6 +64,10 @@ const TopContainer = styled.div`
     > span {
       margin-left: 10px;
       margin-right: 20px;
+    }
+
+    .toggle {
+      height: auto;
     }
   }
   .title-right-box {
@@ -90,9 +97,14 @@ const TopContainer = styled.div`
     font-weight: 500;
     padding: 10px;
     border-bottom: 1px solid var(--purple-medium);
-    margin-bottom: 10px;
+
     > span {
       align-items: center;
+      margin-right: 10px;
+    }
+    a {
+      color: var(--purple);
+      text-decoration: none;
       margin-right: 10px;
     }
   }
@@ -103,7 +115,11 @@ const TopContainer = styled.div`
 `;
 const LeftRightWholeConatiner = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
 `;
 const LeftViewContainer = styled.div`
   display: flex;
@@ -112,24 +128,27 @@ const LeftViewContainer = styled.div`
   min-width: 350px;
   background-color: white;
   border-radius: 8px;
-  padding: 30px;
-  margin: 25px 15px 25px 0;
+  padding: 15px;
+  margin: 30px 5px 15px 0;
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 const LeftViewTopBox = styled.div`
   border: 1px solid var(--purple-medium);
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
-  border-radius: 9px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 500;
-  padding: 25px;
+  padding: 15px;
 `;
 const LeftViewBottomBox = styled.div`
   border: 1px solid var(--purple-medium);
   flex-direction: column;
-  margin-bottom: 10px;
-  border-radius: 9px;
+  border-radius: 8px;
   padding: 25px;
   > ul {
     font-weight: 500;
@@ -162,10 +181,11 @@ const RightViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 57%;
+  min-width: 450px;
   background-color: white;
   border-radius: 8px;
   padding: 30px;
-  margin: 25px 0 25px 15px;
+  margin: 30px 0 15px 15px;
   .content-plan {
     margin-bottom: 20px;
     padding-bottom: 20px;
@@ -176,6 +196,12 @@ const RightViewContainer = styled.div`
   span {
     font-size: 15px;
   }
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    margin: 0 0 15px 0;
+    min-height: 300px;
+  }
 `;
 const BottomCommentConatiner = styled.div`
   display: flex;
@@ -183,10 +209,12 @@ const BottomCommentConatiner = styled.div`
   justify-content: center;
   align-items: center;
   width: 80%;
+  min-width: fit-content;
   height: auto;
   background-color: white;
   border-radius: 8px;
   padding: 45px;
+  white-space: nowrap;
   .user-info {
     font-size: 14px;
   }
@@ -250,10 +278,13 @@ const ArticleDetail = () => {
   let { id } = useParams();
   const createdAtArticle = new Date(articles.createdAt);
   const currentUser = useRecoilValue(currentUserState);
+  const [inputBody, setInputBody] = useRecoilState(inputBodyState);
 
   // 게시글 조회 http 요청
   useEffect(() => {
     axios.get(`/articles/${id}`).then((response) => {
+      // 게시글 viewer 상태 set
+      setInputBody(response.data.data.body);
       // articles 전체 데이터 상태
       setArticles(response.data.data);
       // 좋아요 상태 set
@@ -298,8 +329,7 @@ const ArticleDetail = () => {
           {
             headers: {
               // 로그인 토큰 자리
-              Authorization:
-                'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTgxNDAwNCwiZXhwIjoxNjY5ODE1ODAzfQ.cdcc7CxX2SMnYIbipvj0_HrZKzTVwrBMITIFZP0g39bk9erlcaEkrRZ7ihkHhECh',
+              Authorization: localStorage.getItem('Authorization'),
             },
           },
         )
@@ -307,7 +337,7 @@ const ArticleDetail = () => {
           onToggleChange(isCheck);
         });
     } else {
-      alert('수정 권한이 없습니다.');
+      notiError('수정 권한이 없습니다.');
     }
   };
 
@@ -360,18 +390,19 @@ const ArticleDetail = () => {
         `/answers`,
         {
           articleId,
-          memberId: 14,
+          memberId: currentUser.memberId,
           body: answerInput,
         },
         {
           headers: {
             // 로그인 토큰 자리
-            Authorization: '',
+            Authorization: localStorage.getItem('Authorization'),
           },
         },
       )
       .then((response) => {
         setNewComment(!newComment);
+        setAnswerInput('');
       })
       .catch(console.error);
   };
@@ -386,7 +417,7 @@ const ArticleDetail = () => {
       .delete(`/answers/${answerId}`, {
         headers: {
           // 로그인 토큰 자리
-          Authorization: '',
+          Authorization: localStorage.getItem('Authorization'),
         },
       })
       .then((response) => {
@@ -395,18 +426,20 @@ const ArticleDetail = () => {
   };
 
   return (
-    <WholeContainer className="a">
+    <WholeContainer>
       {/* 게시글 헤더 */}
-      <TopContainer>
+      <TopContainer className="abc">
         <div className="title-box">
           <div className="title-left-box">
             <Backbutton />
             <span>{articles.title} </span>
-            <SwitchToggle
-              right="모집 완료"
-              setChecked={isCheck}
-              onClick={onToggle}
-            />
+            <div className="toggle">
+              <SwitchToggle
+                right="모집 완료"
+                setChecked={isCheck}
+                onClick={onToggle}
+              />
+            </div>
           </div>
           <form className="title-right-box">
             {/* 공유 버튼 */}
@@ -441,6 +474,16 @@ const ArticleDetail = () => {
         </div>
         {/* 게시글 상세 정보 */}
         <div className="content-detail">
+          {/* 작성자 닉네임 */}
+          {currentUser.memberId === articles.memberId ? (
+            <Link to={`/mypage/${currentUser.memberId}`}>
+              <span>{articles.memberName}</span>
+            </Link>
+          ) : (
+            <Link to={`/profile/${articles.memberId}`}>
+              <span>{articles.memberName}</span>
+            </Link>
+          )}
           {/* 조회수 */}
           <span>{articles.views} view</span>
           {/* 좋아요 수 */}
@@ -452,7 +495,7 @@ const ArticleDetail = () => {
           <span>작성일 {createdAtArticle.toLocaleString()}</span>
         </div>
       </TopContainer>
-      <LeftRightWholeConatiner>
+      <LeftRightWholeConatiner className="abcde">
         <LeftViewContainer>
           <LeftViewTopBox>
             <span>이런 기술 스택을 사용하고 싶어요.</span>
@@ -502,10 +545,8 @@ const ArticleDetail = () => {
             </ul>
           </LeftViewBottomBox>
         </LeftViewContainer>
-        <RightViewContainer>
-          <span className="content-plan">프로젝트 계획을 설명해 주세요!</span>
-          <span>{articles.body}</span>
-        </RightViewContainer>
+        {/* 게시글 Viewer */}
+        <ContentViewer content={inputBody} />
       </LeftRightWholeConatiner>
       {/* 댓글 컴포넌트 */}
       <BottomCommentConatiner>

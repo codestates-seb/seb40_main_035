@@ -21,6 +21,7 @@ import {
   skillstacksCheckState,
   interestsCheckState,
 } from '../atom/atom';
+import { notiError, notiInfo, notiSuccess } from '../assets/toast';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -43,20 +44,6 @@ const Container = styled.div`
       justify-content: space-between;
     }
 
-    .select-section {
-      margin-bottom: 30px;
-    }
-
-    .github-link {
-      display: flex;
-      align-items: center;
-
-      span {
-        font-size: 13px;
-        font-weight: 400;
-      }
-    }
-
     .input-wrapper {
       display: flex;
 
@@ -69,11 +56,29 @@ const Container = styled.div`
         padding-top: 5px;
       }
     }
+
+    .select-section {
+      margin-bottom: 30px;
+
+      .option-notice {
+        font-size: 13px;
+        font-weight: 400;
+      }
+    }
   }
 
   .submit-btn {
     margin-top: 60px;
     float: right;
+  }
+
+  .github-url {
+    width: 100%;
+    color: var(--black);
+    line-height: 10px;
+    padding-top: 12px;
+    border-bottom: 1px solid var(--purple);
+    font-size: 14px;
   }
 `;
 
@@ -107,6 +112,9 @@ const SignUp = () => {
   const selectedInterest = useRecoilValue(selectedInterestsState);
   const [interestsCheck, setInterestsCheck] =
     useRecoilState(interestsCheckState);
+
+  const [github, setGithub] = useState('');
+  const [githubIsChecked, setGithubChecked] = useState(false);
 
   // 내용 수정
   // 아이디
@@ -168,18 +176,18 @@ const SignUp = () => {
           email: userId,
         })
         .then((res) => {
-          window.alert(res.data.data);
+          notiSuccess(res.data.data);
           setIdChecked(true);
         })
         .catch((err) => {
           if (err.response.data.status === 409) {
-            window.alert(err.response.data.message);
+            notiError(err.response.data.message);
           } else {
             console.log(err);
           }
         });
     } else {
-      window.alert('이메일 주소를 다시 확인해주세요');
+      notiError('이메일 주소를 다시 확인해주세요');
     }
   };
   // 인증코드 인증확인
@@ -190,12 +198,12 @@ const SignUp = () => {
         code: verificationCode,
       })
       .then((res) => {
-        window.alert(res.data.data);
+        notiSuccess(res.data.data);
         setVerificationCodeErr(false);
         setCodeChecked(true);
       })
       .catch(() => {
-        window.alert('인증코드가 유효하지 않습니다.');
+        notiError('인증코드가 유효하지 않습니다.');
         setVerificationCodeErr(true);
         setCodeChecked(false);
       });
@@ -207,17 +215,34 @@ const SignUp = () => {
         name: nickName,
       })
       .then((res) => {
-        window.alert('사용 가능한 닉네임 입니다');
+        notiSuccess('사용 가능한 닉네임 입니다');
         setNameChecked(true);
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        notiError(err.response.data.message);
       });
   };
   // 깃허브 연동하기
   const onConnectGithub = () => {
-    alert('준비중인 기능입니다!');
-    // axios.get(`/oauth2/authorization/github`).then((res) => console.log(res));
+    const githubPopup = window.open(
+      process.env.REACT_APP_OAUTH_GITHUB_URL,
+      '깃허브 인증창',
+      'width=600px,height=500px,scrollbars=yes',
+    );
+    githubPopup.addEventListener('unload', () => {
+      const githubURL = window.localStorage.getItem('githubURL');
+      if (githubURL) {
+        notiInfo('깃허브 계정이 연동되었습니다!');
+        setGithub(githubURL);
+        setGithubChecked(true);
+      }
+    });
+  };
+  // 깃허브 연동 해제
+  const onDisconnectGithub = () => {
+    window.localStorage.removeItem('githubURL');
+    setGithub('');
+    setGithubChecked(false);
   };
   // 전체 내용 확인
   const onCheckAll = () => {
@@ -261,22 +286,24 @@ const SignUp = () => {
         memberInterests,
         memberSkills,
       };
+      if (github.length > 1) signUpInfo.github = github;
 
       axios
         .post('/members/signup', signUpInfo)
         .then(() => {
           // + 입력되어 있던 데이터로 로그인 요청
-          window.alert('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
+          notiSuccess('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
           window.location = '/';
+          window.localStorage.removeItem('githubURL');
         })
         .catch((err) => {
           if (err.response.data.status === 409) {
-            window.alert(err.response.data.message);
+            notiError(err.response.data.message);
           }
           console.error(err);
         });
     } else {
-      window.alert('입력 사항을 확인해주세요!');
+      notiError('입력 사항을 확인해주세요!');
     }
   };
 
@@ -404,11 +431,30 @@ const SignUp = () => {
             )}
             <InterestSelect id="interest" />
           </div>
-          <div className="select-section github-link">
+          <div className="select-section">
             <Label htmlFor="github">
-              깃허브<span>(선택)</span>
+              깃허브<span className="option-notice">(선택)</span>
             </Label>
-            <MiniButton text="연동하기" onClick={onConnectGithub} />
+            <div className="input-wrapper">
+              <p className="github-url" id="github">
+                {githubIsChecked ? github : '깃허브 계정을 연동해주세요!'}
+              </p>
+              {githubIsChecked ? (
+                <>
+                  <div className="confirmed-icon">
+                    <AiOutlineCheck fill="var(--purple)" />
+                  </div>
+                  <MiniButton
+                    text="해제하기"
+                    onClick={onDisconnectGithub}
+                    color="var(--purple-light)"
+                    bgColor="var(--purple)"
+                  />
+                </>
+              ) : (
+                <MiniButton text="연동하기" onClick={onConnectGithub} />
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -16,6 +16,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import getSkills from '../utils/getSkills';
 import ArticlesGrid from '../components/ArticlesGrid';
+import { notiSuccess } from '../assets/toast';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
@@ -47,7 +48,7 @@ const Container = styled.div`
   }
 
   .article-area {
-    width: calc(100vw - 340px);
+    width: calc(100vw - 360px);
     min-width: 762px;
   }
 
@@ -109,18 +110,11 @@ const MyPage = () => {
   const [likedArticles, setLikedArticles] = useRecoilState(likedArticlesState); //좋아요 프로젝트
 
   useEffect(() => {
-    // let token =
-    //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTYyOTQ0MCwiZXhwIjoxNjY5NjMxMjQwfQ.pAn-zeHetvAz6EkJc9NWtBSHg9F7MrkmOGtQpQNkr8qkjhwafCMvbQtPzbhSVIan';
     axios
-      .get(
-        `/members/${currentUser.memberId}`,
-        // {
-        //   headers: { Authorization: token },
-        // }
-      )
+      .get(`/members/${currentUser.memberId}`, {
+        headers: { Authorization: localStorage.getItem('Authorization') },
+      })
       .then((res) => {
-        console.log(res.data.data.skills);
-
         // 프로필카드 상태 set
         const userProfile = {
           memberId: res.data.data.memberId,
@@ -161,9 +155,10 @@ const MyPage = () => {
 
   const onMemberDelete = () => {
     let isGo = window.confirm('탈퇴하시겠습니까?');
+    // let isGo = notiConfirm('탈퇴하시겠습니까?');
 
     if (isGo) {
-      window.alert('탈퇴되었습니다');
+      notiSuccess('탈퇴되었습니다');
       // axios.delete(`/members/${currentUser.memberId}`); // 서버에 탈퇴 요청
       // 로그인 여부 상태 초기화 코드 자리
       // 로그인된 유저의 정보 (유저 아이디) 상태 초기화 코드 자리
