@@ -12,6 +12,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   currentUserState,
+  inputBodyState,
   interestViewState,
   skillStackViewState,
 } from '../atom/atom';
@@ -19,6 +20,8 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import Comment from '../components/Comment';
 import InterestView from '../components/InterestView';
 import getSkills from '../utils/getSkills';
+import ContentViewer from '../components/ContentViewer';
+import { notiError } from '../assets/toast';
 
 const WholeContainer = styled.div`
   background-color: var(--purple-light);
@@ -275,10 +278,13 @@ const ArticleDetail = () => {
   let { id } = useParams();
   const createdAtArticle = new Date(articles.createdAt);
   const currentUser = useRecoilValue(currentUserState);
+  const [inputBody, setInputBody] = useRecoilState(inputBodyState);
 
   // 게시글 조회 http 요청
   useEffect(() => {
     axios.get(`/articles/${id}`).then((response) => {
+      // 게시글 viewer 상태 set
+      setInputBody(response.data.data.body);
       // articles 전체 데이터 상태
       setArticles(response.data.data);
       // 좋아요 상태 set
@@ -332,7 +338,7 @@ const ArticleDetail = () => {
           onToggleChange(isCheck);
         });
     } else {
-      alert('수정 권한이 없습니다.');
+      notiError('수정 권한이 없습니다.');
     }
   };
 
@@ -540,10 +546,8 @@ const ArticleDetail = () => {
             </ul>
           </LeftViewBottomBox>
         </LeftViewContainer>
-        <RightViewContainer>
-          <span className="content-plan">프로젝트 계획을 설명해 주세요!</span>
-          <span>{articles.body}</span>
-        </RightViewContainer>
+        {/* 게시글 Viewer */}
+        <ContentViewer content={inputBody} />
       </LeftRightWholeConatiner>
       {/* 댓글 컴포넌트 */}
       <BottomCommentConatiner>

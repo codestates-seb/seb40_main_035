@@ -16,6 +16,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import getSkills from '../utils/getSkills';
 import ArticlesGrid from '../components/ArticlesGrid';
+import { notiSuccess } from '../assets/toast';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
@@ -159,9 +160,10 @@ const MyPage = () => {
 
   const onMemberDelete = () => {
     let isGo = window.confirm('탈퇴하시겠습니까?');
+    // let isGo = notiConfirm('탈퇴하시겠습니까?');
 
     if (isGo) {
-      window.alert('탈퇴되었습니다');
+      notiSuccess('탈퇴되었습니다');
       // axios.delete(`/members/${currentUser.memberId}`); // 서버에 탈퇴 요청
       // 로그인 여부 상태 초기화 코드 자리
       // 로그인된 유저의 정보 (유저 아이디) 상태 초기화 코드 자리

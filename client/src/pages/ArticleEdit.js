@@ -38,6 +38,7 @@ import getEditSkills from '../utils/getEditSkills';
 import SwitchToggle from '../components/SwitchToggle';
 import submitFormatDate from '../utils/submitFormatDate';
 import getFormatDate from '../utils/getFormatDate';
+import { notiError } from '../assets/toast';
 
 const Container = styled.div`
   background-color: var(--purple-light);
@@ -345,7 +346,7 @@ const ArticleEdit = () => {
       if (selectedSkillstacksSubmit.length === 0) {
         setSkillstacksCheck(false);
       }
-      alert('모두 입력해주세요!');
+      notiError('모두 입력해주세요!');
     }
   };
 
