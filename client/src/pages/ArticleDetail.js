@@ -319,7 +319,7 @@ const ArticleDetail = () => {
   };
   // 모집중 토글 이벤트 핸들러
   const onToggle = () => {
-    if (currentUser.memberId === articles.memberId) {
+    if (Number(currentUser.memberId) === articles.memberId) {
       axios
         .patch(
           `/articles/${id}`,

@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { userProfileState, currentUserState } from '../atom/atom';
 
 const ProfileCardWrapper = styled.div`
-  width: 762px;
+  width: 100%;
   height: 267px;
   display: flex;
   justify-content: center;
