@@ -150,7 +150,7 @@ const Main = () => {
       <div className="view-options">
         <div className="filter-options">
           <SwitchToggle
-            right="전체 보기"
+            right="모두 보기"
             setChecked={viewAllStatus}
             width="100px"
             onClick={() => {
