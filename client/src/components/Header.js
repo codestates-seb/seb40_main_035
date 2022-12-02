@@ -17,7 +17,7 @@ import {
   modalOpenState,
   currentUserState,
 } from '../atom/atom';
-import { notiSuccess } from '../assets/toast';
+import { notiError, notiSuccess } from '../assets/toast';
 
 const HeaderContainer = styled.header`
   z-index: 1;
@@ -142,17 +142,21 @@ const Header = () => {
   };
 
   const onWrite = () => {
-    navigate('/write');
-    setMenu(2);
-    setInputTitleCheck(true);
-    setInterestsCheck(true);
-    setSkillstacksCheck(true);
-    setStartDateCheck(true);
-    setEndDateCheck(true);
-    setFeNumberCheck(true);
-    setBeNumberCheck(true);
-    setInputBodyCheck(true);
-    setHashtagsCheck(true);
+    if (currentUser.isLogIn) {
+      navigate('/write');
+      setMenu(2);
+      setInputTitleCheck(true);
+      setInterestsCheck(true);
+      setSkillstacksCheck(true);
+      setStartDateCheck(true);
+      setEndDateCheck(true);
+      setFeNumberCheck(true);
+      setBeNumberCheck(true);
+      setInputBodyCheck(true);
+      setHashtagsCheck(true);
+    } else {
+      notiError('글 작성 권한이 없습니다.');
+    }
   };
   const onLogIn = () => {
     setModalOpen(!modalOpen);

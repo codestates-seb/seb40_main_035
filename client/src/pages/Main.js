@@ -1,7 +1,5 @@
 import ArticleCard from '../components/ArticleCard';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { articlesListState } from '../atom/atom';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import SwitchToggle from '../components/SwitchToggle';
@@ -71,7 +69,7 @@ const Loading = styled.div`
 
 const Main = () => {
   // 아티클 목록
-  const [articlesList, setArticlesList] = useRecoilState(articlesListState);
+  const [articlesList, setArticlesList] = useState([]);
   // 전체보기/모집중만 보기 선택 토글
   const [viewAllStatus, setViewStatus] = useState(true);
   // 스킬 스택 필터
@@ -89,7 +87,7 @@ const Main = () => {
   // 데이터 요청 옵션
   const [pageNumber, setPageNumber] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const pageSize = 3 * Math.floor((visualViewport.width - 340) / (323 + 30));
+  const [viewPortWidth, setViewPortWidth] = useState(visualViewport.width);
 
   // 스크롤 감지
   useEffect(() => {
@@ -99,9 +97,16 @@ const Main = () => {
         setIsFetching(true);
       }
     };
+    const handleResize = () => {
+      setViewPortWidth(visualViewport.width);
+    };
     setIsFetching(true);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // 필터링/정렬 변화
@@ -120,6 +125,8 @@ const Main = () => {
 
   // 데이터 요청 콜백
   const fetchArticles = useCallback(async () => {
+    const pageSize = 3 * Math.floor((viewPortWidth - 340 + 30) / (323 + 30));
+
     const skill = skillfilter.join(',');
     const status = viewAllStatus ? '' : false;
     const sort = sortOptions[sortOption];
@@ -143,8 +150,7 @@ const Main = () => {
       <div className="view-options">
         <div className="filter-options">
           <SwitchToggle
-            left="전체 보기"
-            right="모집 중"
+            right="모두 보기"
             setChecked={viewAllStatus}
             width="100px"
             onClick={() => {
