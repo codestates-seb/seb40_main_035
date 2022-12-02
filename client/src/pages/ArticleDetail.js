@@ -319,7 +319,7 @@ const ArticleDetail = () => {
   };
   // 모집중 토글 이벤트 핸들러
   const onToggle = () => {
-    if (currentUser.memberId === articles.memberId) {
+    if (Number(currentUser.memberId) === articles.memberId) {
       axios
         .patch(
           `/articles/${id}`,
@@ -456,7 +456,7 @@ const ArticleDetail = () => {
             </button>
             {/* 게시글 수정 버튼 */}
 
-            {currentUser.memberId === articles.memberId ? (
+            {Number(currentUser.memberId) === articles.memberId ? (
               <>
                 <MiniButton
                   onClick={() => {
@@ -475,7 +475,7 @@ const ArticleDetail = () => {
         {/* 게시글 상세 정보 */}
         <div className="content-detail">
           {/* 작성자 닉네임 */}
-          {currentUser.memberId === articles.memberId ? (
+          {Number(currentUser.memberId) === articles.memberId ? (
             <Link to={`/mypage/${currentUser.memberId}`}>
               <span>{articles.memberName}</span>
             </Link>

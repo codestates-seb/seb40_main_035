@@ -38,7 +38,7 @@ import getEditSkills from '../utils/getEditSkills';
 import SwitchToggle from '../components/SwitchToggle';
 import submitFormatDate from '../utils/submitFormatDate';
 import getFormatDate from '../utils/getFormatDate';
-import { notiError } from '../assets/toast';
+import { notiError, notiSuccess } from '../assets/toast';
 
 const Container = styled.div`
   background-color: var(--purple-light);
@@ -299,7 +299,10 @@ const ArticleEdit = () => {
         })
         .then(
           // 글 등록 후 해당 글 상세페이지로 이동
-          (res) => (window.location = `/articles/${res.data.data.articleId}`),
+          (res) => {
+            notiSuccess('글이 수정되었습니다.');
+            window.location = `/articles/${res.data.data.articleId}`;
+          },
         );
     }
   };
@@ -446,7 +449,7 @@ const ArticleEdit = () => {
                 </div>
               </div>
               <div className="article-write-btn">
-                <MiniButton text="등록하기" onClick={onWriteSubmit} />
+                <MiniButton text="수정하기" onClick={onWriteSubmit} />
               </div>
             </div>
           </div>

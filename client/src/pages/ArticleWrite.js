@@ -34,7 +34,7 @@ import {
 } from '../atom/atom';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { notiError } from '../assets/toast';
+import { notiError, notiSuccess } from '../assets/toast';
 
 const Container = styled.div`
   background-color: var(--purple-light);
@@ -249,7 +249,10 @@ const ArticleWrite = () => {
         })
         .then(
           // 글 등록 후 해당 글 상세페이지로 이동
-          (res) => (window.location = `/articles/${res.data.data.articleId}`),
+          (res) => {
+            notiSuccess('글이 등록되었습니다.');
+            window.location = `/articles/${res.data.data.articleId}`;
+          },
         );
     }
   };

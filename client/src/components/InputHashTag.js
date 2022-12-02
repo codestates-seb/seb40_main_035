@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { inputHashTagsState, hashtagsCheckState } from '../atom/atom';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
+import { notiError } from '../assets/toast';
 
 const Container = styled.div`
   width: 100%;
@@ -95,7 +96,7 @@ const InputHashTag = () => {
     }
 
     if (e.keyCode === 32) {
-      alert('해시태그는 공백 입력이 불가합니다.');
+      notiError('해시태그는 공백 입력이 불가합니다.');
       e.target.value = '';
     }
   };
