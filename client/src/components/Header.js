@@ -17,7 +17,7 @@ import {
   modalOpenState,
   currentUserState,
 } from '../atom/atom';
-import { notiSuccess } from '../assets/toast';
+import { notiError, notiSuccess } from '../assets/toast';
 
 const HeaderContainer = styled.header`
   z-index: 1;
@@ -142,21 +142,21 @@ const Header = () => {
   };
 
   const onWrite = () => {
-    navigate('/write');
-    setMenu(2);
-    setInputTitleCheck(true);
-    setInterestsCheck(true);
-    setSkillstacksCheck(true);
-    setStartDateCheck(true);
-    setEndDateCheck(true);
-    setFeNumberCheck(true);
-    setBeNumberCheck(true);
-    setInputBodyCheck(true);
-    setHashtagsCheck(true);
-  };
-  const onLogIn = () => {
-    setModalOpen(!modalOpen);
-    setMenu(3);
+    if (currentUser.isLogIn) {
+      navigate('/write');
+      setMenu(2);
+      setInputTitleCheck(true);
+      setInterestsCheck(true);
+      setSkillstacksCheck(true);
+      setStartDateCheck(true);
+      setEndDateCheck(true);
+      setFeNumberCheck(true);
+      setBeNumberCheck(true);
+      setInputBodyCheck(true);
+      setHashtagsCheck(true);
+    } else {
+      notiError('글 작성 권한이 없습니다.');
+    }
   };
 
   const onMyPage = () => {
@@ -164,18 +164,25 @@ const Header = () => {
     setMenu(3);
   };
 
-  const onSignup = () => {
-    navigate('/signup');
-    setMenu(4);
-  };
-
   const onLogOut = () => {
+    setMenu(4);
     localStorage.removeItem('Authorization');
     localStorage.removeItem('Refresh');
+    localStorage.removeItem('memberId');
     setCurrentUser({ memberId: null, isLogIn: false });
     notiSuccess('로그아웃 되었습니다.');
     navigate('/');
-    setMenu(4);
+    setMenu(0);
+  };
+
+  const onLogIn = () => {
+    setModalOpen(!modalOpen);
+    setMenu(5);
+  };
+
+  const onSignup = () => {
+    navigate('/signup');
+    setMenu(6);
   };
 
   const userMenu = useRef();
@@ -235,12 +242,12 @@ const Header = () => {
             ) : (
               <>
                 <li>
-                  <NavBtn $color={menu === 3} onClick={onLogIn}>
+                  <NavBtn $color={menu === 5} onClick={onLogIn}>
                     로그인
                   </NavBtn>
                 </li>
                 <li>
-                  <NavBtn $color={menu === 4} onClick={onSignup}>
+                  <NavBtn $color={menu === 6} onClick={onSignup}>
                     회원가입
                   </NavBtn>
                 </li>{' '}

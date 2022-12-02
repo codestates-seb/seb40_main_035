@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineCheck } from 'react-icons/ai';
@@ -10,7 +11,10 @@ const Container = styled.div`
   left: 0;
   bottom: 0;
   z-index: 30;
-  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   background-color: var(--purple-light);
 
@@ -40,15 +44,22 @@ const ReceiveGithub = () => {
 
   const url = new URL(window.location.href);
   const githubURL = url.searchParams.get('github');
+  const Authorization = url.searchParams.get('Authorization');
+  const Refresh = url.searchParams.get('Refresh');
+  const memberId = url.searchParams.get('memberId');
+
+  if (githubURL) localStorage.setItem('githubURL', githubURL);
+  else if (Authorization) {
+    localStorage.setItem('Authorization', Authorization);
+    localStorage.setItem('Refresh', Refresh);
+    localStorage.setItem('memberId', memberId);
+  }
 
   useEffect(() => {
     if (time === 0) window.close();
-    if (githubURL) {
-      localStorage.setItem('githubURL', githubURL);
-      setInterval(() => {
-        setTime(time - 1);
-      }, 1000);
-    }
+    setInterval(() => {
+      setTime(time - 1);
+    }, 1000);
   }, [time]);
 
   return (

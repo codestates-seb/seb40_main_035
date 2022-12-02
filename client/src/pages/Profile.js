@@ -27,12 +27,13 @@ const Container = styled.div`
 
   .profile-card {
     margin-top: 40px;
+    width: 100%;
   }
 
   .skill-stack {
     border-radius: 8px;
     background-color: white;
-    width: 762px;
+    width: 100%;
     margin-top: 20px;
     padding: 20px 30px;
   }
@@ -40,19 +41,20 @@ const Container = styled.div`
   .interest {
     border-radius: 8px;
     background-color: white;
-    width: 762px;
+    width: 100%;
     margin-top: 20px;
     padding: 20px 30px 30px 30px;
   }
 
   .article-area {
     width: calc(100vw - 360px);
-    min-width: 762px;
+    min-width: 100%;
   }
 
   .article-menu {
     padding: 60px 0 0 0;
     display: flex;
+    margin-bottom: 20px;
   }
 
   .menu {

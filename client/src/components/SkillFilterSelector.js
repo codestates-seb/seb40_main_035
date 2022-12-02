@@ -81,6 +81,7 @@ const SkillFilterSelector = ({ setSkillFilter, setModalDisplay, isOpened }) => {
   };
 
   const onApply = () => {
+    setModalDisplay();
     setSkillFilter(
       selectedSkillStacks.map((el) => {
         return el.name;
