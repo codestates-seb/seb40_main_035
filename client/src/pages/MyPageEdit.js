@@ -17,10 +17,11 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import getEditSkills from '../utils/getEditSkills';
+import { notiError, notiSuccess } from '../assets/toast';
 
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
-  width: 100vw;
+  /* width: 100%; */
   height: auto;
 `;
 const Wrapper = styled.section`
@@ -29,7 +30,6 @@ const Wrapper = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
   .save-btn {
     margin-top: 20px;
     width: 650px;
@@ -138,7 +138,6 @@ const MyPageEdit = () => {
   useEffect(() => {
     // 마이페이지 프로필 정보 불러오기
     axios.get(`/members/${id}`).then((res) => {
-      console.log(res.data.data);
       // 기술스택 상태
       setSelectedSkillstacks(getEditSkills(res.data.data.skills));
       // 관심분야 상태
@@ -183,7 +182,6 @@ const MyPageEdit = () => {
       return newProfileBody;
     });
   };
-
   // 수정 PATCH 요청
   const onUpload = () => {
     // 로그인한 유저
@@ -214,9 +212,10 @@ const MyPageEdit = () => {
         },
       )
       .then((res) => {
-        // 저장 후 마이페이지로 이동
+        notiSuccess('수정사항이 저장되었습니다.');
         navaigate(`/mypage/${id}`);
-      });
+      })
+      .catch((err) => notiError('입력사항을 확인해주세요!'));
   };
   return (
     <MypageEditContainer>
