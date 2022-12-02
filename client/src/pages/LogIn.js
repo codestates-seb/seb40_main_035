@@ -229,7 +229,10 @@ const LogIn = ({ userMenu }) => {
         .then((res) => {
           localStorage.setItem('Authorization', res.headers.authorization);
           localStorage.setItem('Refresh', res.headers.refresh);
-          setCurrentUser({ memberId: res.headers.memberid, isLogIn: true });
+          setCurrentUser({
+            memberId: Number(res.headers.memberid),
+            isLogIn: true,
+          });
           setEmail('');
           setPassword('');
           closeLogIn();
@@ -256,7 +259,7 @@ const LogIn = ({ userMenu }) => {
       const githubURL = window.localStorage.getItem('githubURL');
 
       if (Authorization) {
-        setCurrentUser({ memberId, isLogIn: true });
+        setCurrentUser({ memberId: Number(memberId), isLogIn: true });
         notiSuccess('로그인 되었습니다!');
       } else if (githubURL) {
         notiError(
