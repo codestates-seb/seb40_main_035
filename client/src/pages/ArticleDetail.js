@@ -291,7 +291,6 @@ const ArticleDetail = () => {
       setAnswers(response.data.data.answers);
       // 모집 여부 상태 set
       setIsCheck(response.data.data.isCompleted);
-      console.log(response.data.data);
     });
   }, [newComment]);
 
