@@ -182,6 +182,12 @@ const LogIn = ({ userMenu }) => {
     setPassword(e.target.value);
   };
 
+  const enterPress = (e) => {
+    if (e.key === 'Enter') {
+      LogInPost();
+    }
+  };
+
   const onCheckEmail = (email, setNotice) => {
     const emailCheck =
       /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
@@ -278,6 +284,7 @@ const LogIn = ({ userMenu }) => {
               onChange={changeEmail}
               value={email}
               placeholder={'이메일을 입력해주세요.'}
+              onKeyPress={enterPress}
             />
             {emailNotice ? (
               <div className="form-alert">{emailNotice}</div>
@@ -293,6 +300,7 @@ const LogIn = ({ userMenu }) => {
               value={password}
               placeholder={'패스워드를 입력해주세요.'}
               type={'password'}
+              onKeyPress={enterPress}
             />
           </div>
         </form>
