@@ -100,6 +100,7 @@ const SwitchToggle = ({ right, setChecked, onClick }) => {
           type="checkbox"
           checked={setChecked}
           onClick={onClick}
+          readOnly
         ></CheckBox>
       </CheckBoxContainer>
     </ToggleContainer>
@@ -107,20 +108,3 @@ const SwitchToggle = ({ right, setChecked, onClick }) => {
 };
 
 export default SwitchToggle;
-
-// 부모 컴포넌트 예시입니다. 추후 삭제 할 예정입니다.
-// export const ParentComponents = () => {
-//   const [isCheck, setIsCheck] = useState(true);
-//   return (
-//     <div>
-//       <SwitchToggle
-//         right="모집 완료"
-//         setChecked={isCheck}
-//         onClick={() => {
-//           setIsCheck(!isCheck);
-//         }}
-//         width="100px"
-//       />
-//     </div>
-//   );
-// };
