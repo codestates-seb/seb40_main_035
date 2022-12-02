@@ -18,6 +18,7 @@ const ProfileCardWrapper = styled.div`
 
   .user-avatar {
     margin-right: 60px;
+    margin-left: 2rem;
     overflow: visible;
 
     img {
@@ -25,10 +26,15 @@ const ProfileCardWrapper = styled.div`
       height: 152px;
       object-fit: cover;
     }
+
+    @media screen and (max-width: 550px) {
+      margin-left: 1rem;
+    }
   }
 
   .user-info {
     max-width: calc(762px - 152px - 60px);
+    margin-right: 2rem;
     .user-name {
       margin-bottom: 9px;
       font-size: 25px;
@@ -60,7 +66,7 @@ const ProfileCardWrapper = styled.div`
         color: var(--grey-dark);
       }
 
-      @media (max-width: 550px) {
+      @media screen and (max-width: 550px) {
         display: flex;
         flex-direction: column;
       }
@@ -68,6 +74,10 @@ const ProfileCardWrapper = styled.div`
 
     .user-detail:not(:last-child) {
       margin-bottom: 10px;
+    }
+
+    @media screen and (max-width: 550px) {
+      margin-top: 2rem;
     }
   }
 
