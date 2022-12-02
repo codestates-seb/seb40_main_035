@@ -1,12 +1,18 @@
 import styled from 'styled-components';
-import DefaultButton from '../components/DefaultButton';
-import { useSetRecoilState, useRecoilState } from 'recoil';
-import { modalOpenState, searchPwEmailState } from '../atom/atom';
-import CloseButton from '../components/CloseButton';
 import { useState } from 'react';
+import axios from 'axios';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import {
+  modalOpenState,
+  searchPwEmailState,
+  emailState,
+  passwordState,
+  currentUserState,
+} from '../atom/atom';
+import CloseButton from '../components/CloseButton';
+import DefaultButton from '../components/DefaultButton';
 import DefaultInput from '../components/DefaultInput';
 import MiniButton from '../components/MiniButton';
-import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -76,6 +82,8 @@ const Container = styled.div`
   .form-alert {
     color: var(--purple);
     font-size: 13px;
+    padding-bottom: 10px;
+    height: 3px;
   }
 
   .link-container {
@@ -132,7 +140,12 @@ const LogIn = ({ userMenu }) => {
   const [isSearchPw, setIsSearchPw] = useState(false);
   const [searchPwEmail, setSearchPwEmail] = useRecoilState(searchPwEmailState);
   const [noticeText, setNoticeText] = useState('');
-  const [isNotice, setIsNotice] = useState(false);
+  const [emailNotice, setEmailNotice] = useState('이메일을 입력해주세요.');
+  const [passwordNotice, setPasswordNotice] =
+    useState('패스워드를 입력해주세요.');
+  const [email, setEmail] = useRecoilState(emailState);
+  const [password, setPassword] = useRecoilState(passwordState);
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
   const closeLogIn = () => {
     setModalOpen(false);
@@ -140,44 +153,83 @@ const LogIn = ({ userMenu }) => {
 
   const onSearchPwClick = () => {
     setIsSearchPw(!isSearchPw);
-    setIsNotice(false);
     setNoticeText('');
     setSearchPwEmail('');
   };
 
-  const onCheckEmail = () => {
-    let emailCheck =
+  const changeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const changePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const onCheckEmail = (email, setNotice) => {
+    const emailCheck =
       /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
-    if (emailCheck.test(searchPwEmail) === false) {
-      setIsNotice(true);
-      setNoticeText('올바른 이메일 형식이 아닙니다.');
+    if (emailCheck.test(email) === false) {
+      setNotice('올바른 이메일 형식이 아닙니다.');
       return false;
     } else {
-      setIsNotice(false);
+      setNotice('');
+      return true;
+    }
+  };
+
+  const onCheckPassword = (password, setNotice) => {
+    const passwordCheck =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    if (passwordCheck.test(password) === false) {
+      setNotice('올바른 패스워드 형식이 아닙니다.');
+      return false;
+    } else {
+      setNotice('');
       return true;
     }
   };
 
   const onResetPw = () => {
-    if (onCheckEmail(searchPwEmail)) {
+    if (onCheckEmail(searchPwEmail, setNoticeText)) {
       axios
         .post(`/members/find-password`, { email: searchPwEmail })
         .then(
           // 요청 후 서버에 이메일이 존재하면 실행
           (res) => {
-            setIsNotice(true);
             setNoticeText(res.data.data);
           },
         )
         .catch((ex) => {
           // 요청 후 서버에 이메일 존재하지 않아 404에러 발생시 실행
           if (ex.response && ex.response.status === 404) {
-            setIsNotice(true);
             setNoticeText(ex.response.data.message);
           }
         });
     } else {
       alert('올바른 이메일 형식이 아닙니다.\n다시 입력해주세요.');
+    }
+  };
+
+  const LogInPost = () => {
+    const CheckEmail = onCheckEmail(email, setEmailNotice);
+    const CheckPassword = onCheckPassword(password, setPasswordNotice);
+    if (CheckEmail) {
+      axios
+        .post(`/members/login`, { email, password })
+        .then((res) => {
+          localStorage.setItem('Authorization', res.headers.authorization);
+          localStorage.setItem('Refresh', res.headers.refresh);
+          setCurrentUser({ memberId: res.headers.memberid, isLogIn: true });
+          setEmail('');
+          setPassword('');
+          closeLogIn();
+        })
+        .catch((ex) => {
+          // 요청 후 서버에 이메일 존재하지 않아 404에러 발생시 실행
+          if (ex.response && ex.response.status === 404) {
+            setEmailNotice(ex.response.data.message);
+          }
+        });
     }
   };
 
@@ -191,16 +243,38 @@ const LogIn = ({ userMenu }) => {
         <form>
           <div className="form-container">
             <div className="form-title">이메일</div>
-            <input className="form-input" />
-            <div className="form-alert">가입되지 않은 이메일 입니다.</div>
+            <input
+              className="form-input"
+              onChange={changeEmail}
+              value={email}
+            />
+            {emailNotice ? (
+              <div className="form-alert">{emailNotice}</div>
+            ) : (
+              <div className="form-alert" />
+            )}
           </div>
           <div className="form-container">
             <div className="form-title">비밀번호</div>
-            <input className="form-input" />
-            <div className="form-alert">비밀번호를 확인해 주세요.</div>
+            <input
+              className="form-input"
+              onChange={changePassword}
+              value={password}
+              type={'password'}
+            />
+            {passwordNotice ? (
+              <div className="form-alert">{passwordNotice}</div>
+            ) : (
+              <div className="form-alert" />
+            )}
           </div>
         </form>
-        <DefaultButton className="login-button" text="로그인" />
+        <DefaultButton
+          className="login-button"
+          text="로그인"
+          onClick={LogInPost}
+          type="submit"
+        />
         <div className="link-container">
           {isSearchPw ? (
             <button className="link PW-button" onClick={onSearchPwClick}>
@@ -221,7 +295,7 @@ const LogIn = ({ userMenu }) => {
               <div className="search-input-container">
                 <div className="search-input">
                   <DefaultInput
-                    placeholder={'이메일을 입력해주세요'}
+                    placeholder={'이메일을 입력해주세요.'}
                     value={searchPwEmail}
                     onChange={setSearchPwEmail}
                     onblur={onCheckEmail}
@@ -232,7 +306,11 @@ const LogIn = ({ userMenu }) => {
                 <MiniButton text="찾기" onClick={onResetPw} />
               </div>
             </div>
-            {isNotice ? <div className="form-alert">{noticeText}</div> : ''}
+            {noticeText ? (
+              <div className="form-alert">{noticeText}</div>
+            ) : (
+              <div className="form-alert" />
+            )}
           </>
         ) : (
           <div className="image-container">

@@ -84,7 +84,8 @@ export const userProfileState = atom({
 export const currentUserState = atom({
   key: 'currentUserState',
   default: {
-    memberId: 15,
+    memberId: null,
+    isLogIn: false,
   },
 });
 
@@ -196,7 +197,6 @@ export const isCompletedState = atom({
   default: false,
 });
 
-
 // 숙련도 선택 상태
 export const selectedLevelState = atom({
   key: 'selectedLevelState',
@@ -213,10 +213,22 @@ export const activeDropDownState = atom({
 export const levelOptionsState = atom({
   key: 'levelOptionsState',
   default: [],
-  });
+});
 
 // 비밀번호 찾기위한 이메일 입력 값 상태
 export const searchPwEmailState = atom({
   key: 'searchPwEmailState',
+  default: '',
+});
+
+//로그인 이메일 입력 값
+export const emailState = atom({
+  key: 'emailState',
+  default: '',
+});
+
+//로그인 패스워드 입력 값
+export const passwordState = atom({
+  key: 'passwoedState',
   default: '',
 });
