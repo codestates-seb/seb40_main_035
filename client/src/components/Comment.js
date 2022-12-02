@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 import styled from 'styled-components';
 import Recomment from './Recomment';
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { currentUserState } from '../atom/atom';
+import { useRecoilState } from 'recoil';
 
 const CommentBox = styled.form`
   font-size: 14px;
@@ -87,6 +90,7 @@ const Comment = ({ avatar, answers, onDeleteComment }) => {
   const [editIng, setEditIng] = useState(false);
   const [editSelectedIdx, setEditSelectedIdx] = useState();
   const [editInput, setEditInput] = useState('');
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
   const navigate = useNavigate();
 
   // 댓글 수정하기 이벤트 핸들러
@@ -119,13 +123,11 @@ const Comment = ({ avatar, answers, onDeleteComment }) => {
       },
       {
         headers: {
-          // 로그인 토큰 자리
-          Authorization: '',
+          Authorization: localStorage.getItem('Authorization'),
         },
       },
     );
   };
-
   return (
     <CommentBox>
       {answers.map((comment, idx) => (
@@ -147,20 +149,22 @@ const Comment = ({ avatar, answers, onDeleteComment }) => {
                   {new Date(comment.createdAt).toLocaleString()}
                 </span>
               </div>
-              <span className="comment-btn">
-                {editSelectedIdx == idx && editIng ? (
-                  <button value={idx} onClick={onEditCompleteBtn}>
-                    수정완료
+              {Number(currentUser.memberId) === comment.memberId && (
+                <span className="comment-btn">
+                  {editSelectedIdx == idx && editIng ? (
+                    <button value={idx} onClick={onEditCompleteBtn}>
+                      수정완료
+                    </button>
+                  ) : (
+                    <button value={idx} onClick={onEditBtn}>
+                      수정하기
+                    </button>
+                  )}
+                  <button value={comment.answerId} onClick={onDeleteComment}>
+                    삭제하기
                   </button>
-                ) : (
-                  <button value={idx} onClick={onEditBtn}>
-                    수정하기
-                  </button>
-                )}
-                <button value={comment.answerId} onClick={onDeleteComment}>
-                  삭제하기
-                </button>
-              </span>
+                </span>
+              )}
             </div>
 
             {editSelectedIdx == idx && editIng ? (

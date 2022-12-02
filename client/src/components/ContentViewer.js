@@ -23,7 +23,8 @@ const RightViewContainer = styled.div`
     padding: 25px;
   }
   .viewer {
-    margin-top: 40px;
+    border-top: 1px solid var(--purple-medium);
+    margin-top: 15px;
   }
   .content-plan {
     margin-bottom: 70px;
@@ -31,7 +32,11 @@ const RightViewContainer = styled.div`
     font-size: 15px;
     font-weight: 500;
     color: var(--grey-dark);
-    border-bottom: 1px solid var(--purple-medium);
+  }
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    margin: 0 0 25px 0;
+    min-height: 300px;
   }
 `;
 const ContentViewer = ({ content }) => {
