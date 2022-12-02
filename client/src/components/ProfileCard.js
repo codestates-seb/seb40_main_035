@@ -103,11 +103,13 @@ const ProfileCard = ({ onEditProfile, onDeleteProfile }) => {
           <span>{profileData.github}</span>
         </div>
       </div>
-      {profileData.memberId === currentUser.memberId && (
+      {profileData.memberId === Number(currentUser.memberId) ? (
         <div className="util-btn">
           <MiniButton text="수정하기" onClick={onEditProfile} />
           <MiniButton text="탈퇴하기" onClick={onDeleteProfile} />
         </div>
+      ) : (
+        ''
       )}
     </ProfileCardWrapper>
   );
