@@ -15,7 +15,9 @@ import {
   inputBodyCheckState,
   hashtagsCheckState,
   modalOpenState,
+  currentUserState,
 } from '../atom/atom';
+import { notiSuccess } from '../assets/toast';
 
 const HeaderContainer = styled.header`
   z-index: 1;
@@ -127,6 +129,7 @@ const Header = () => {
   const setBeNumberCheck = useSetRecoilState(beNumberCheckState);
   const setInputBodyCheck = useSetRecoilState(inputBodyCheckState);
   const setHashtagsCheck = useSetRecoilState(hashtagsCheckState);
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
   const onMain = () => {
     navigate('/');
@@ -155,8 +158,23 @@ const Header = () => {
     setModalOpen(!modalOpen);
     setMenu(3);
   };
+
+  const onMyPage = () => {
+    navigate(`/mypage/${currentUser.memberId}`);
+    setMenu(3);
+  };
+
   const onSignup = () => {
     navigate('/signup');
+    setMenu(4);
+  };
+
+  const onLogOut = () => {
+    localStorage.removeItem('Authorization');
+    localStorage.removeItem('Refresh');
+    setCurrentUser({ memberId: null, isLogIn: false });
+    notiSuccess('로그아웃 되었습니다.');
+    navigate('/');
     setMenu(4);
   };
 
@@ -201,16 +219,33 @@ const Header = () => {
                 글쓰기
               </NavBtn>
             </li>
-            <li>
-              <NavBtn $color={menu === 3} onClick={onLogIn}>
-                로그인
-              </NavBtn>
-            </li>
-            <li>
-              <NavBtn $color={menu === 4} onClick={onSignup}>
-                회원가입
-              </NavBtn>
-            </li>
+            {currentUser.isLogIn ? (
+              <>
+                <li>
+                  <NavBtn $color={menu === 3} onClick={onMyPage}>
+                    마이페이지
+                  </NavBtn>
+                </li>
+                <li>
+                  <NavBtn $color={menu === 4} onClick={onLogOut}>
+                    로그아웃
+                  </NavBtn>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <NavBtn $color={menu === 3} onClick={onLogIn}>
+                    로그인
+                  </NavBtn>
+                </li>
+                <li>
+                  <NavBtn $color={menu === 4} onClick={onSignup}>
+                    회원가입
+                  </NavBtn>
+                </li>{' '}
+              </>
+            )}
             <li>
               {/* 다크모드 후순위 작업 */}
               <BiMoon className="moon-icon" />

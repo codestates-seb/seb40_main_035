@@ -13,7 +13,7 @@ import CloseButton from '../components/CloseButton';
 import DefaultButton from '../components/DefaultButton';
 import DefaultInput from '../components/DefaultInput';
 import MiniButton from '../components/MiniButton';
-import axios from 'axios';
+import { notiError, notiSuccess } from '../assets/toast';
 
 const Container = styled.div`
   display: flex;
@@ -146,7 +146,7 @@ const LogIn = ({ userMenu }) => {
     useState('패스워드를 입력해주세요.');
   const [email, setEmail] = useRecoilState(emailState);
   const [password, setPassword] = useRecoilState(passwordState);
-  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const setCurrentUser = useSetRecoilState(currentUserState);
 
   const closeLogIn = () => {
     setModalOpen(false);
@@ -207,7 +207,31 @@ const LogIn = ({ userMenu }) => {
           }
         });
     } else {
-      alert('올바른 이메일 형식이 아닙니다.\n다시 입력해주세요.');
+      notiError('올바른 이메일 형식이 아닙니다.\n다시 입력해주세요.');
+    }
+  };
+
+  const LogInPost = () => {
+    const CheckEmail = onCheckEmail(email, setEmailNotice);
+    const CheckPassword = onCheckPassword(password, setPasswordNotice);
+    if (CheckEmail && CheckPassword) {
+      axios
+        .post(`/members/login`, { email, password })
+        .then((res) => {
+          localStorage.setItem('Authorization', res.headers.authorization);
+          localStorage.setItem('Refresh', res.headers.refresh);
+          setCurrentUser({ memberId: res.headers.memberid, isLogIn: true });
+          setEmail('');
+          setPassword('');
+          closeLogIn();
+          notiSuccess('로그인 완료 되었습니다.');
+        })
+        .catch((ex) => {
+          // 요청 후 서버에 이메일 존재하지 않아 404에러 발생시 실행
+          if (ex.response && ex.response.status === 404) {
+            setEmailNotice(ex.response.data.message);
+          }
+        });
     }
   };
 
