@@ -291,8 +291,7 @@ const SignUp = () => {
       axios
         .post('/members/signup', signUpInfo)
         .then(() => {
-          // + 입력되어 있던 데이터로 로그인 요청
-          notiSuccess('가입되었습니다'); // 로그인 요청 추가시 환영 문구로 변경 필요
+          notiSuccess('가입되었습니다! 메인페이지에서 로그인을 진행해 주세요!');
           window.location = '/';
           window.localStorage.removeItem('githubURL');
         })

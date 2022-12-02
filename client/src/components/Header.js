@@ -158,28 +158,31 @@ const Header = () => {
       notiError('글 작성 권한이 없습니다.');
     }
   };
-  const onLogIn = () => {
-    setModalOpen(!modalOpen);
-    setMenu(3);
-  };
 
   const onMyPage = () => {
     navigate(`/mypage/${currentUser.memberId}`);
     setMenu(3);
   };
 
-  const onSignup = () => {
-    navigate('/signup');
-    setMenu(4);
-  };
-
   const onLogOut = () => {
+    setMenu(4);
     localStorage.removeItem('Authorization');
     localStorage.removeItem('Refresh');
+    localStorage.removeItem('memberId');
     setCurrentUser({ memberId: null, isLogIn: false });
     notiSuccess('로그아웃 되었습니다.');
     navigate('/');
-    setMenu(4);
+    setMenu(0);
+  };
+
+  const onLogIn = () => {
+    setModalOpen(!modalOpen);
+    setMenu(5);
+  };
+
+  const onSignup = () => {
+    navigate('/signup');
+    setMenu(6);
   };
 
   const userMenu = useRef();
@@ -239,12 +242,12 @@ const Header = () => {
             ) : (
               <>
                 <li>
-                  <NavBtn $color={menu === 3} onClick={onLogIn}>
+                  <NavBtn $color={menu === 5} onClick={onLogIn}>
                     로그인
                   </NavBtn>
                 </li>
                 <li>
-                  <NavBtn $color={menu === 4} onClick={onSignup}>
+                  <NavBtn $color={menu === 6} onClick={onSignup}>
                     회원가입
                   </NavBtn>
                 </li>{' '}

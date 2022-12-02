@@ -13,7 +13,7 @@ import CloseButton from '../components/CloseButton';
 import DefaultButton from '../components/DefaultButton';
 import DefaultInput from '../components/DefaultInput';
 import MiniButton from '../components/MiniButton';
-import { notiError, notiSuccess } from '../assets/toast';
+import { notiError, notiSuccess, notiInfo } from '../assets/toast';
 
 const Container = styled.div`
   display: flex;
@@ -127,12 +127,21 @@ const Container = styled.div`
   }
 `;
 
-const Authbutton = styled.a`
-  margin: 30px;
+const Authbutton = styled.button`
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  background-color: #fff;
+  border: none;
+  margin: 0 60px 0 0;
+
+  :last-child {
+    margin-right: 0;
+  }
 
   img {
-    width: 60px;
-    height: 60px;
+    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -220,11 +229,14 @@ const LogIn = ({ userMenu }) => {
         .then((res) => {
           localStorage.setItem('Authorization', res.headers.authorization);
           localStorage.setItem('Refresh', res.headers.refresh);
-          setCurrentUser({ memberId: res.headers.memberid, isLogIn: true });
+          setCurrentUser({
+            memberId: Number(res.headers.memberid),
+            isLogIn: true,
+          });
           setEmail('');
           setPassword('');
           closeLogIn();
-          notiSuccess('로그인 완료 되었습니다.');
+          notiSuccess('로그인 되었습니다!');
         })
         .catch((ex) => {
           // 요청 후 서버에 이메일 존재하지 않아 404에러 발생시 실행
@@ -233,6 +245,28 @@ const LogIn = ({ userMenu }) => {
           }
         });
     }
+  };
+
+  const onGithubLogin = () => {
+    const githubPopup = window.open(
+      process.env.REACT_APP_OAUTH_GITHUB_URL,
+      '깃허브 인증창',
+      'width=600px,height=500px,scrollbars=yes',
+    );
+    githubPopup.addEventListener('unload', () => {
+      const memberId = window.localStorage.getItem('memberId');
+      const Authorization = window.localStorage.getItem('Authorization');
+      const githubURL = window.localStorage.getItem('githubURL');
+
+      if (Authorization) {
+        setCurrentUser({ memberId: Number(memberId), isLogIn: true });
+        notiSuccess('로그인 되었습니다!');
+      } else if (githubURL) {
+        notiError(
+          '등록된 깃허브 계정이 아닙니다! 회원가입 후 깃허브 계정을 연동해주세요',
+        );
+      }
+    });
   };
 
   return (
@@ -316,22 +350,22 @@ const LogIn = ({ userMenu }) => {
           </>
         ) : (
           <div className="image-container">
-            <Authbutton href="">
+            <Authbutton onClick={() => notiInfo('준비 중인 기능입니다!')}>
               <img
                 src={require('../images/google login.png')}
-                alt="구글로그인"
+                alt="구글 로그인"
               ></img>
             </Authbutton>
-            <Authbutton href="">
+            <Authbutton onClick={onGithubLogin}>
               <img
                 src={require('../images/github login.png')}
-                alt="깃허브로그인"
+                alt="깃허브 로그인"
               ></img>
             </Authbutton>
-            <Authbutton href="">
+            <Authbutton onClick={() => notiInfo('준비 중인 기능입니다!')}>
               <img
                 src={require('../images/kakao login.png')}
-                alt="카카오톡로그인"
+                alt="카카오톡 로그인"
               ></img>
             </Authbutton>
           </div>
