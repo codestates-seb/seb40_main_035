@@ -87,7 +87,7 @@ const Main = () => {
   // 데이터 요청 옵션
   const [pageNumber, setPageNumber] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const pageSize = 3 * Math.floor((visualViewport.width - 340) / (323 + 30));
+  const [viewPortWidth, setViewPortWidth] = useState(visualViewport.width);
 
   // 스크롤 감지
   useEffect(() => {
@@ -97,9 +97,16 @@ const Main = () => {
         setIsFetching(true);
       }
     };
+    const handleResize = () => {
+      setViewPortWidth(visualViewport.width);
+    };
     setIsFetching(true);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // 필터링/정렬 변화
@@ -118,6 +125,8 @@ const Main = () => {
 
   // 데이터 요청 콜백
   const fetchArticles = useCallback(async () => {
+    const pageSize = 3 * Math.floor((viewPortWidth - 340) / (323 + 30));
+
     const skill = skillfilter.join(',');
     const status = viewAllStatus ? '' : false;
     const sort = sortOptions[sortOption];
@@ -130,11 +139,8 @@ const Main = () => {
     setPageNumber(data.pageInfo.page + 1);
     setHasNextPage(data.pageInfo.totalPages !== data.pageInfo.page);
     setIsFetching(false);
-    // console.log('FETCH DATA!');
-    // console.log('states:', viewAllStatus, skillfilter, sortOption, pageNumber);
-  }, [viewAllStatus, skillfilter, sortOption, pageNumber]);
+  }, [viewAllStatus, skillfilter, sortOption, pageNumber, viewPortWidth]);
 
-  // console.log('PAINT!');
   return (
     <Container>
       <h1>
