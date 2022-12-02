@@ -10,7 +10,12 @@ const RightViewContainer = styled.div`
   background-color: white;
   border-radius: 8px;
   padding: 30px;
-  margin: 25px 0 25px 15px;
+  margin: 30px 0 15px 15px;
+
+  @media screen and (max-width: 1200px) {
+    margin: 0 0 15px 0;
+  }
+
   .right-view-body {
     border: 1px solid var(--purple-medium);
     height: 100%;
