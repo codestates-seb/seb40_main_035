@@ -14,7 +14,7 @@ const ArticleCardWrapper = styled(Link)`
   position: relative;
 
   &:hover {
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     transform: translate(0, -5px);
   }
 
