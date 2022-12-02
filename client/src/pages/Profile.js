@@ -42,11 +42,11 @@ const Container = styled.div`
     background-color: white;
     width: 762px;
     margin-top: 20px;
-    padding: 20px 30px;
+    padding: 20px 30px 30px 30px;
   }
 
   .article-area {
-    width: calc(100vw - 340px);
+    width: calc(100vw - 360px);
     min-width: 762px;
   }
 

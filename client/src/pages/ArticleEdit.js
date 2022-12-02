@@ -50,7 +50,6 @@ const Container = styled.div`
   .article-write-title {
     margin: 30px 0 30px 0;
     padding-bottom: 30px;
-    padding-right: 15px;
     border-bottom: 1px solid var(--purple-medium);
 
     display: flex;
@@ -71,17 +70,26 @@ const Container = styled.div`
     justify-content: space-around;
     margin-bottom: 30px;
 
+    @media screen and (max-width: 1200px) {
+      flex-direction: column;
+    }
+
     .article-write-body-select {
       border-radius: 8px;
       background-color: white;
-      width: 47.5%;
+      width: 50%;
       min-width: 470px;
       height: 100%;
       padding: 15px;
-      margin-right: 5px;
+      margin-right: 20px;
 
       display: flex;
       flex-direction: column;
+
+      @media screen and (max-width: 1200px) {
+        width: 100%;
+        margin-bottom: 10px;
+      }
 
       .select-tag,
       .select-date-number {
@@ -146,10 +154,14 @@ const Container = styled.div`
     }
 
     .article-write-body-right {
-      width: 47.5%;
+      width: 50%;
       height: fit-content;
       min-width: 480px;
-      margin-left: 5px;
+
+      @media screen and (max-width: 1200px) {
+        width: 100%;
+        margin-left: 0px;
+      }
     }
   }
 
@@ -160,8 +172,7 @@ const Container = styled.div`
   }
 
   .btn {
-    /* margin-top: 30px; */
-    margin-right: 10px;
+    margin-left: -50px;
   }
 
   .article-title {
@@ -170,6 +181,10 @@ const Container = styled.div`
 
   .toggle {
     height: auto;
+
+    @media screen and (max-width: 1200px) {
+      margin-left: 5px;
+    }
   }
 `;
 

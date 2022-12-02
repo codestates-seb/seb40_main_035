@@ -9,6 +9,7 @@ const CommentBox = styled.form`
   display: flex;
   flex-direction: column;
   width: 75%;
+  min-width: fit-content;
   justify-content: center;
   /* align-items: flex-start; */
   padding-bottom: 20px;

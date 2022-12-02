@@ -48,7 +48,7 @@ const Container = styled.div`
   }
 
   .article-area {
-    width: calc(100vw - 340px);
+    width: calc(100vw - 360px);
     min-width: 762px;
   }
 
@@ -120,8 +120,6 @@ const MyPage = () => {
         // }
       )
       .then((res) => {
-        console.log(res.data.data.skills);
-
         // 프로필카드 상태 set
         const userProfile = {
           memberId: res.data.data.memberId,

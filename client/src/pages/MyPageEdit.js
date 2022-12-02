@@ -21,7 +21,7 @@ import { notiError, notiSuccess } from '../assets/toast';
 
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
-  width: 100vw;
+  /* width: 100%; */
   height: auto;
 `;
 const Wrapper = styled.section`
@@ -138,7 +138,6 @@ const MyPageEdit = () => {
   useEffect(() => {
     // 마이페이지 프로필 정보 불러오기
     axios.get(`/members/${id}`).then((res) => {
-      console.log(res.data.data);
       // 기술스택 상태
       setSelectedSkillstacks(getEditSkills(res.data.data.skills));
       // 관심분야 상태
