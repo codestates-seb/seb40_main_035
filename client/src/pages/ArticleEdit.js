@@ -293,10 +293,9 @@ const ArticleEdit = () => {
         articleSkills: selectedSkillstacksSubmit,
       };
 
-      let token = '';
       axios
         .patch(`/articles/${id}`, writeBody, {
-          headers: { Authorization: token },
+          headers: { Authorization: localStorage.getItem('Authorization') },
         })
         .then(
           // 글 등록 후 해당 글 상세페이지로 이동

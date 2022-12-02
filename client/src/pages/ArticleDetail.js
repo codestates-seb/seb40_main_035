@@ -329,8 +329,7 @@ const ArticleDetail = () => {
           {
             headers: {
               // 로그인 토큰 자리
-              Authorization:
-                'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTgxNDAwNCwiZXhwIjoxNjY5ODE1ODAzfQ.cdcc7CxX2SMnYIbipvj0_HrZKzTVwrBMITIFZP0g39bk9erlcaEkrRZ7ihkHhECh',
+              Authorization: localStorage.getItem('Authorization'),
             },
           },
         )
@@ -397,7 +396,7 @@ const ArticleDetail = () => {
         {
           headers: {
             // 로그인 토큰 자리
-            Authorization: '',
+            Authorization: localStorage.getItem('Authorization'),
           },
         },
       )
@@ -418,7 +417,7 @@ const ArticleDetail = () => {
       .delete(`/answers/${answerId}`, {
         headers: {
           // 로그인 토큰 자리
-          Authorization: '',
+          Authorization: localStorage.getItem('Authorization'),
         },
       })
       .then((response) => {

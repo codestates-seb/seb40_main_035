@@ -189,7 +189,6 @@ const MyPageEdit = () => {
     // headers: {
     //   Authorization: '',
     // },
-    let token = '';
     // 선택된 기술 스택 목록을 POST 데이터 형식으로 변경
     let selectedSkillstacksSubmit = selectedSkillstacks.map((el) => {
       let obj = { skillName: el.name };
@@ -208,7 +207,7 @@ const MyPageEdit = () => {
           memberSkills: selectedSkillstacksSubmit,
         },
         {
-          headers: { Authorization: token },
+          headers: { Authorization: localStorage.getItem('Authorization') },
         },
       )
       .then((res) => {

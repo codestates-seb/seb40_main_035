@@ -243,11 +243,9 @@ const ArticleWrite = () => {
         articleSkills: selectedSkillstacksSubmit,
       };
 
-      let token = '';
-      // 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTQ5NDEwMywiZXhwIjoxNjY5NTA4NTAzfQ.subidPsgbabDGWdbimGCsQ1pALbtosMtqlAqAd8K9ttZ7LboPDnPMv4FqnLtKxy0';
       axios
         .post(`/articles`, writeBody, {
-          headers: { Authorization: token },
+          headers: { Authorization: localStorage.getItem('Authorization') },
         })
         .then(
           // 글 등록 후 해당 글 상세페이지로 이동

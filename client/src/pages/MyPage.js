@@ -110,15 +110,10 @@ const MyPage = () => {
   const [likedArticles, setLikedArticles] = useRecoilState(likedArticlesState); //좋아요 프로젝트
 
   useEffect(() => {
-    // let token =
-    //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoi7YyM656R7J20IiwibWVtYmVySWQiOjE1LCJzdWIiOiJibHVlQGdtYWlsLmNvbSIsImlhdCI6MTY2OTYyOTQ0MCwiZXhwIjoxNjY5NjMxMjQwfQ.pAn-zeHetvAz6EkJc9NWtBSHg9F7MrkmOGtQpQNkr8qkjhwafCMvbQtPzbhSVIan';
     axios
-      .get(
-        `/members/${currentUser.memberId}`,
-        // {
-        //   headers: { Authorization: token },
-        // }
-      )
+      .get(`/members/${currentUser.memberId}`, {
+        headers: { Authorization: localStorage.getItem('Authorization') },
+      })
       .then((res) => {
         // 프로필카드 상태 set
         const userProfile = {
