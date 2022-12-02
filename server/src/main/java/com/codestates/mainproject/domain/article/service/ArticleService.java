@@ -245,13 +245,13 @@ public class ArticleService {
 
         switch (sort) {
             case "view": {
-                return articles.stream().sorted(Comparator.comparing(Article::getViews).reversed().thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
+                return articles.stream().sorted(Comparator.comparing(Article::getViews).thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
             }
             case "heart": {
-                return articles.stream().sorted(Comparator.comparing(Article::getHeartCount).reversed().thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
+                return articles.stream().sorted(Comparator.comparing(Article::getHeartCount).thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
             }
             case "answer": {
-                return articles.stream().sorted(Comparator.comparing(Article::getAnswerCount).reversed().thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
+                return articles.stream().sorted(Comparator.comparing(Article::getAnswerCount).thenComparing(Article::getArticleId).reversed()).collect(Collectors.toList());
             }
             default: {
                 return articles.stream().sorted(Comparator.comparing(Article::getArticleId).reversed()).collect(Collectors.toList());

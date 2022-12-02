@@ -48,7 +48,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private URI createURI(MultiValueMap<String, String> queryParams) {
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
+                .scheme("http")
                 .host("seb-main-035-client.s3-website.ap-northeast-2.amazonaws.com")
 //                .port(3000)
                 .path("/receive-token")
