@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
-import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import {
   modalOpenState,
   searchPwEmailState,
@@ -13,7 +13,7 @@ import CloseButton from '../components/CloseButton';
 import DefaultButton from '../components/DefaultButton';
 import DefaultInput from '../components/DefaultInput';
 import MiniButton from '../components/MiniButton';
-import { notiError, notiSuccess } from '../assets/toast';
+import { notiError, notiSuccess, notiInfo } from '../assets/toast';
 
 const Container = styled.div`
   display: flex;
@@ -265,8 +265,7 @@ const LogIn = ({ userMenu }) => {
       }
     });
   };
-  const currentUser = useRecoilValue(currentUserState);
-  console.log(currentUser);
+
   return (
     <Container>
       <div className="login-container" ref={userMenu}>
@@ -348,7 +347,7 @@ const LogIn = ({ userMenu }) => {
           </>
         ) : (
           <div className="image-container">
-            <Authbutton href="">
+            <Authbutton onClick={() => notiInfo('준비 중인 기능입니다!')}>
               <img
                 src={require('../images/google login.png')}
                 alt="구글 로그인"
@@ -360,7 +359,7 @@ const LogIn = ({ userMenu }) => {
                 alt="깃허브 로그인"
               ></img>
             </Authbutton>
-            <Authbutton href="">
+            <Authbutton onClick={() => notiInfo('준비 중인 기능입니다!')}>
               <img
                 src={require('../images/kakao login.png')}
                 alt="카카오톡 로그인"
