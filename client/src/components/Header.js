@@ -172,6 +172,7 @@ const Header = () => {
   const onLogOut = () => {
     localStorage.removeItem('Authorization');
     localStorage.removeItem('Refresh');
+    localStorage.removeItem('memberId');
     setCurrentUser({ memberId: null, isLogIn: false });
     notiSuccess('로그아웃 되었습니다.');
     navigate('/');
