@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 import {
   modalOpenState,
   searchPwEmailState,
@@ -233,7 +233,7 @@ const LogIn = ({ userMenu }) => {
           setEmail('');
           setPassword('');
           closeLogIn();
-          notiSuccess('로그인 완료 되었습니다.');
+          notiSuccess('로그인 되었습니다!');
         })
         .catch((ex) => {
           // 요청 후 서버에 이메일 존재하지 않아 404에러 발생시 실행
@@ -244,6 +244,29 @@ const LogIn = ({ userMenu }) => {
     }
   };
 
+  const onGithubLogin = () => {
+    const githubPopup = window.open(
+      process.env.REACT_APP_OAUTH_GITHUB_URL,
+      '깃허브 인증창',
+      'width=600px,height=500px,scrollbars=yes',
+    );
+    githubPopup.addEventListener('unload', () => {
+      const memberId = window.localStorage.getItem('memberId');
+      const Authorization = window.localStorage.getItem('Authorization');
+      const githubURL = window.localStorage.getItem('githubURL');
+
+      if (Authorization) {
+        setCurrentUser({ memberId, isLogIn: true });
+        notiSuccess('로그인 되었습니다!');
+      } else if (githubURL) {
+        notiError(
+          '등록된 깃허브 계정이 아닙니다! 회원가입 후 깃허브 계정을 연동해주세요',
+        );
+      }
+    });
+  };
+  const currentUser = useRecoilValue(currentUserState);
+  console.log(currentUser);
   return (
     <Container>
       <div className="login-container" ref={userMenu}>
@@ -328,19 +351,19 @@ const LogIn = ({ userMenu }) => {
             <Authbutton href="">
               <img
                 src={require('../images/google login.png')}
-                alt="구글로그인"
+                alt="구글 로그인"
               ></img>
             </Authbutton>
-            <Authbutton href="">
+            <Authbutton onClick={onGithubLogin}>
               <img
                 src={require('../images/github login.png')}
-                alt="깃허브로그인"
+                alt="깃허브 로그인"
               ></img>
             </Authbutton>
             <Authbutton href="">
               <img
                 src={require('../images/kakao login.png')}
-                alt="카카오톡로그인"
+                alt="카카오톡 로그인"
               ></img>
             </Authbutton>
           </div>
