@@ -127,12 +127,21 @@ const Container = styled.div`
   }
 `;
 
-const Authbutton = styled.a`
-  margin: 30px;
+const Authbutton = styled.button`
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  background-color: #fff;
+  border: none;
+  margin: 0 60px 0 0;
+
+  :last-child {
+    margin-right: 0;
+  }
 
   img {
-    width: 60px;
-    height: 60px;
+    width: 100%;
+    height: 100%;
   }
 `;
 
