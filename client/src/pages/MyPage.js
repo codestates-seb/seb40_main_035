@@ -11,12 +11,13 @@ import {
   skillStackViewState,
   interestViewState,
 } from '../atom/atom';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import getSkills from '../utils/getSkills';
 import ArticlesGrid from '../components/ArticlesGrid';
 import { notiSuccess } from '../assets/toast';
+import Swal from 'sweetalert2';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
@@ -98,8 +99,8 @@ const Container = styled.div`
 const MyPage = () => {
   const [activeMenu, setActiveMenu] = useState(0);
 
-  const currentUser = useRecoilValue(currentUserState); //로그인 후, 응답으로 받아 오는 멤버아이디
-  const [profileData, setProfileData] = useRecoilState(userProfileState); //프로필카드
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState); //로그인 후, 응답으로 받아 오는 멤버아이디
+  const setProfileData = useSetRecoilState(userProfileState); //프로필카드
   // const [skillStackView, setSkillStackView] =
   //   useRecoilState(skillStackViewState); //기술스택
   const setSkillStackView = useSetRecoilState(skillStackViewState); //기술스택
@@ -149,23 +150,34 @@ const MyPage = () => {
   };
 
   const onlinkToEdit = () => {
-    location.href = `/mypage/edit/${profileData.memberId}`;
+    location.href = `/mypage/edit/${currentUser.memberId}`;
     // location.href = `/mypage/edit/${currentUser.memberId}`;
   };
 
   const onMemberDelete = () => {
-    let isGo = window.confirm('탈퇴하시겠습니까?');
-    // let isGo = notiConfirm('탈퇴하시겠습니까?');
+    // let isGo = window.confirm('탈퇴하시겠습니까?');
+    Swal.fire({
+      title: '탈퇴하시겠습니까?',
+      icon: 'question',
+      showCancelButton: true,
+      closeOnConfirm: false,
+      closeOnCancel: true,
+      confirmButtonText: '확인',
+      denyButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`/members/${currentUser.memberId}`); // 서버에 탈퇴 요청
 
-    if (isGo) {
-      notiSuccess('탈퇴되었습니다');
-      // axios.delete(`/members/${currentUser.memberId}`); // 서버에 탈퇴 요청
-      // 로그인 여부 상태 초기화 코드 자리
-      // 로그인된 유저의 정보 (유저 아이디) 상태 초기화 코드 자리
-      window.location = '/';
-    } else {
-      console.log('stay');
-    }
+        localStorage.removeItem('Authorization');
+        localStorage.removeItem('Refresh');
+        notiSuccess('탈퇴되었습니다');
+        setCurrentUser({ memberId: null, isLogIn: false });
+
+        location.href = `/`;
+      } else if (result.isDismissed) {
+        console.log('stay');
+      }
+    });
   };
 
   return (
