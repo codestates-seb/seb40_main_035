@@ -11,7 +11,10 @@ const Container = styled.div`
   left: 0;
   bottom: 0;
   z-index: 30;
-  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   background-color: var(--purple-light);
 
