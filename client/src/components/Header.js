@@ -40,6 +40,10 @@ const HeaderContainer = styled.header`
     align-items: center;
     justify-content: space-between;
     background-color: var(--purple);
+
+    @media screen and (max-width: 1020px) {
+      justify-content: center;
+    }
   }
   a {
     text-decoration-line: none;
@@ -54,12 +58,19 @@ const HeaderContainer = styled.header`
     display: flex;
     align-items: center;
     padding-right: 132px;
+    @media screen and (max-width: 1020px) {
+      padding-right: 0px;
+    }
   }
   .logo {
     white-space: nowrap;
     padding-right: 50px;
     padding-left: 170px;
     font-size: 25px;
+
+    @media screen and (max-width: 1020px) {
+      padding-left: 0px;
+    }
   }
   .gnb {
     display: flex;
@@ -80,6 +91,15 @@ const HeaderContainer = styled.header`
       transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
       :hover {
         box-shadow: 0 0 40px 40px rgba(81, 56, 144, 0.8) inset;
+      }
+      @media screen and (max-width: 720px) {
+        margin-right: 10px;
+      }
+    }
+
+    button {
+      @media screen and (max-width: 720px) {
+        font-size: 0.8rem;
       }
     }
   }

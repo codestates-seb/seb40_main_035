@@ -13,6 +13,8 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   background-color: var(--purple-light);
+  min-width: fit-content;
+  width: 100%;
 `;
 
 const ContentContainer = styled.div`
@@ -20,6 +22,13 @@ const ContentContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   margin: 0 170px;
+  min-width: fit-content;
+  @media screen and (max-width: 830px) {
+    margin: 0 50px;
+  }
+  @media screen and (max-width: 500px) {
+    margin: 0 15px;
+  }
 `;
 
 function App() {

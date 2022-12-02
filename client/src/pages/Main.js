@@ -120,8 +120,6 @@ const Main = () => {
 
   // 데이터 요청 콜백
   const fetchArticles = useCallback(async () => {
-    // console.log('recoil state', articlesList);
-
     const skill = skillfilter.join(',');
     const status = viewAllStatus ? '' : false;
     const sort = sortOptions[sortOption];
@@ -134,11 +132,8 @@ const Main = () => {
     setPageNumber(data.pageInfo.page + 1);
     setHasNextPage(data.pageInfo.totalPages !== data.pageInfo.page);
     setIsFetching(false);
-    // console.log('FETCH DATA!');
-    // console.log('states:', viewAllStatus, skillfilter, sortOption, pageNumber);
   }, [viewAllStatus, skillfilter, sortOption, pageNumber]);
 
-  // console.log('PAINT!');
   return (
     <Container>
       <h1>
@@ -176,7 +171,6 @@ const Main = () => {
       </div>
       <ArticlesGrid>
         {articlesList.map((article) => {
-          // console.log(article.articleId, article.title);
           return (
             <ArticleCard
               key={article.articleId}
