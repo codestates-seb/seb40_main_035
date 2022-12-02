@@ -57,7 +57,7 @@ const ProfileCardWrapper = styled.div`
         font-weight: 700;
       }
       span:last-child {
-        color: var(--grey-light);
+        color: var(--grey-dark);
       }
 
       @media (max-width: 550px) {
