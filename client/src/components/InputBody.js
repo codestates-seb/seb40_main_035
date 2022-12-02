@@ -51,7 +51,7 @@ const InputBody = () => {
           ['heading', 'bold', 'italic', 'strike'],
           ['hr', 'quote'],
           ['ul', 'ol', 'task', 'indent', 'outdent'],
-          ['table', 'link'],
+          ['table', 'image', 'link'],
           ['code', 'codeblock'],
         ]}
         language="ko-KR"
