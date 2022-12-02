@@ -128,8 +128,8 @@ const LeftViewContainer = styled.div`
   min-width: 350px;
   background-color: white;
   border-radius: 8px;
-  padding: 15px;
-  margin: 30px 5px 15px 0;
+  padding: 30px;
+  margin: 30px 5px 25px 0;
 
   @media screen and (max-width: 1200px) {
     width: 100%;
@@ -177,38 +177,13 @@ const LeftViewBottomBox = styled.div`
     font-weight: 400;
   }
 `;
-const RightViewContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 57%;
-  min-width: 450px;
-  background-color: white;
-  border-radius: 8px;
-  padding: 30px;
-  margin: 30px 0 15px 15px;
-  .content-plan {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    font-size: 15px;
-    font-weight: 500;
-    border-bottom: 1px solid var(--purple-medium);
-  }
-  span {
-    font-size: 15px;
-  }
 
-  @media screen and (max-width: 1200px) {
-    width: 100%;
-    margin: 0 0 15px 0;
-    min-height: 300px;
-  }
-`;
 const BottomCommentConatiner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 100%;
   min-width: fit-content;
   height: auto;
   background-color: white;
@@ -310,7 +285,7 @@ const ArticleDetail = () => {
     axios.delete(`/articles/${id}`, {
       headers: {
         // 로그인 토큰 자리
-        Authorization: '',
+        Authorization: localStorage.getItem('Authorization'),
       },
     });
   };
@@ -319,7 +294,7 @@ const ArticleDetail = () => {
   };
   // 모집중 토글 이벤트 핸들러
   const onToggle = () => {
-    if (currentUser.memberId === articles.memberId) {
+    if (Number(currentUser.memberId) === articles.memberId) {
       axios
         .patch(
           `/articles/${id}`,
