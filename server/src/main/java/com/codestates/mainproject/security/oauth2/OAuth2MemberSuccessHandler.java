@@ -33,11 +33,27 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         try {
             Member member = memberDetailsService.findByGithub(html_url);
             TokenResponse tokenResponse = jwtTokenizer.createTokensByLogin(member);
-            response.addHeader("Authorization", "Bearer " + tokenResponse.getAcToken());
-            response.addHeader("Refresh", tokenResponse.getRfToken());
-            response.addHeader("memberId", String.valueOf(member.getMemberId()));
+            MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+            queryParams.add("Authorization", "Bearer " + tokenResponse.getAcToken());
+            queryParams.add("Refresh", tokenResponse.getRfToken());
+            queryParams.add("memberId", String.valueOf(member.getMemberId()));
+            getRedirectStrategy().sendRedirect(request, response, createURI(queryParams).toString());
         } catch (BusinessLogicException e) {
-            response.addHeader("github", html_url);
+            MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+            queryParams.add("github", html_url);
+            getRedirectStrategy().sendRedirect(request, response, createURI(queryParams).toString());
         }
+    }
+
+    private URI createURI(MultiValueMap<String, String> queryParams) {
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("https")
+                .host("seb-main-035-client.s3-website.ap-northeast-2.amazonaws.com")
+//                .port(3000)
+                .path("/receive-token")
+                .queryParams(queryParams)
+                .build()
+                .toUri();
     }
 }
