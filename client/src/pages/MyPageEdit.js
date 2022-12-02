@@ -20,7 +20,7 @@ import getEditSkills from '../utils/getEditSkills';
 
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
-  width: 100vw;
+  /* width: 100%; */
   height: auto;
 `;
 const Wrapper = styled.section`
