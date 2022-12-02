@@ -1,7 +1,5 @@
 import ArticleCard from '../components/ArticleCard';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { articlesListState } from '../atom/atom';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import SwitchToggle from '../components/SwitchToggle';
@@ -71,7 +69,7 @@ const Loading = styled.div`
 
 const Main = () => {
   // 아티클 목록
-  const [articlesList, setArticlesList] = useRecoilState(articlesListState);
+  const [articlesList, setArticlesList] = useState([]);
   // 전체보기/모집중만 보기 선택 토글
   const [viewAllStatus, setViewStatus] = useState(true);
   // 스킬 스택 필터
@@ -120,8 +118,6 @@ const Main = () => {
 
   // 데이터 요청 콜백
   const fetchArticles = useCallback(async () => {
-    // console.log('recoil state', articlesList);
-
     const skill = skillfilter.join(',');
     const status = viewAllStatus ? '' : false;
     const sort = sortOptions[sortOption];
@@ -176,7 +172,6 @@ const Main = () => {
       </div>
       <ArticlesGrid>
         {articlesList.map((article) => {
-          // console.log(article.articleId, article.title);
           return (
             <ArticleCard
               key={article.articleId}
