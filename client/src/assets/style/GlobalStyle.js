@@ -8,6 +8,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 0; 
     font-family: 'Noto Sans KR', sans-serif;
   }
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
 :root {
     ${Variables};

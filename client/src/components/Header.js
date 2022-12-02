@@ -188,7 +188,7 @@ const Header = () => {
   const userMenu = useRef();
 
   const modalCloseHandler = ({ target }) => {
-    if (!userMenu.current.contains(target)) setModalOpen(false);
+    if (userMenu.current.contains(target)) setModalOpen(false);
   };
 
   useEffect(() => {
