@@ -22,9 +22,14 @@ const Container = styled.div`
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: rgba(176, 176, 179, 0.8);
   inset: 0px;
-  z-index: 2;
+
+  .pageblur {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(176, 176, 179, 0.8);
+  }
 
   .login-container {
     display: flex;
@@ -36,7 +41,7 @@ const Container = styled.div`
     border: none;
     border: 1px solid var(--purple);
     align-items: center;
-    z-index: 3;
+    z-index: 1;
   }
 
   .close-button-container {
@@ -49,7 +54,7 @@ const Container = styled.div`
   .login-button {
     height: 60px;
     width: 414px;
-    margin-top: 40px;
+    margin-top: 50px;
   }
 
   .login-title {
@@ -73,6 +78,10 @@ const Container = styled.div`
     font-size: 15px;
     border: none;
     border-bottom: 1px solid var(--purple);
+
+    &::placeholder {
+      color: var(--purple);
+    }
 
     &:focus,
     &:active {
@@ -141,9 +150,7 @@ const LogIn = ({ userMenu }) => {
   const [isSearchPw, setIsSearchPw] = useState(false);
   const [searchPwEmail, setSearchPwEmail] = useRecoilState(searchPwEmailState);
   const [noticeText, setNoticeText] = useState('');
-  const [emailNotice, setEmailNotice] = useState('이메일을 입력해주세요.');
-  const [passwordNotice, setPasswordNotice] =
-    useState('패스워드를 입력해주세요.');
+  const [emailNotice, setEmailNotice] = useState('');
   const [email, setEmail] = useRecoilState(emailState);
   const [password, setPassword] = useRecoilState(passwordState);
   const setCurrentUser = useSetRecoilState(currentUserState);
@@ -178,18 +185,6 @@ const LogIn = ({ userMenu }) => {
     }
   };
 
-  const onCheckPassword = (password, setNotice) => {
-    const passwordCheck =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-    if (passwordCheck.test(password) === false) {
-      setNotice('올바른 패스워드 형식이 아닙니다.');
-      return false;
-    } else {
-      setNotice('');
-      return true;
-    }
-  };
-
   const onResetPw = () => {
     if (onCheckEmail(searchPwEmail, setNoticeText)) {
       axios
@@ -212,9 +207,7 @@ const LogIn = ({ userMenu }) => {
   };
 
   const LogInPost = () => {
-    const CheckEmail = onCheckEmail(email, setEmailNotice);
-    const CheckPassword = onCheckPassword(password, setPasswordNotice);
-    if (CheckEmail && CheckPassword) {
+    if (onCheckEmail(email, setEmailNotice)) {
       axios
         .post(`/members/login`, { email, password })
         .then((res) => {
@@ -223,13 +216,13 @@ const LogIn = ({ userMenu }) => {
           setCurrentUser({ memberId: res.headers.memberid, isLogIn: true });
           setEmail('');
           setPassword('');
-          closeLogIn();
           notiSuccess('로그인 완료 되었습니다.');
+          closeLogIn();
         })
         .catch((ex) => {
           // 요청 후 서버에 이메일 존재하지 않아 404에러 발생시 실행
           if (ex.response && ex.response.status === 404) {
-            setEmailNotice(ex.response.data.message);
+            notiError(ex.response.data.message);
           }
         });
     }
@@ -237,7 +230,8 @@ const LogIn = ({ userMenu }) => {
 
   return (
     <Container>
-      <div className="login-container" ref={userMenu}>
+      <div className="pageblur" ref={userMenu} />
+      <div className="login-container">
         <span className="close-button-container">
           <CloseButton onClick={closeLogIn} />
         </span>
@@ -249,6 +243,7 @@ const LogIn = ({ userMenu }) => {
               className="form-input"
               onChange={changeEmail}
               value={email}
+              placeholder={'이메일을 입력해주세요.'}
             />
             {emailNotice ? (
               <div className="form-alert">{emailNotice}</div>
@@ -262,13 +257,9 @@ const LogIn = ({ userMenu }) => {
               className="form-input"
               onChange={changePassword}
               value={password}
+              placeholder={'패스워드를 입력해주세요.'}
               type={'password'}
             />
-            {passwordNotice ? (
-              <div className="form-alert">{passwordNotice}</div>
-            ) : (
-              <div className="form-alert" />
-            )}
           </div>
         </form>
         <DefaultButton
