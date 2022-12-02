@@ -125,7 +125,7 @@ const Main = () => {
 
   // 데이터 요청 콜백
   const fetchArticles = useCallback(async () => {
-    const pageSize = 3 * Math.floor((viewPortWidth - 340) / (323 + 30));
+    const pageSize = 3 * Math.floor((viewPortWidth - 340 + 30) / (323 + 30));
 
     const skill = skillfilter.join(',');
     const status = viewAllStatus ? '' : false;
@@ -150,8 +150,7 @@ const Main = () => {
       <div className="view-options">
         <div className="filter-options">
           <SwitchToggle
-            left="전체 보기"
-            right="모집 중"
+            right="전체 보기"
             setChecked={viewAllStatus}
             width="100px"
             onClick={() => {
