@@ -96,10 +96,10 @@ const SignUp = () => {
   const [nameIsChecked, setNameChecked] = useState(false); // 닉네임 중복 검사 성공
 
   const [password, setPassword] = useState('');
-  const [passwordErr, setPasswordErr] = useState(null);
+  const [passwordErr, setPasswordErr] = useState(false);
 
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [passwordCheckErr, setPasswordCheckErr] = useState(null);
+  const [passwordCheckErr, setPasswordCheckErr] = useState(false);
 
   const selectedLevel = useRecoilValue(selectedLevelState);
   const [levelErr, setLevelErr] = useState(false);
@@ -123,8 +123,10 @@ const SignUp = () => {
     if (idIsChecked) {
       onIdValidation();
       setIdChecked(false);
+
       setVerificationCode('');
       setCodeChecked(false);
+      setVerificationCodeErr(true);
     }
   };
   // 닉네임
@@ -138,7 +140,17 @@ const SignUp = () => {
   // 비밀번호
   const onPasswordChange = (pw) => {
     setPassword(pw);
-    if (pw.length >= 8) onPasswordValidation();
+    if (pw.length >= 8) {
+      const regex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+      setPasswordErr(!regex.test(pw));
+    }
+  };
+  // 비밀번호 확인
+  const onPasswordCheckChange = (pwCheck) => {
+    setPasswordCheck(pwCheck);
+    if (pwCheck.length >= password.length)
+      setPasswordCheckErr(password !== pwCheck);
   };
 
   // 유효성 검사
@@ -163,7 +175,7 @@ const SignUp = () => {
   };
   // 비밀번호 확인
   const onPasswordCheckValidation = () => {
-    setPasswordCheckErr(passwordErr && password !== passwordCheck);
+    setPasswordCheckErr(password !== passwordCheck);
   };
 
   // 인증/확인 버튼
@@ -175,8 +187,8 @@ const SignUp = () => {
         .post(`/members/signup/email-send`, {
           email: userId,
         })
-        .then((res) => {
-          notiSuccess(res.data.data);
+        .then(() => {
+          notiSuccess('입력하신 이메일로 인증코드가 발송되었습니다');
           setIdChecked(true);
         })
         .catch((err) => {
@@ -186,8 +198,6 @@ const SignUp = () => {
             console.log(err);
           }
         });
-    } else {
-      notiError('이메일 주소를 다시 확인해주세요');
     }
   };
   // 인증코드 인증확인
@@ -197,8 +207,7 @@ const SignUp = () => {
         email: userId,
         code: verificationCode,
       })
-      .then((res) => {
-        notiSuccess(res.data.data);
+      .then(() => {
         setVerificationCodeErr(false);
         setCodeChecked(true);
       })
@@ -214,12 +223,13 @@ const SignUp = () => {
       .post(`/members/signup/verify-name`, {
         name: nickName,
       })
-      .then((res) => {
-        notiSuccess('사용 가능한 닉네임 입니다');
+      .then(() => {
         setNameChecked(true);
       })
       .catch((err) => {
         notiError(err.response.data.message);
+        setNameChecked(false);
+        setNickNameErr(true);
       });
   };
   // 깃허브 연동하기
@@ -232,7 +242,6 @@ const SignUp = () => {
     githubPopup.addEventListener('unload', () => {
       const githubURL = window.localStorage.getItem('githubURL');
       if (githubURL) {
-        notiInfo('깃허브 계정이 연동되었습니다!');
         setGithub(githubURL);
         setGithubChecked(true);
       }
@@ -306,6 +315,14 @@ const SignUp = () => {
     }
   };
 
+  console.log(
+    !verificationCodeErr
+      ? ''
+      : idIsChecked
+      ? '이메일로 전송된 코드를 입력해주세요.'
+      : '이메일 인증을 먼저 진행해주세요.',
+  );
+
   return (
     <Container>
       <h1>회원가입</h1>
@@ -317,6 +334,8 @@ const SignUp = () => {
               id="user-id"
               message={
                 idIsChecked
+                  ? ''
+                  : userIdErr
                   ? '이메일 주소를 다시 확인해주세요.'
                   : '아이디로 사용될 이메일을 입력해주세요.'
               }
@@ -324,6 +343,7 @@ const SignUp = () => {
               onChange={onIdChange}
               onBlur={onIdValidation}
               isError={userIdErr}
+              type="email"
             />
             {!idIsChecked ? (
               <MiniButton text="인증하기" onClick={onCheckIdBtn} />
@@ -338,9 +358,11 @@ const SignUp = () => {
             <LineInput
               id="verification-code"
               message={
-                idIsChecked
-                  ? '이메일로 전송된 코드를 입력해주세요.'
-                  : '이메일 인증을 먼저 진행해주세요.'
+                !idIsChecked
+                  ? '이메일 인증을 먼저 진행해주세요.'
+                  : codeIsChecked
+                  ? ''
+                  : '이메일로 전송된 코드를 입력해주세요.'
               }
               value={verificationCode}
               onChange={setVerificationCode}
@@ -365,7 +387,13 @@ const SignUp = () => {
             <LineInput
               id="nickname"
               message={
-                nickNameErr ? '1자 이상 입력해주세요.' : '이름을 입력해주세요.'
+                nameIsChecked
+                  ? ''
+                  : !nickNameErr
+                  ? '닉네임을 입력해주세요.'
+                  : nickName.length < 1
+                  ? '1자 이상 입력해주세요.'
+                  : '사용할 수 없는 닉네임입니다.'
               }
               value={nickName}
               onChange={onNameChange}
@@ -381,34 +409,51 @@ const SignUp = () => {
             )}
           </div>
           <Label htmlFor="password">비밀번호</Label>
-          <LineInput
-            id="password"
-            message={
-              passwordErr
-                ? '영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요.'
-                : '8글자 이상의 영문, 숫자, 특수문자 조합이어야 합니다.'
-            }
-            value={password}
-            onChange={onPasswordChange}
-            onBlur={onPasswordValidation}
-            isError={passwordErr}
-            type="password"
-          />
+          <div className="input-wrapper">
+            <LineInput
+              id="password"
+              message={
+                passwordErr
+                  ? '영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요.'
+                  : password.length >= 8
+                  ? ''
+                  : '8글자 이상의 영문, 숫자, 특수문자 조합이어야 합니다.'
+              }
+              value={password}
+              onChange={onPasswordChange}
+              onBlur={onPasswordValidation}
+              isError={passwordErr}
+              type="password"
+            />
+            {password.length >= 8 && !passwordErr && (
+              <div className="confirmed-icon">
+                <AiOutlineCheck fill="var(--purple)" />
+              </div>
+            )}
+          </div>
           <Label htmlFor="password-check">비밀번호 확인</Label>
-          <LineInput
-            id="password-check"
-            message={
-              passwordCheckErr
-                ? '비밀번호가 일치하지 않습니다.'
-                : '비밀번호를 다시 한 번 입력해주세요.'
-            }
-            value={passwordCheck}
-            onChange={setPasswordCheck}
-            onBlur={onPasswordCheckValidation}
-            isError={passwordCheckErr}
-            disabled={password.length <= 8 || passwordErr}
-            type="password"
-          />
+          <div className="input-wrapper">
+            <LineInput
+              id="password-check"
+              message={
+                passwordCheck.length < 8
+                  ? '비밀번호를 다시 한 번 입력해주세요.'
+                  : passwordCheckErr
+                  ? '비밀번호가 일치하지 않습니다.'
+                  : ''
+              }
+              value={passwordCheck}
+              onChange={onPasswordCheckChange}
+              onBlur={onPasswordCheckValidation}
+              isError={passwordCheckErr}
+              type="password"
+            />
+            {passwordCheck.length >= 8 && !passwordCheckErr && (
+              <div className="confirmed-icon">
+                <AiOutlineCheck fill="var(--purple)" />
+              </div>
+            )}
+          </div>
           <Label htmlFor="level">숙련도</Label>
           <LevelSelect id="level" />
           {levelErr && <Message isError={levelErr} text="필수 입력입니다." />}
