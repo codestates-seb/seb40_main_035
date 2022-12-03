@@ -6,12 +6,14 @@ import MiniButton from '../components/MiniButton';
 import SwitchToggle from '../components/SwitchToggle';
 import SkillStackView from '../components/SkillStackView';
 import avatar from '../assets/image/userAvatar.png';
-import { BsArrowUpCircleFill, BsHeartFill } from 'react-icons/bs';
+import { BsArrowUpCircleFill, BsHeartFill, BsHeart } from 'react-icons/bs';
 import { FiShare } from 'react-icons/fi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   currentUserState,
+  heartArticleState,
+  heartMemberIdState,
   inputBodyState,
   interestViewState,
   skillStackViewState,
@@ -176,6 +178,10 @@ const LeftViewBottomBox = styled.div`
   .left-bottom-content {
     font-weight: 400;
   }
+  .project-schedule {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const BottomCommentConatiner = styled.div`
@@ -254,7 +260,9 @@ const ArticleDetail = () => {
   const createdAtArticle = new Date(articles.createdAt);
   const currentUser = useRecoilValue(currentUserState);
   const [inputBody, setInputBody] = useRecoilState(inputBodyState);
-
+  const [heartMemberId, setHeartMemberId] = useRecoilState(heartMemberIdState);
+  const [heartArticle, setHeartArticle] = useRecoilState(heartArticleState);
+  const [heartCount, setHeartCount] = useState(null);
   // 게시글 조회 http 요청
   useEffect(() => {
     axios.get(`/articles/${id}`).then((response) => {
@@ -262,8 +270,8 @@ const ArticleDetail = () => {
       setInputBody(response.data.data.body);
       // articles 전체 데이터 상태
       setArticles(response.data.data);
-      // 좋아요 상태 set
-      setLiked(response.data.data.heartCount);
+      // 좋아요 Count 상태 set
+      setHeartCount(response.data.data.heartCount);
       // 관심분야 상태 set
       setInterestView(response.data.data.interests);
       // 기술스택 상태 set
@@ -275,6 +283,49 @@ const ArticleDetail = () => {
     });
   }, [newComment]);
 
+  // 회원 정보 조회
+  useEffect(() => {
+    axios.get(`/members/${currentUser.memberId}`).then((res) => {
+      setHeartMemberId(res.data.data.memberId);
+      setHeartArticle(res.data.data.heartArticles);
+      onCheckHeart(res.data.data.heartArticles);
+    });
+  }, []);
+
+  const onCheckHeart = (res) => {
+    const temp = res.map((el) =>
+      String(el.articleId).includes(String(id)) ? 'o' : 'x',
+    );
+
+    if (temp.includes('o')) {
+      setLiked(true);
+    } else setLiked(false);
+  };
+  // 좋아요 이벤트 핸들러
+  const onHeartSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .patch(
+        `/articles/${id}`,
+        {
+          hearts: [
+            {
+              // 로그인 토큰에 따른 추후 수정
+              memberId: currentUser.memberId,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('Authorization'),
+          },
+        },
+      )
+      .then((response) => {
+        setLiked(!liked);
+        setHeartCount(response.data.data.heartCount);
+      });
+  };
   // 게시글 삭제 이벤트 핸들러
   const onDeleteArticle = (e) => {
     e.preventDefault();
@@ -316,38 +367,16 @@ const ArticleDetail = () => {
     }
   };
 
-  // 좋아요 이벤트 핸들러
-  // const onHeartHandler = (memeberId) => {};
-  // const onHeartSubmit = () => {
-  //   axios
-  //     .patch(
-  //       `/articles/${id}`,
-  //       {
-  //         hearts: [
-  //           {
-  //             // 로그인 토큰에 따른 추후 수정
-  //             // memberId: ,
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         headers: {
-  //           // 로그인 토큰 자리
-  //           Authorization: '',
-  //         },
-  //       },
-  //     )
-  //     .then((response) => {
-  //       setLiked(response.data.isLiked);
-  //     });
-  // };
-
   // 댓글 등록 이벤트 핸들러
   const onAnswerHandler = (e, articleId) => {
-    e.preventDefault();
-    let answerValue = e.target.value;
-    setAnswerInput(answerValue);
-    answerSubmit(articleId);
+    if (currentUser.isLogIn) {
+      e.preventDefault();
+      let answerValue = e.target.value;
+      setAnswerInput(answerValue);
+      answerSubmit(articleId);
+    } else {
+      notiError('로그인 후 다시 시도해 주세요!');
+    }
   };
   // 댓글 Enter submit 이벤트 함수
   const onKeyPress = (e) => {
@@ -424,11 +453,19 @@ const ArticleDetail = () => {
               </span>
             </button>
             {/* 좋아요 버튼 */}
-            <button className="title-btn" onClick={() => {}}>
-              <span className="title-icons title-heart-icons">
-                <BsHeartFill />
-              </span>
-            </button>
+            {liked ? (
+              <button className="title-btn" onClick={onHeartSubmit}>
+                <span className="title-icons title-heart-icons">
+                  <BsHeartFill />
+                </span>
+              </button>
+            ) : (
+              <button className="title-btn" onClick={onHeartSubmit}>
+                <span className="title-icons title-heart-icons">
+                  <BsHeart />
+                </span>
+              </button>
+            )}
             {/* 게시글 수정 버튼 */}
 
             {Number(currentUser.memberId) === articles.memberId ? (
@@ -464,7 +501,7 @@ const ArticleDetail = () => {
           {/* 좋아요 수 */}
           <span>
             <BsHeartFill className="conetent-heart-icons" />
-            {articles.heartCount}
+            {heartCount}
           </span>
           {/* 작성 일 */}
           <span>작성일 {createdAtArticle.toLocaleString()}</span>
@@ -488,7 +525,7 @@ const ArticleDetail = () => {
             </ul>
             <ul>
               프로젝트 예정기간
-              <div>
+              <div className="project-schedule">
                 <li>
                   <span className="project-plan-title">시작 예정 일</span>
                   <span className="left-bottom-content">
