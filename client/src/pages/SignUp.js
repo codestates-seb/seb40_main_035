@@ -156,8 +156,10 @@ const SignUp = () => {
   // 유효성 검사
   // 아이디
   const onIdValidation = () => {
-    const email = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
-    setUserIdErr(!email.test(userId));
+    if (userId.length) {
+      const email = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+      setUserIdErr(!email.test(userId));
+    }
   };
   // 인증코드
   const onVerificationValidation = () => {
@@ -165,17 +167,23 @@ const SignUp = () => {
   };
   // 닉네임
   const onNickNameValidation = () => {
-    setNickNameErr(!(nickName.length >= 1));
+    if (nickName.length) {
+      setNickNameErr(!(nickName.length >= 1));
+    }
   };
   // 비밀번호
   const onPasswordValidation = () => {
-    const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-    setPasswordErr(!regex.test(password));
+    if (password.length) {
+      const regex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+      setPasswordErr(!regex.test(password));
+    }
   };
   // 비밀번호 확인
   const onPasswordCheckValidation = () => {
-    setPasswordCheckErr(password !== passwordCheck);
+    if (passwordCheck.length) {
+      setPasswordCheckErr(password !== passwordCheck);
+    }
   };
 
   // 인증/확인 버튼
@@ -314,14 +322,6 @@ const SignUp = () => {
       notiError('입력 사항을 확인해주세요!');
     }
   };
-
-  console.log(
-    !verificationCodeErr
-      ? ''
-      : idIsChecked
-      ? '이메일로 전송된 코드를 입력해주세요.'
-      : '이메일 인증을 먼저 진행해주세요.',
-  );
 
   return (
     <Container>
