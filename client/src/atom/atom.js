@@ -227,3 +227,14 @@ export const passwordState = atom({
   key: 'passwoedState',
   default: '',
 });
+
+// 게시글 좋아요 ID 값
+export const heartMemberIdState = atom({
+  key: 'heartMemberIdState',
+  default: null,
+});
+
+export const heartArticleState = atom({
+  key: 'heartArticleState',
+  default: [],
+});

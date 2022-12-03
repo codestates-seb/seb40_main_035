@@ -139,7 +139,11 @@ const Comment = ({ avatar, answers, onDeleteComment }) => {
                 <img src={avatar} alt="" />
                 <button
                   onClick={() => {
-                    navigate(`/profile/${comment.memberId}`);
+                    if (currentUser.memberId === comment.memberId) {
+                      navigate(`/mypage/${currentUser.memberId}`);
+                    } else {
+                      navigate(`/profile/${comment.memberId}`);
+                    }
                   }}
                   className="user-name"
                 >
