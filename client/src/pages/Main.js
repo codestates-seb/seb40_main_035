@@ -98,7 +98,15 @@ const Main = () => {
       }
     };
     const handleResize = () => {
-      setViewPortWidth(visualViewport.width);
+      let width = visualViewport.width;
+      if (width <= 500) {
+        width -= 15 * 2;
+        console.log('-30');
+      } else if (width <= 830) {
+        width -= 50 * 2;
+        console.log('-100');
+      }
+      setViewPortWidth(width);
     };
     setIsFetching(true);
     window.addEventListener('scroll', handleScroll);
@@ -125,7 +133,7 @@ const Main = () => {
 
   // 데이터 요청 콜백
   const fetchArticles = useCallback(async () => {
-    const pageSize = 3 * Math.floor((viewPortWidth - 340 + 30) / (323 + 30));
+    const pageSize = 3 * (Math.floor((viewPortWidth + 30) / (323 + 30)) | 2);
 
     const skill = skillfilter.join(',');
     const status = viewAllStatus ? '' : false;
@@ -139,7 +147,7 @@ const Main = () => {
     setPageNumber(data.pageInfo.page + 1);
     setHasNextPage(data.pageInfo.totalPages !== data.pageInfo.page);
     setIsFetching(false);
-  }, [viewAllStatus, skillfilter, sortOption, pageNumber]);
+  }, [viewAllStatus, skillfilter, sortOption, pageNumber, viewPortWidth]);
 
   return (
     <Container>
