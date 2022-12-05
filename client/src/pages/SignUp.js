@@ -21,7 +21,7 @@ import {
   skillstacksCheckState,
   interestsCheckState,
 } from '../atom/atom';
-import { notiError, notiInfo, notiSuccess } from '../assets/toast';
+import { notiError, notiInfo, notiSuccess, notiToast } from '../assets/toast';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -190,7 +190,7 @@ const SignUp = () => {
   // 아이디 인증하기
   const onCheckIdBtn = () => {
     onIdValidation();
-    if (!userIdErr) {
+    if (!userIdErr && userId.length > 1) {
       axios
         .post(`/members/signup/email-send`, {
           email: userId,
@@ -206,6 +206,8 @@ const SignUp = () => {
             console.log(err);
           }
         });
+    } else {
+      notiToast('이메일 주소를 다시 확인해주세요', 'error');
     }
   };
   // 인증코드 인증확인
@@ -220,7 +222,7 @@ const SignUp = () => {
         setCodeChecked(true);
       })
       .catch(() => {
-        notiError('인증코드가 유효하지 않습니다.');
+        notiToast('인증코드가 유효하지 않습니다.', 'error');
         setVerificationCodeErr(true);
         setCodeChecked(false);
       });
@@ -252,6 +254,9 @@ const SignUp = () => {
       if (githubURL) {
         setGithub(githubURL);
         setGithubChecked(true);
+      } else {
+        const Authorization = window.localStorage.getItem('Authorization');
+        if (Authorization) notiInfo('이미 등록된 깃허브 주소입니다.');
       }
     });
   };
