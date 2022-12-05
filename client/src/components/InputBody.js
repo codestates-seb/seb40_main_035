@@ -28,7 +28,8 @@ const InputBody = () => {
   };
 
   const onblur = () => {
-    if (inputBody === '') {
+    const blank_pattern = /^\s+|\s+$/g;
+    if (inputBody === '' || inputBody.replace(blank_pattern, '') == '') {
       setInputBodyCheck(false);
     } else {
       setInputBodyCheck(true);

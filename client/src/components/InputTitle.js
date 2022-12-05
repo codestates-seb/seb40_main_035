@@ -55,7 +55,8 @@ const InputTitle = ({ placeholder, value, onChange }) => {
   const inputTitle = useRecoilValue(inputTitleState);
 
   const onblur = () => {
-    if (inputTitle === '') {
+    const blank_pattern = /^\s+|\s+$/g;
+    if (inputTitle === '' || inputTitle.replace(blank_pattern, '') == '') {
       setInputTitleCheck(false);
     } else {
       setInputTitleCheck(true);
@@ -73,7 +74,7 @@ const InputTitle = ({ placeholder, value, onChange }) => {
       {inputTitleCheck ? (
         ''
       ) : (
-        <div className="warning">1자 이상 입력해주세요.</div>
+        <div className="warning">내용을 입력해주세요.</div>
       )}
     </Container>
   );

@@ -314,7 +314,6 @@ const ArticleWrite = () => {
               placeholder={'제목을 입력해주세요.'}
               value={inputTitle}
               onChange={setInputTitle}
-              onblur={onblur}
             />
           </div>
           <div className="article-write-body">
@@ -370,7 +369,7 @@ const ArticleWrite = () => {
                     {inputBodyCheck ? (
                       ''
                     ) : (
-                      <div className="warning">1자 이상 입력해주세요</div>
+                      <div className="warning">내용을 입력해주세요</div>
                     )}
                   </div>
                   <InputBody />
