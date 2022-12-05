@@ -46,7 +46,7 @@ function App() {
             <Route path="/mypage/edit/:id" element={<MyPageEdit />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/receive-token.html" element={<ReceiveGithub />} />
+            <Route path="/receive-token" element={<ReceiveGithub />} />
           </Routes>
         </ContentContainer>
       </Container>
