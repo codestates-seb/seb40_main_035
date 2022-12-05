@@ -25,7 +25,7 @@ const MypageEditContainer = styled.div`
   height: auto;
 `;
 const Wrapper = styled.section`
-  margin-top: 70px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;

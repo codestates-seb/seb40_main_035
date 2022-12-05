@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
-  width: fit-content;
+  width: 650px;
   color: var(--black);
 
   display: flex;
