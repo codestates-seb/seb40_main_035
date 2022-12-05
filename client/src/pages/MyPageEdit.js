@@ -22,7 +22,7 @@ import { notiError, notiSuccess } from '../assets/toast';
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
   /* width: 100%; */
-  height: auto;
+  min-height: calc(100vh - 62px);
 `;
 const Wrapper = styled.section`
   margin-top: 40px;
