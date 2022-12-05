@@ -40,7 +40,8 @@ const Wrapper = styled.div`
     flex-direction: row;
   }
 
-  .react-datepicker__input .react-datepicker__day--keyboard-selected,
+  .react-datepicker__input,
+  .react-datepicker__day--keyboard-selected,
   .react-datepicker__day--in-range,
   .react-datepicker__day--in-selecting-range,
   .react-datepicker__day--selected {
@@ -95,7 +96,6 @@ const Calendar = () => {
         placeholderText="시작 예정 일"
         dateFormat="yyyy-MM-dd"
         dateFormatCalendar="yyyy년 MM월"
-        selectsStart
         startDate={startDate}
         endDate={endDate}
         minDate={new Date()}
@@ -111,7 +111,6 @@ const Calendar = () => {
         placeholderText="마감 예정 일"
         dateFormat="yyyy-MM-dd"
         dateFormatCalendar="yyyy년 MM월"
-        selectsEnd
         startDate={startDate}
         endDate={endDate}
         minDate={startDate}
