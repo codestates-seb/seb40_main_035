@@ -2,13 +2,34 @@ import styled from 'styled-components';
 import ProfileTeams from '../components/ProfileTeams';
 
 const AboutContainer = styled.div`
+  min-height: calc(100vh - 62px); //전체화면-헤더 높이
+  width: 100%;
+  display: flex;
+  background-image: linear-gradient(120deg, #775cbb 0%, #cfcfe9 100%);
+  justify-content: center;
+
   .about-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
   }
   .title-profile {
+    margin-top: 150px;
+    font-size: 50px;
+    color: white;
+    font-weight: 800;
   }
   .body-profile {
+    margin-top: 30px;
+    color: var(--purple-light);
+    font-weight: 500;
+    margin-bottom: 50px;
+    text-align: center;
   }
   .profile-teams-wrapper {
+    display: flex;
+    margin-bottom: 20px;
   }
 `;
 
