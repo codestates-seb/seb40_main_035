@@ -6,6 +6,7 @@ import SwitchToggle from '../components/SwitchToggle';
 import ScrollTopButton from '../components/ScrollTopButton';
 import ArticlesGrid from '../components/ArticlesGrid';
 import SkillFilterSelector from '../components/SkillFilterSelector';
+import { GrCircleAlert } from 'react-icons/gr';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -50,6 +51,22 @@ const Container = styled.div`
       }
     }
   }
+
+  .message {
+    width: 100%;
+    text-align: center;
+
+    p {
+      margin-bottom: 20px;
+      color: var(--purple-medium);
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    svg path {
+      stroke: var(--purple-medium);
+    }
+  }
 `;
 
 // 임시 로딩 컴포넌트
@@ -58,6 +75,9 @@ const Loading = styled.div`
   height: 200px;
   padding-top: 100px;
   text-align: center;
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 20px;
   animation: blink 2s ease-in-out infinite;
 
   @keyframes blink {
@@ -88,6 +108,7 @@ const Main = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [viewPortWidth, setViewPortWidth] = useState(visualViewport.width);
+  const [noArticle, setNoArticle] = useState(false);
 
   // 스크롤 감지
   useEffect(() => {
@@ -139,14 +160,17 @@ const Main = () => {
     const status = viewAllStatus ? '' : false;
     const sort = sortOptions[sortOption];
 
-    const { data } = await axios.get('/articles?', {
-      params: { skill, status, page: pageNumber, sort, size: pageSize },
-    });
+    const { data } = await axios
+      .get('/articles?', {
+        params: { skill, status, page: pageNumber, sort, size: pageSize },
+      })
+      .catch((err) => console.error(err));
 
     setArticlesList(articlesList.concat(data.data));
     setPageNumber(data.pageInfo.page + 1);
     setHasNextPage(data.pageInfo.totalPages !== data.pageInfo.page);
     setIsFetching(false);
+    data.data.length < 1 ? setNoArticle(true) : setNoArticle(false);
   }, [viewAllStatus, skillfilter, sortOption, pageNumber, viewPortWidth]);
 
   return (
@@ -183,6 +207,12 @@ const Main = () => {
           ))}
         </div>
       </div>
+      {noArticle && (
+        <div className="message">
+          <GrCircleAlert width="40px" height="40px" aria-hidden="true" />
+          <p>게시글이 없습니다.</p>
+        </div>
+      )}
       <ArticlesGrid>
         {articlesList.map((article) => {
           return (
