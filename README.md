@@ -1,4 +1,6 @@
 # 🔭 3355팀 Main Project 
+![image](https://user-images.githubusercontent.com/107869548/205680419-829d3197-90bd-495b-8d3d-c868c0c3c904.png)
+
 
 ## 🙋‍♀️🙋‍♂️ 팀 멤버
 <table>
@@ -18,16 +20,64 @@
 </table>
 </br>
 
-## ✏️ 상세 설명
+## 배포 링크
+http://seb-main-035-client.s3-website.ap-northeast-2.amazonaws.com/
 
-근 5개월간 코드스테이츠 부트캠프에서 배운 기술을 활용해
-프론트엔드 개발자 4명, 백엔드 개발자 3명이 한 팀으로,
-사이드 프로젝트 팀원 모집 사이트를 구현했습니다.
+</br>
+
+## 테스트 계정
+ID   : blue@gmail.com</br>
+PW : blue1234!
 
 </br>
 
 ## 📅 프로젝트 기간
-- 2022.11.08 ~ 2022.12.07 (1달)
+2022.11.08 ~ 2022.12.07 (1달)
+
+</br>
+
+## 프로젝트 소개
+삼삼오오는 **프로젝트와 스터디를 수월하게 구성하기 위한 커뮤니티 서비스**로,<br/>
+개발자들이 프로젝트나 스터디를 **쉽고 빠르게 모집할 수 있도록** 삼삼오오를 기획하게 되었습니다.
+
+</br>
+
+## 📒 DOCS
+- [발표문서](https://www.notion.so/codestates/35-Team3355-440a0433a2334167ac9db10fa224adf5#b2e506e09f4d4c31a9d439c392bcc26f)
+- [발표 ppt](https://docs.google.com/presentation/d/1HlVYk-HRnkfl3Yz_gSJSvUzUHYBRUWaa-SqfTeQP2GQ/edit#slide=id.p)
+- [Figma](https://www.figma.com/file/94JPdauQVUotJFU4RtbxUM/3355%EC%A1%B0?node-id=1%3A136&t=psXSxP4i8fqeIb4K-0)
+- [ERD](https://user-images.githubusercontent.com/107869548/205679002-0f358f1e-fb5a-41a0-a8db-41505bcb5b1f.png)
+- [사용자 요구사항 정의서](https://www.notion.so/codestates/741b0552d2134cde82935480c253bf6b)
+
+
+</br>
+
+## 📱 skill stack
+#### <div text-align=center>Frontend
+<div text-align=center>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
+  <img src="https://img.shields.io/badge/styledComponents-DB7093?style=for-the-badge&logo=styled-components&logoColor=white">
+  <img src="https://img.shields.io/badge/Recoil-3578E5?style=for-the-badge&logo=Recoil&logoColor=white">
+  <img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white">
+  <img src="https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=Prettier&logoColor=white">
+  <img src="https://img.shields.io/badge/AmazonS3-339933?style=for-the-badge&logo=AmazonS3&logoColor=white">
+  <img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=React Router&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
+
+#### Backend
+   <img src="https://img.shields.io/badge/mySQL-4479A1?style=for-the-badge&logo=mySQL&logoColor=white"> 
+   <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> 
+   <img src="https://img.shields.io/badge/java 11-007396?style=for-the-badge&logo=OpenJDK&logoColor=white"> 
+   <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">
+   <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white">
+
+#### Collaboration Tools
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+  <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+  <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+</div>
 
 </br>
 
@@ -41,16 +91,6 @@
 - `style` : 코드 포맷 수정
 - `test` : 테스트 작성/수정
 - `chore` : 기타 문제(의존성 문제, 설정 문제 등)
-
-</br>
-
-## 📱 Collaboration Tools
-<div align=center> 
-  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
-  <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
-  <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
-  <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
-</div>
 
 </br>
 
