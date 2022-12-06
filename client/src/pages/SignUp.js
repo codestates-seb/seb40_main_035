@@ -149,8 +149,7 @@ const SignUp = () => {
   // 비밀번호 확인
   const onPasswordCheckChange = (pwCheck) => {
     setPasswordCheck(pwCheck);
-    if (pwCheck.length >= password.length)
-      setPasswordCheckErr(password !== pwCheck);
+    onPasswordCheckValidation();
   };
 
   // 유효성 검사
@@ -445,11 +444,11 @@ const SignUp = () => {
             <LineInput
               id="password-check"
               message={
-                passwordCheck.length < 8
+                passwordCheck.length < 1
                   ? '비밀번호를 다시 한 번 입력해주세요.'
-                  : passwordCheckErr
-                  ? '비밀번호가 일치하지 않습니다.'
-                  : ''
+                  : password === passwordCheck
+                  ? ''
+                  : '비밀번호가 일치하지 않습니다.'
               }
               value={passwordCheck}
               onChange={onPasswordCheckChange}
@@ -457,7 +456,7 @@ const SignUp = () => {
               isError={passwordCheckErr}
               type="password"
             />
-            {passwordCheck.length >= 8 && !passwordCheckErr && (
+            {passwordCheck.length >= 8 && password === passwordCheck && (
               <div className="confirmed-icon">
                 <AiOutlineCheck fill="var(--purple)" />
               </div>
