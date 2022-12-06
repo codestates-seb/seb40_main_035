@@ -229,18 +229,22 @@ const SignUp = () => {
   };
   // 닉네임 중복확인
   const onCheckNickNameBtn = () => {
-    axios
-      .post(`/members/signup/verify-name`, {
-        name: nickName,
-      })
-      .then(() => {
-        setNameChecked(true);
-      })
-      .catch((err) => {
-        notiError(err.response.data.message);
-        setNameChecked(false);
-        setNickNameErr(true);
-      });
+    if (nickName.length) {
+      axios
+        .post(`/members/signup/verify-name`, {
+          name: nickName,
+        })
+        .then(() => {
+          setNameChecked(true);
+        })
+        .catch((err) => {
+          notiError(err.response.data.message);
+          setNameChecked(false);
+          setNickNameErr(true);
+        });
+    } else {
+      notiToast('1자 이상 입력해주세요', 'error');
+    }
   };
   // 깃허브 연동하기
   const onConnectGithub = () => {
