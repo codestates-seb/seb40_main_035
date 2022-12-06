@@ -209,7 +209,7 @@ const Header = () => {
           <ul className="gnb">
             <li>
               <NavBtn $color={menu === 1} onClick={onAbout}>
-                사이트 소개
+                팀 소개
               </NavBtn>
             </li>
             <li>
