@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-// import avatar from '../assets/image/userAvatar.png';
 import jw from '../assets/image/jw.png';
 import sb from '../assets/image/sb.png';
 import dh from '../assets/image/dh.jpg';
@@ -15,7 +14,7 @@ const ProfileContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 15px;
   text-align: center;
 
@@ -38,7 +37,7 @@ const ProfileContainer = styled.div`
   a {
     text-decoration: none;
     &:hover {
-      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      box-shadow: rgba(149, 157, 165, 0.2) 5px 8px 24px;
       transform: translate(0, -5px);
     }
     :visited {

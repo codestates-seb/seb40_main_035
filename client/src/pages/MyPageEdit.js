@@ -2,7 +2,6 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import {
-  currentUserState,
   selectedInterestsState,
   selectedLevelState,
   selectedSkillstacksState,
@@ -116,9 +115,6 @@ const ViewContainer = styled.div`
 `;
 
 const MyPageEdit = () => {
-  // 로그인 후, 응답으로 받아 오는 멤버아이디
-  // const currentUser = useRecoilValue(currentUserState);
-
   //프로필카드 상태
   const [profileData, setProfileData] = useRecoilState(userProfileState);
   // 기술스택 상태
@@ -184,11 +180,6 @@ const MyPageEdit = () => {
   };
   // 수정 PATCH 요청
   const onUpload = () => {
-    // 로그인한 유저
-    // axios.patch(`/members/${currentUser.memberId}`, {
-    // headers: {
-    //   Authorization: '',
-    // },
     // 선택된 기술 스택 목록을 POST 데이터 형식으로 변경
     let selectedSkillstacksSubmit = selectedSkillstacks.map((el) => {
       let obj = { skillName: el.name };
