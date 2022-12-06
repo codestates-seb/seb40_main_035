@@ -17,7 +17,8 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import getEditSkills from '../utils/getEditSkills';
-import { notiError, notiSuccess } from '../assets/toast';
+import { notiError, notiInfo, notiSuccess, notiToast } from '../assets/toast';
+import DefaultButton from '../components/DefaultButton';
 
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
@@ -175,20 +176,37 @@ const MyPageEdit = () => {
     });
   };
   // 깃허브 수정 이벤트 핸들러
-  const onChangeGithub = (e) => {
-    setProfileBody((cur) => {
-      const newProfileBody = { ...cur };
-      newProfileBody.github = e.target.value;
-      return newProfileBody;
+  const onConnectGithub = () => {
+    const githubPopup = window.open(
+      process.env.REACT_APP_OAUTH_GITHUB_URL,
+      '깃허브 인증창',
+      'width=600px,height=500px,scrollbars=yes',
+    );
+    githubPopup.addEventListener('unload', () => {
+      const githubURL = window.localStorage.getItem('githubURL');
+      if (githubURL) {
+        setProfileBody({ ...profileBody, github: githubURL });
+      } else {
+        const Authorization = window.localStorage.getItem('Authorization');
+        if (Authorization) notiInfo('이미 등록된 깃허브 주소입니다.');
+      }
     });
+  };
+  const onDisconnectGithub = () => {
+    axios
+      .get(`/members/${id}/delete-github`, {
+        headers: { Authorization: localStorage.getItem('Authorization') },
+      })
+      .then(() => {
+        setProfileBody({ ...profileBody, github: '' });
+      })
+      .catch((err) => {
+        console.error(err);
+        notiToast('에러가 발생했습니다😢');
+      });
   };
   // 수정 PATCH 요청
   const onUpload = () => {
-    // 로그인한 유저
-    // axios.patch(`/members/${currentUser.memberId}`, {
-    // headers: {
-    //   Authorization: '',
-    // },
     // 선택된 기술 스택 목록을 POST 데이터 형식으로 변경
     let selectedSkillstacksSubmit = selectedSkillstacks.map((el) => {
       let obj = { skillName: el.name };
@@ -255,8 +273,13 @@ const MyPageEdit = () => {
                 id="github-url"
                 className="github-info"
                 value={profileBody.github || ''}
-                onChange={onChangeGithub}
+                disabled
               ></input>
+              {profileBody.github ? (
+                <DefaultButton text="해제하기" onClick={onDisconnectGithub} />
+              ) : (
+                <DefaultButton text="연동하기" onClick={onConnectGithub} />
+              )}
             </label>
           </div>
         </MyInfoContainer>
