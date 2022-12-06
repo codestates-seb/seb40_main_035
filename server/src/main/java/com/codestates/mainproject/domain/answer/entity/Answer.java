@@ -22,7 +22,7 @@ public class Answer extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long answerId;
 
-    @Column(nullable = false, length = 5000)
+    @Column(nullable = false, length = 500)
     private String body;
 
     @ManyToOne

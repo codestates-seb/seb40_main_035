@@ -27,7 +27,7 @@ public class Article extends Auditable {
     @Column(nullable = false, length = 50)
     private String title;
 
-    @Column(nullable = false, length = 2000)
+    @Column(nullable = false, length = 5000)
     private String body;
 
     @Column(nullable = false)
