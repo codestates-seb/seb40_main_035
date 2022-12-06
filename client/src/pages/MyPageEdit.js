@@ -17,11 +17,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import getEditSkills from '../utils/getEditSkills';
 import { notiError, notiInfo, notiSuccess, notiToast } from '../assets/toast';
-import DefaultButton from '../components/DefaultButton';
 
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
-  /* width: 100%; */
   min-height: calc(100vh - 62px);
 `;
 const Wrapper = styled.section`
@@ -57,10 +55,13 @@ const MyInfoContainer = styled.div`
   label {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
     margin-top: 5px;
     margin-bottom: 5px;
+    white-space: nowrap;
   }
+
   .user-img {
     padding-right: 50px;
     img {
@@ -70,7 +71,8 @@ const MyInfoContainer = styled.div`
   }
 
   input {
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     font-size: 13px;
     padding: 10px;
     outline: none;
@@ -93,8 +95,17 @@ const MyInfoContainer = styled.div`
     }
   }
 
-  .github-info {
-    margin-left: 50px;
+  .github-wrapper {
+    display: flex;
+    align-items: center;
+
+    input {
+      margin-left: -5px;
+    }
+
+    button {
+      margin-left: 10px;
+    }
   }
 `;
 const ViewContainer = styled.div`
@@ -265,17 +276,18 @@ const MyPageEdit = () => {
             </div>
             <label htmlFor="github-url">
               <span>깃허브</span>
-              <input
-                id="github-url"
-                className="github-info"
-                value={profileBody.github || ''}
-                disabled
-              ></input>
-              {profileBody.github ? (
-                <DefaultButton text="해제하기" onClick={onDisconnectGithub} />
-              ) : (
-                <DefaultButton text="연동하기" onClick={onConnectGithub} />
-              )}
+              <div className="github-wrapper">
+                <input
+                  id="github-url"
+                  value={profileBody.github || '연동된 계정이 없습니다.'}
+                  disabled
+                ></input>
+                {profileBody.github ? (
+                  <MiniButton text="해제하기" onClick={onDisconnectGithub} />
+                ) : (
+                  <MiniButton text="연동하기" onClick={onConnectGithub} />
+                )}
+              </div>
             </label>
           </div>
         </MyInfoContainer>
