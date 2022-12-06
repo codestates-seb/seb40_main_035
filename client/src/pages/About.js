@@ -3,10 +3,19 @@ import ProfileTeams from '../components/ProfileTeams';
 
 const AboutContainer = styled.div`
   min-height: calc(100vh - 62px); //전체화면-헤더 높이
-  width: 100%;
+  width: 100vw;
   display: flex;
-  background-image: linear-gradient(120deg, #775cbb 0%, #cfcfe9 100%);
+  background-image: linear-gradient(120deg, #cfcfe9 0%, #775cbb 100%);
   justify-content: center;
+
+  margin: 0 -170px;
+  min-width: fit-content;
+  @media screen and (max-width: 830px) {
+    margin: 0 -50px;
+  }
+  @media screen and (max-width: 500px) {
+    margin: 0 -15px;
+  }
 
   .about-wrapper {
     display: flex;
@@ -24,12 +33,12 @@ const AboutContainer = styled.div`
     margin-top: 30px;
     color: var(--purple-light);
     font-weight: 500;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     text-align: center;
   }
   .profile-teams-wrapper {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 150px;
   }
 `;
 
@@ -50,15 +59,7 @@ const About = () => {
           되었습니다.
         </div>
         <div className="profile-teams-wrapper">
-          <ProfileTeams name="서건원" part="BackEnd" />
-          <ProfileTeams name="박영기" part="BackEnd" />
-          <ProfileTeams name="박찬현" part="BackEnd" />
-        </div>
-        <div className="profile-teams-wrapper">
-          <ProfileTeams name="손지원" part="FrontEnd" />
-          <ProfileTeams name="이세비" part="FrontEnd" />
-          <ProfileTeams name="최동환" part="FrontEnd" />
-          <ProfileTeams name="하정인" part="FrontEnd" />
+          <ProfileTeams />
         </div>
       </div>
     </AboutContainer>
