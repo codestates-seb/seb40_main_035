@@ -2,7 +2,6 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import {
-  currentUserState,
   selectedInterestsState,
   selectedLevelState,
   selectedSkillstacksState,
@@ -23,7 +22,7 @@ import DefaultButton from '../components/DefaultButton';
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
   /* width: 100%; */
-  height: auto;
+  min-height: calc(100vh - 62px);
 `;
 const Wrapper = styled.section`
   margin-top: 40px;
@@ -117,9 +116,6 @@ const ViewContainer = styled.div`
 `;
 
 const MyPageEdit = () => {
-  // 로그인 후, 응답으로 받아 오는 멤버아이디
-  // const currentUser = useRecoilValue(currentUserState);
-
   //프로필카드 상태
   const [profileData, setProfileData] = useRecoilState(userProfileState);
   // 기술스택 상태
