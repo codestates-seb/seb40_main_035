@@ -3,20 +3,8 @@ import styled from 'styled-components';
 import { BiMoon } from 'react-icons/bi';
 import { useState, useRef, useEffect } from 'react';
 import LogIn from '../pages/LogIn';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import {
-  inputTitleCheckState,
-  interestsCheckState,
-  skillstacksCheckState,
-  startDateCheckState,
-  endDateCheckState,
-  feNumberCheckState,
-  beNumberCheckState,
-  inputBodyCheckState,
-  hashtagsCheckState,
-  modalOpenState,
-  currentUserState,
-} from '../atom/atom';
+import { useRecoilState } from 'recoil';
+import { modalOpenState, currentUserState } from '../atom/atom';
 import { notiError, notiSuccess } from '../assets/toast';
 
 const HeaderContainer = styled.header`
@@ -120,15 +108,6 @@ const Header = () => {
   const [menu, setMenu] = useState(0);
   const [modalOpen, setModalOpen] = useRecoilState(modalOpenState);
   const navigate = useNavigate();
-  const setInputTitleCheck = useSetRecoilState(inputTitleCheckState);
-  const setInterestsCheck = useSetRecoilState(interestsCheckState);
-  const setSkillstacksCheck = useSetRecoilState(skillstacksCheckState);
-  const setStartDateCheck = useSetRecoilState(startDateCheckState);
-  const setEndDateCheck = useSetRecoilState(endDateCheckState);
-  const setFeNumberCheck = useSetRecoilState(feNumberCheckState);
-  const setBeNumberCheck = useSetRecoilState(beNumberCheckState);
-  const setInputBodyCheck = useSetRecoilState(inputBodyCheckState);
-  const setHashtagsCheck = useSetRecoilState(hashtagsCheckState);
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
   const onMain = () => {
@@ -145,15 +124,6 @@ const Header = () => {
     if (currentUser.isLogIn) {
       navigate('/write');
       setMenu(2);
-      setInputTitleCheck(true);
-      setInterestsCheck(true);
-      setSkillstacksCheck(true);
-      setStartDateCheck(true);
-      setEndDateCheck(true);
-      setFeNumberCheck(true);
-      setBeNumberCheck(true);
-      setInputBodyCheck(true);
-      setHashtagsCheck(true);
     } else {
       notiError('글 작성 권한이 없습니다.');
     }
