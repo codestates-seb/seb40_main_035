@@ -20,19 +20,45 @@ const ProfileContainer = styled.div`
   text-align: center;
 
   .team-members-wrapper {
+    display: flex;
   }
   .profile-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .team-members {
+    padding: 20px;
+    color: white;
+    font-size: 15px;
   }
   img {
+    width: 110px;
   }
   a {
+    text-decoration: none;
+    &:hover {
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      transform: translate(0, -5px);
+    }
+    :visited {
+      text-decoration: none;
+    }
   }
   .name {
+    margin-top: 8px;
+    padding: 3px;
   }
 
   .profile-img-body {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--purple-medium);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
   }
 `;
 
