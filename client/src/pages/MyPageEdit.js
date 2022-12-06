@@ -16,11 +16,10 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import getEditSkills from '../utils/getEditSkills';
-import { notiError, notiSuccess } from '../assets/toast';
+import { notiError, notiInfo, notiSuccess, notiToast } from '../assets/toast';
 
 const MypageEditContainer = styled.div`
   background-color: var(--purple-light);
-  /* width: 100%; */
   min-height: calc(100vh - 62px);
 `;
 const Wrapper = styled.section`
@@ -56,10 +55,13 @@ const MyInfoContainer = styled.div`
   label {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
     margin-top: 5px;
     margin-bottom: 5px;
+    white-space: nowrap;
   }
+
   .user-img {
     padding-right: 50px;
     img {
@@ -69,7 +71,8 @@ const MyInfoContainer = styled.div`
   }
 
   input {
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     font-size: 13px;
     padding: 10px;
     outline: none;
@@ -92,8 +95,17 @@ const MyInfoContainer = styled.div`
     }
   }
 
-  .github-info {
-    margin-left: 50px;
+  .github-wrapper {
+    display: flex;
+    align-items: center;
+
+    input {
+      margin-left: -5px;
+    }
+
+    button {
+      margin-left: 10px;
+    }
   }
 `;
 const ViewContainer = styled.div`
@@ -171,12 +183,34 @@ const MyPageEdit = () => {
     });
   };
   // 깃허브 수정 이벤트 핸들러
-  const onChangeGithub = (e) => {
-    setProfileBody((cur) => {
-      const newProfileBody = { ...cur };
-      newProfileBody.github = e.target.value;
-      return newProfileBody;
+  const onConnectGithub = () => {
+    const githubPopup = window.open(
+      process.env.REACT_APP_OAUTH_GITHUB_URL,
+      '깃허브 인증창',
+      'width=600px,height=500px,scrollbars=yes',
+    );
+    githubPopup.addEventListener('unload', () => {
+      const githubURL = window.localStorage.getItem('githubURL');
+      if (githubURL) {
+        setProfileBody({ ...profileBody, github: githubURL });
+      } else {
+        const Authorization = window.localStorage.getItem('Authorization');
+        if (Authorization) notiInfo('이미 등록된 깃허브 주소입니다.');
+      }
     });
+  };
+  const onDisconnectGithub = () => {
+    axios
+      .get(`/members/${id}/delete-github`, {
+        headers: { Authorization: localStorage.getItem('Authorization') },
+      })
+      .then(() => {
+        setProfileBody({ ...profileBody, github: '' });
+      })
+      .catch((err) => {
+        console.error(err);
+        notiToast('에러가 발생했습니다😢');
+      });
   };
   // 수정 PATCH 요청
   const onUpload = () => {
@@ -242,12 +276,18 @@ const MyPageEdit = () => {
             </div>
             <label htmlFor="github-url">
               <span>깃허브</span>
-              <input
-                id="github-url"
-                className="github-info"
-                value={profileBody.github || ''}
-                onChange={onChangeGithub}
-              ></input>
+              <div className="github-wrapper">
+                <input
+                  id="github-url"
+                  value={profileBody.github || '연동된 계정이 없습니다.'}
+                  disabled
+                ></input>
+                {profileBody.github ? (
+                  <MiniButton text="해제하기" onClick={onDisconnectGithub} />
+                ) : (
+                  <MiniButton text="연동하기" onClick={onConnectGithub} />
+                )}
+              </div>
             </label>
           </div>
         </MyInfoContainer>
