@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import DefaultButton from '../components/DefaultButton';
 import InterestSelect from '../components/InterestSelect';
@@ -21,7 +21,7 @@ import {
   skillstacksCheckState,
   interestsCheckState,
 } from '../atom/atom';
-import { notiError, notiInfo, notiSuccess } from '../assets/toast';
+import { notiError, notiInfo, notiSuccess, notiToast } from '../assets/toast';
 
 const Container = styled.div`
   min-height: calc(100vh - 62px);
@@ -101,20 +101,32 @@ const SignUp = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckErr, setPasswordCheckErr] = useState(false);
 
-  const selectedLevel = useRecoilValue(selectedLevelState);
+  const [selectedLevel, setSelectedLevel] = useRecoilState(selectedLevelState);
   const [levelErr, setLevelErr] = useState(false);
 
-  const selectedSkillStacks = useRecoilValue(selectedSkillstacksState);
+  const [selectedSkillStacks, setSelectedSkillStacks] = useRecoilState(
+    selectedSkillstacksState,
+  );
   const [skillstacksCheck, setSkillstacksCheck] = useRecoilState(
     skillstacksCheckState,
   );
 
-  const selectedInterest = useRecoilValue(selectedInterestsState);
+  const [selectedInterest, setSelectedInterest] = useRecoilState(
+    selectedInterestsState,
+  );
   const [interestsCheck, setInterestsCheck] =
     useRecoilState(interestsCheckState);
 
   const [github, setGithub] = useState('');
   const [githubIsChecked, setGithubChecked] = useState(false);
+
+  useEffect(() => {
+    setSelectedLevel('');
+    setSelectedSkillStacks([]);
+    setSkillstacksCheck(true);
+    setSelectedInterest([]);
+    setInterestsCheck(true);
+  }, []);
 
   // 내용 수정
   // 아이디
@@ -149,8 +161,7 @@ const SignUp = () => {
   // 비밀번호 확인
   const onPasswordCheckChange = (pwCheck) => {
     setPasswordCheck(pwCheck);
-    if (pwCheck.length >= password.length)
-      setPasswordCheckErr(password !== pwCheck);
+    onPasswordCheckValidation();
   };
 
   // 유효성 검사
@@ -190,7 +201,7 @@ const SignUp = () => {
   // 아이디 인증하기
   const onCheckIdBtn = () => {
     onIdValidation();
-    if (!userIdErr) {
+    if (!userIdErr && userId.length > 1) {
       axios
         .post(`/members/signup/email-send`, {
           email: userId,
@@ -206,6 +217,8 @@ const SignUp = () => {
             console.log(err);
           }
         });
+    } else {
+      notiToast('이메일 주소를 다시 확인해주세요', 'error');
     }
   };
   // 인증코드 인증확인
@@ -220,25 +233,29 @@ const SignUp = () => {
         setCodeChecked(true);
       })
       .catch(() => {
-        notiError('인증코드가 유효하지 않습니다.');
+        notiToast('인증코드가 유효하지 않습니다.', 'error');
         setVerificationCodeErr(true);
         setCodeChecked(false);
       });
   };
   // 닉네임 중복확인
   const onCheckNickNameBtn = () => {
-    axios
-      .post(`/members/signup/verify-name`, {
-        name: nickName,
-      })
-      .then(() => {
-        setNameChecked(true);
-      })
-      .catch((err) => {
-        notiError(err.response.data.message);
-        setNameChecked(false);
-        setNickNameErr(true);
-      });
+    if (nickName.length) {
+      axios
+        .post(`/members/signup/verify-name`, {
+          name: nickName,
+        })
+        .then(() => {
+          setNameChecked(true);
+        })
+        .catch((err) => {
+          notiError(err.response.data.message);
+          setNameChecked(false);
+          setNickNameErr(true);
+        });
+    } else {
+      notiToast('1자 이상 입력해주세요', 'error');
+    }
   };
   // 깃허브 연동하기
   const onConnectGithub = () => {
@@ -252,6 +269,9 @@ const SignUp = () => {
       if (githubURL) {
         setGithub(githubURL);
         setGithubChecked(true);
+      } else {
+        const Authorization = window.localStorage.getItem('Authorization');
+        if (Authorization) notiInfo('이미 등록된 깃허브 주소입니다.');
       }
     });
   };
@@ -436,11 +456,11 @@ const SignUp = () => {
             <LineInput
               id="password-check"
               message={
-                passwordCheck.length < 8
+                passwordCheck.length < 1
                   ? '비밀번호를 다시 한 번 입력해주세요.'
-                  : passwordCheckErr
-                  ? '비밀번호가 일치하지 않습니다.'
-                  : ''
+                  : password === passwordCheck
+                  ? ''
+                  : '비밀번호가 일치하지 않습니다.'
               }
               value={passwordCheck}
               onChange={onPasswordCheckChange}
@@ -448,7 +468,7 @@ const SignUp = () => {
               isError={passwordCheckErr}
               type="password"
             />
-            {passwordCheck.length >= 8 && !passwordCheckErr && (
+            {passwordCheck.length >= 8 && password === passwordCheck && (
               <div className="confirmed-icon">
                 <AiOutlineCheck fill="var(--purple)" />
               </div>

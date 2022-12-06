@@ -213,8 +213,18 @@ const ArticleWrite = () => {
     setFeNumber(0);
     setBeNumber(0);
     setInputBody('');
-    setNext(next + 1);
     setInputHashTags([]);
+    setNext(next + 1);
+
+    setInputTitleCheck(true);
+    setInterestsCheck(true);
+    setSkillstacksCheck(true);
+    setStartDateCheck(true);
+    setEndDateCheck(true);
+    setFeNumberCheck(true);
+    setBeNumberCheck(true);
+    setInputBodyCheck(true);
+    setHashtagsCheck(true);
   }, []);
 
   const onWriteSubmit = () => {
@@ -314,7 +324,6 @@ const ArticleWrite = () => {
               placeholder={'제목을 입력해주세요.'}
               value={inputTitle}
               onChange={setInputTitle}
-              onblur={onblur}
             />
           </div>
           <div className="article-write-body">
@@ -370,7 +379,7 @@ const ArticleWrite = () => {
                     {inputBodyCheck ? (
                       ''
                     ) : (
-                      <div className="warning">1자 이상 입력해주세요</div>
+                      <div className="warning">내용을 입력해주세요</div>
                     )}
                   </div>
                   <InputBody />

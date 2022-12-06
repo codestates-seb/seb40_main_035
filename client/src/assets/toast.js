@@ -34,3 +34,16 @@ export const notiInfo = (message) => {
     confirmButtonText: '확인',
   });
 };
+
+export const notiToast = (title, icon) => {
+  Swal.fire({
+    title: title,
+    icon: icon,
+    toast: true,
+    position: 'top',
+    background: 'white',
+    showConfirmButton: false,
+    timer: 2500,
+    timerProgressBar: true,
+  });
+};

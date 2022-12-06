@@ -51,6 +51,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/about" element={<About />} />
             <Route path="/receive-token.html" element={<ReceiveGithub />} />
+            <Route path="/receive-token" element={<ReceiveGithub />} />
           </Routes>
         </ContentContainer>
       </Container>
