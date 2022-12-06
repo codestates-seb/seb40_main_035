@@ -12,6 +12,7 @@ import com.codestates.mainproject.domain.skill.entity.Skill;
 import com.codestates.mainproject.email.service.EmailService;
 import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
 import com.codestates.mainproject.security.config.SecurityConfiguration;
+import com.codestates.mainproject.security.oauth2.OAuth2MemberSuccessHandler;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -49,7 +50,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = MemberController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@WebMvcTest(value = MemberController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class, OAuth2ClientAutoConfiguration.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 class MemberControllerTest {

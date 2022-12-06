@@ -37,7 +37,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = AnswerController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@WebMvcTest(value = AnswerController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class, OAuth2ClientAutoConfiguration.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 class AnswerControllerTest {

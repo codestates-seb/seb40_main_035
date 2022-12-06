@@ -89,12 +89,12 @@ public class MemberController {
         return new ResponseEntity<>(new SingleResponseDto<>(responseDto), HttpStatus.OK);
     }
 
-//    @GetMapping("/{member-id}/delete-github")
-//    public ResponseEntity deleteGithub(@PathVariable("member-id") @Positive long memberId) {
-//        memberService.deleteGithub(memberId);
-//
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+    @GetMapping("/{member-id}/delete-github")
+    public ResponseEntity deleteGithub(@PathVariable("member-id") @Positive long memberId) {
+        memberService.deleteGithub(memberId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") @Positive long memberId) {
