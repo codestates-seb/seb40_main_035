@@ -213,8 +213,18 @@ const ArticleWrite = () => {
     setFeNumber(0);
     setBeNumber(0);
     setInputBody('');
-    setNext(next + 1);
     setInputHashTags([]);
+    setNext(next + 1);
+
+    setInputTitleCheck(true);
+    setInterestsCheck(true);
+    setSkillstacksCheck(true);
+    setStartDateCheck(true);
+    setEndDateCheck(true);
+    setFeNumberCheck(true);
+    setBeNumberCheck(true);
+    setInputBodyCheck(true);
+    setHashtagsCheck(true);
   }, []);
 
   const onWriteSubmit = () => {
