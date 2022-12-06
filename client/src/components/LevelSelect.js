@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FiChevronDown } from 'react-icons/fi';
 import { useRecoilState } from 'recoil';
@@ -20,8 +19,6 @@ const WholeContainer = styled.div`
 
 const DropdownContainer = styled.div`
   display: flex;
-  /* justify-content: center; */
-
   &:hover {
     cursor: pointer;
   }
@@ -111,7 +108,6 @@ const selectOptions = ['학생', '취준생', '주니어', '시니어'];
 const LevelSelect = () => {
   // 드롭다운 상태 저장 => active ? 펼쳐집니다 : 닫힙니다
   const [isActive, setIsActive] = useRecoilState(activeDropDownState);
-  // const [isActive, setIsActive] = useState(false);
   // 선택된 데이터 저장
   const [selectedLevel, setSelectedLevel] = useRecoilState(selectedLevelState);
   const selectInput = useRef();

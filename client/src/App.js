@@ -10,6 +10,8 @@ import Profile from './pages/Profile';
 import SignUp from './pages/SignUp';
 import ReceiveGithub from './pages/ReceiveGithub';
 import styled from 'styled-components';
+import NotFound from './pages/NotFound';
+import About from './pages/About';
 
 const Container = styled.div`
   background-color: var(--purple-light);
@@ -39,6 +41,7 @@ function App() {
         <ContentContainer>
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="*" element={<NotFound />} />
             <Route path="/write" element={<ArticleWrite />} />
             <Route path="/articles/edit/:id" element={<ArticleEdit />} />
             <Route path="/articles/:id" element={<ArticleDetail />} />
@@ -46,6 +49,8 @@ function App() {
             <Route path="/mypage/edit/:id" element={<MyPageEdit />} />
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/receive-token.html" element={<ReceiveGithub />} />
             <Route path="/receive-token" element={<ReceiveGithub />} />
           </Routes>
         </ContentContainer>

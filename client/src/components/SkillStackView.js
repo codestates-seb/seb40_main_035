@@ -39,7 +39,7 @@ const SkillViewContainer = styled.div`
   color: var(--grey-dark);
   font-size: 13px;
   width: 100%;
-  height: 200px;
+  min-height: 280px;
   min-width: 250px;
 
   .skill-menu {
