@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import DefaultButton from '../components/DefaultButton';
 import InterestSelect from '../components/InterestSelect';
@@ -101,20 +101,32 @@ const SignUp = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckErr, setPasswordCheckErr] = useState(false);
 
-  const selectedLevel = useRecoilValue(selectedLevelState);
+  const [selectedLevel, setSelectedLevel] = useRecoilState(selectedLevelState);
   const [levelErr, setLevelErr] = useState(false);
 
-  const selectedSkillStacks = useRecoilValue(selectedSkillstacksState);
+  const [selectedSkillStacks, setSelectedSkillStacks] = useRecoilState(
+    selectedSkillstacksState,
+  );
   const [skillstacksCheck, setSkillstacksCheck] = useRecoilState(
     skillstacksCheckState,
   );
 
-  const selectedInterest = useRecoilValue(selectedInterestsState);
+  const [selectedInterest, setSelectedInterest] = useRecoilState(
+    selectedInterestsState,
+  );
   const [interestsCheck, setInterestsCheck] =
     useRecoilState(interestsCheckState);
 
   const [github, setGithub] = useState('');
   const [githubIsChecked, setGithubChecked] = useState(false);
+
+  useEffect(() => {
+    setSelectedLevel('');
+    setSelectedSkillStacks([]);
+    setSkillstacksCheck(true);
+    setSelectedInterest([]);
+    setInterestsCheck(true);
+  }, []);
 
   // 내용 수정
   // 아이디
