@@ -234,7 +234,7 @@ const LogIn = ({ userMenu }) => {
           });
           setEmail('');
           setPassword('');
-          notiSuccess('로그인 완료 되었습니다.');
+          notiSuccess('로그인 되었습니다.');
           closeLogIn();
         })
         .catch((ex) => {
@@ -259,10 +259,11 @@ const LogIn = ({ userMenu }) => {
 
       if (Authorization) {
         setCurrentUser({ memberId: Number(memberId), isLogIn: true });
+        closeLogIn();
         notiSuccess('로그인 되었습니다!');
       } else if (githubURL) {
         notiError(
-          '등록된 깃허브 계정이 아닙니다! 회원가입 후 깃허브 계정을 연동해주세요',
+          '등록된 깃허브 계정이 아닙니다! 로그인 후 깃허브 계정을 연결해주세요.',
         );
       }
     });
