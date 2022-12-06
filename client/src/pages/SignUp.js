@@ -149,8 +149,7 @@ const SignUp = () => {
   // 비밀번호 확인
   const onPasswordCheckChange = (pwCheck) => {
     setPasswordCheck(pwCheck);
-    if (pwCheck.length >= password.length)
-      setPasswordCheckErr(password !== pwCheck);
+    onPasswordCheckValidation();
   };
 
   // 유효성 검사
@@ -229,18 +228,22 @@ const SignUp = () => {
   };
   // 닉네임 중복확인
   const onCheckNickNameBtn = () => {
-    axios
-      .post(`/members/signup/verify-name`, {
-        name: nickName,
-      })
-      .then(() => {
-        setNameChecked(true);
-      })
-      .catch((err) => {
-        notiError(err.response.data.message);
-        setNameChecked(false);
-        setNickNameErr(true);
-      });
+    if (nickName.length) {
+      axios
+        .post(`/members/signup/verify-name`, {
+          name: nickName,
+        })
+        .then(() => {
+          setNameChecked(true);
+        })
+        .catch((err) => {
+          notiError(err.response.data.message);
+          setNameChecked(false);
+          setNickNameErr(true);
+        });
+    } else {
+      notiToast('1자 이상 입력해주세요', 'error');
+    }
   };
   // 깃허브 연동하기
   const onConnectGithub = () => {
@@ -441,11 +444,11 @@ const SignUp = () => {
             <LineInput
               id="password-check"
               message={
-                passwordCheck.length < 8
+                passwordCheck.length < 1
                   ? '비밀번호를 다시 한 번 입력해주세요.'
-                  : passwordCheckErr
-                  ? '비밀번호가 일치하지 않습니다.'
-                  : ''
+                  : password === passwordCheck
+                  ? ''
+                  : '비밀번호가 일치하지 않습니다.'
               }
               value={passwordCheck}
               onChange={onPasswordCheckChange}
@@ -453,7 +456,7 @@ const SignUp = () => {
               isError={passwordCheckErr}
               type="password"
             />
-            {passwordCheck.length >= 8 && !passwordCheckErr && (
+            {passwordCheck.length >= 8 && password === passwordCheck && (
               <div className="confirmed-icon">
                 <AiOutlineCheck fill="var(--purple)" />
               </div>
