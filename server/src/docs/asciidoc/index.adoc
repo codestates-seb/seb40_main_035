@@ -1,0 +1,685 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+:basedir: ./src/docs/asciidoc
+endif::[]
+
+= Side Project team recruiting API Docs
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+
+image::https://user-images.githubusercontent.com/107581387/202951829-721a746a-9d5f-4d28-8376-63f63c43ee10.png[]
+
+* `notion`: https://codestates.notion.site/3355-9a952847d618434287a8632770088ca4
+* `github`: https://github.com/codestates-seb/seb40_main_035
+
+
+***
+
+v1.0.1, 2022.11.21
+
+***
+
+_Overview_
+
+* HTTP status codes
+
+|===
+| 상태 코드 | 설명
+
+| `200 OK`
+| 성공
+
+| `400 Bad Request`
+| 잘못된 요청
+
+| `401 Unauthorized`
+| 비인증 상태
+
+| `403 Forbidden`
+| 권한 거부
+
+| `404 Not Found`
+| 존재하지 않는 요청 리소스
+
+| `409 Conflict`
+| 이미 존재하여 충돌
+
+| `500 Internal Server Error`
+| 서버 에러
+|===
+
+== 회원정보
+==== 회원가입
+.curl-request
+include::{snippets}/post-member/curl-request.adoc[]
+
+.request-body
+include::{snippets}/post-member/request-body.adoc[]
+
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-member/response-fields.adoc[]
+
+==== 회원정보 수정
+
+.curl-request
+include::{snippets}/patch-member/curl-request.adoc[]
+
+.request-body
+include::{snippets}/patch-member/request-body.adoc[]
+
+.http-request
+include::{snippets}/patch-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/patch-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-member/response-fields.adoc[]
+
+==== 회원 조회
+.curl-request
+include::{snippets}/get-member/curl-request.adoc[]
+
+.request-body
+include::{snippets}/get-member/request-body.adoc[]
+
+.http-request
+include::{snippets}/get-member/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-member/response-fields.adoc[]
+
+==== 회원 전체 조회
+
+.curl-request
+include::{snippets}/get-members/curl-request.adoc[]
+
+.request-body
+include::{snippets}/get-members/request-body.adoc[]
+
+.http-request
+include::{snippets}/get-members/http-request.adoc[]
+
+.http-response
+include::{snippets}/get-members/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-members/response-fields.adoc[]
+
+==== 회원정보 삭제
+
+.curl-request
+include::{snippets}/delete-member/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-member/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-member/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-member/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-member/http-response.adoc[]
+
+== 게시글
+==== 게시글 생성
+.curl-request
+include::{snippets}/post-article/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-article/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-article/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-article/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-article/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-article/http-response.adoc[]
+
+==== 게시글 수정
+.curl-request
+include::{snippets}/patch-article/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-article/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-article/request-fields.adoc[]
+
+.http-request
+include::{snippets}/patch-article/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/patch-article/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/patch-article/response-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-article/http-response.adoc[]
+
+==== 게시글 조회
+.curl-request
+include::{snippets}/get-article/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-article/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-article/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-article/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-article/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-article/http-response.adoc[]
+
+==== 전체 게시글 조회
+.curl-request
+include::{snippets}/get-articles/curl-request.adoc[]
+
+.request-parameters
+include::{snippets}/get-articles/request-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-articles/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-articles/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-articles/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-articles/http-response.adoc[]
+
+==== 게시글 삭제
+.curl-request
+include::{snippets}/delete-article/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-article/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-article/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-article/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-article/http-response.adoc[]
+
+== 답변
+==== 답변 생성
+.curl-request
+include::{snippets}/post-answer/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-answer/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-answer/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-answer/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-answer/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-answer/http-response.adoc[]
+
+==== 답변 수정
+.curl-request
+include::{snippets}/patch-answer/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-answer/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-answer/request-fields.adoc[]
+
+.http-request
+include::{snippets}/patch-answer/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/patch-answer/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/patch-answer/response-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-answer/http-response.adoc[]
+
+==== 답변 조회
+.curl-request
+include::{snippets}/get-answer/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-answer/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-answer/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-answer/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-answer/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-answer/http-response.adoc[]
+
+==== 전체 답변 조회
+.curl-request
+include::{snippets}/get-answers/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-answers/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-answers/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-answers/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-answers/http-response.adoc[]
+
+==== 답변 삭제
+.curl-request
+include::{snippets}/delete-answer/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-answer/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-answer/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-answer/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-answer/http-response.adoc[]
+
+== 댓글
+==== 댓글 생성
+.curl-request
+include::{snippets}/post-comment/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-comment/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-comment/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-comment/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-comment/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-comment/http-response.adoc[]
+
+==== 댓글 수정
+.curl-request
+include::{snippets}/patch-comment/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-comment/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-comment/request-fields.adoc[]
+
+.http-request
+include::{snippets}/patch-comment/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/patch-comment/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/patch-comment/response-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-comment/http-response.adoc[]
+
+==== 댓글 조회
+.curl-request
+include::{snippets}/get-comment/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-comment/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-comment/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-comment/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-comment/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-comment/http-response.adoc[]
+
+==== 전체 댓글 조회
+.curl-request
+include::{snippets}/get-comments/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-comments/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-comments/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-comments/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-comments/http-response.adoc[]
+
+==== 댓글 삭제
+.curl-request
+include::{snippets}/delete-comment/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-comment/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-comment/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-comment/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-comment/http-response.adoc[]
+
+== 해시태그
+==== 해시태그 생성
+.curl-request
+include::{snippets}/post-hashtag/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-hashtag/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-hashtag/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-hashtag/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-hashtag/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-hashtag/http-response.adoc[]
+
+==== 해시태그 조회
+.curl-request
+include::{snippets}/get-hashtag/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-hashtag/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-hashtag/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-hashtag/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-hashtag/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-hashtag/http-response.adoc[]
+
+==== 전체 해시태그 조회
+.curl-request
+include::{snippets}/get-hashtags/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-hashtags/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-hashtags/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-hashtags/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-hashtags/http-response.adoc[]
+
+==== 해시태그 삭제
+.curl-request
+include::{snippets}/delete-hashtag/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-hashtag/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-hashtag/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-hashtag/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-hashtag/http-response.adoc[]
+
+== 관심분야
+==== 관심분야 생성
+.curl-request
+include::{snippets}/post-interest/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-interest/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-interest/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-interest/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-interest/http-response.adoc[]
+
+==== 관심분야 수정
+.curl-request
+include::{snippets}/patch-interest/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-interest/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-interest/request-fields.adoc[]
+
+.http-request
+include::{snippets}/patch-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/patch-interest/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/patch-interest/response-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-interest/http-response.adoc[]
+
+==== 관심분야 조회
+.curl-request
+include::{snippets}/get-interest/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-interest/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-interest/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-interest/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-interest/http-response.adoc[]
+
+==== 전체 관심분야 조회
+.curl-request
+include::{snippets}/get-interests/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-interests/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-interests/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-interests/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-interests/http-response.adoc[]
+
+==== 관심분야 삭제
+.curl-request
+include::{snippets}/delete-interest/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-interest/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-interest/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-interest/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-interest/http-response.adoc[]
+
+== 기술스택
+==== 기술스택 생성
+.curl-request
+include::{snippets}/post-skill/curl-request.adoc[]
+
+.request-fields
+include::{snippets}/post-skill/request-fields.adoc[]
+
+.http-request
+include::{snippets}/post-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/post-skill/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/post-skill/response-fields.adoc[]
+
+.http-response
+include::{snippets}/post-skill/http-response.adoc[]
+
+==== 기술스택 수정
+.curl-request
+include::{snippets}/patch-skill/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-skill/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-skill/request-fields.adoc[]
+
+.http-request
+include::{snippets}/patch-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/patch-skill/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/patch-skill/response-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-skill/http-response.adoc[]
+
+==== 기술스택 조회
+.curl-request
+include::{snippets}/get-skill/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-skill/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/get-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-skill/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-skill/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-skill/http-response.adoc[]
+
+==== 전체 기술스택 조회
+.curl-request
+include::{snippets}/get-skills/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-skills/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/get-skills/httpie-request.adoc[]
+
+.response-fields
+include::{snippets}/get-skills/response-fields.adoc[]
+
+.http-response
+include::{snippets}/get-skills/http-response.adoc[]
+
+==== 기술스택 삭제
+.curl-request
+include::{snippets}/delete-skill/curl-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-skill/path-parameters.adoc[]
+
+.http-request
+include::{snippets}/delete-skill/http-request.adoc[]
+
+.httpie-request
+include::{snippets}/delete-skill/httpie-request.adoc[]
+
+.http-response
+include::{snippets}/delete-skill/http-response.adoc[]
+
+
+
