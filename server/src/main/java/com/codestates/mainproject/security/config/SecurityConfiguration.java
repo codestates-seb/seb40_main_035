@@ -4,7 +4,7 @@ import com.codestates.mainproject.security.auth.handler.MemberAuthenticationEntr
 import com.codestates.mainproject.security.auth.jwt.MemberDetailsService;
 import com.codestates.mainproject.security.auth.filter.JwtAuthenticationFilter;
 import com.codestates.mainproject.security.auth.jwt.JwtTokenizer;
-import com.codestates.mainproject.security.oauth2.OAuth2MemberSuccessHandler;
+//import com.codestates.mainproject.security.oauth2.OAuth2MemberSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,7 +59,7 @@ public class SecurityConfiguration {
                 .anyRequest().authenticated()
                 .and()
 
-                .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, memberDetailsService)))
+//                .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, memberDetailsService)))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer, memberDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
