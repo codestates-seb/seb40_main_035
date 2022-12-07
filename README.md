@@ -46,7 +46,7 @@ PW : password1!
 - [발표문서](https://www.notion.so/codestates/35-Team3355-440a0433a2334167ac9db10fa224adf5#b2e506e09f4d4c31a9d439c392bcc26f)
 - [발표 ppt](https://docs.google.com/presentation/d/1HlVYk-HRnkfl3Yz_gSJSvUzUHYBRUWaa-SqfTeQP2GQ/edit#slide=id.p)
 - [Figma](https://www.figma.com/file/94JPdauQVUotJFU4RtbxUM/3355%EC%A1%B0?node-id=1%3A136&t=psXSxP4i8fqeIb4K-0)
-- [ERD](https://user-images.githubusercontent.com/107869548/205679002-0f358f1e-fb5a-41a0-a8db-41505bcb5b1f.png)
+- [ERD](https://user-images.githubusercontent.com/107581387/206054323-336f4ab5-c1a5-4314-b2f7-aaefead1ab1c.png)
 - [사용자 요구사항 정의서](https://www.notion.so/codestates/741b0552d2134cde82935480c253bf6b)
 
 
