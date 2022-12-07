@@ -26,8 +26,8 @@ http://seb-main-035-client.s3-website.ap-northeast-2.amazonaws.com/
 </br>
 
 ## 테스트 계정
-ID   : blue@gmail.com</br>
-PW : blue1234!
+ID   : fafaric764@cnogs.com</br>
+PW : password1!
 
 </br>
 
