@@ -73,6 +73,8 @@ PW : password1!
    <img src="https://img.shields.io/badge/java 11-007396?style=for-the-badge&logo=OpenJDK&logoColor=white"> 
    <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">
    <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white">
+   <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white">
+   <img src="https://img.shields.io/badge/OAuth2-EB5424?style=for-the-badge&logo=OAuth2&logoColor=white">
 
 #### Collaboration Tools
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
